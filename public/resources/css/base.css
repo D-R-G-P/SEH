@@ -1,0 +1,17 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+:root {
+    --color1: #094C98;
+    --color2: #26A9DC;
+    --color3: #E0B529;
+}
+
+input[type="text"], input[type="password"] {
+    border: #242424 .2vw solid;
+    border-radius: .8vw;
+    width: 80%;
+    padding: .5vw;
+    font-size: 1.8vw;
+}

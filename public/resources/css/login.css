@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(45deg, var(--color1) 0%, var(--color2) 100%);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+::selection {
+  background: var(--color1);
+}
+
+.container {
+  width: 70vw;
+  padding: 0 20vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container .iconoLogo {
+  width: auto;
+  height: 10vw;
+  margin-bottom: 2vw;
+  background-color: var(--color1);
+  border-radius: 100%;
+  padding: 3vw;
+  color: #fff;
+}
+
+.wrapper {
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 1px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper .title {
+  height: 7vw;
+  background: var(--color1);
+  border-radius: 8px 8px 0 0;
+  color: #fff;
+  font-size: 2.5vw;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper .title p {
+  font-size: 1.3vw;
+}
+
+.wrapper #malLogin {
+  width: 100%;
+  text-align: center;
+  color: rgb(189, 0, 0);
+}
+
+.wrapper form {
+  padding: 2.7vw 1vw 1vw 1vw;
+}
+
+.wrapper form .row {
+  height: 3.5vw;
+  margin-bottom: 2vw;
+  position: relative;
+}
+
+.wrapper form .row input {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  padding-left: 4vw;
+  border-radius: 8px;
+  border: 1px solid lightgrey;
+  font-size: 1.5vw;
+  transition: all 0.3s ease;
+}
+
+form .row input:focus {
+  border-color: var(--color1);
+  box-shadow: inset 0px 0px 2px 2px #00428e40;
+}
+
+form .row input::placeholder {
+  color: #999;
+}
+
+.wrapper form .row .icon {
+  position: absolute;
+  width: 3.5vw;
+  height: 100%;
+  color: #fff;
+  background: var(--color1);
+  border: 1px solid var(--color1);
+  border-radius: 8px 0 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper form .row .icon {
+  font-size: 2.3vw;
+}
+
+.wrapper form .button input {
+  color: #fff;
+  font-size: 2vw;
+  font-weight: 500;
+  padding-left: 0px;
+  background: var(--color1);
+  border: 1px solid var(--color1);
+  cursor: pointer;
+}
+
+form .button input:hover {
+  background: var(--color2);
+}
