@@ -16,7 +16,7 @@
 <body>
 
     <div class="container">
-        <i class="fa-solid fa-notes-medical fa-shake iconoLogo"></i>
+        <i class="fa-solid fa-notes-medical iconoLogo"></i>
         <div class="wrapper">
           <div class="title">
             <span>Iniciar sesión</span>
