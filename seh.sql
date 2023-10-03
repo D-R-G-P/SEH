@@ -33,6 +33,7 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `apellido` varchar(255) NOT NULL,
+  `servicio` varchar(255) NOT NULL,
   `cargo` varchar(255) NOT NULL,
   `tipo_usuario` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
@@ -41,8 +42,8 @@ CREATE TABLE `user` (
 -- Volcado de datos para la tabla `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `nombre`, `apellido`, `cargo`, `tipo_usuario`) VALUES
-(1, 'clamas', '03c2b9f64446d7c270a9ee84a52ea3d8', 'Cristian Jonathan', 'Lamas', 'Administrativo', 'admin');
+INSERT INTO `user` (`id`, `username`, `password`, `nombre`, `servicio`, `apellido`, `cargo`, `tipo_usuario`) VALUES
+(1, 'clamas', '03c2b9f64446d7c270a9ee84a52ea3d8', 'Cristian Jonathan', 'Lamas', 'DRGP', 'Administrativo', 'admin');
 
 --
 -- Índices para tablas volcadas
