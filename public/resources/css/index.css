@@ -17,38 +17,3 @@ body {
   height: 100%;
   background-color: gray;
 }
-
-header {
-    background-color: var(--color1);
-    padding: .9vw 1.5vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-header .logo .iconoLogo {
-    color: #fff;
-    font-size: 3vw;
-}
-
-/* header DIV */
-
-header .perfil {
-    display: flex;
-}
-
-header .perfil .iconoPerfil {
-    color: #fff;
-    font-size: 2.3vw;
-}
-
-header .perfil .arrow {
-    display: flex;
-    align-items: flex-end;
-    margin-left: .3vw;
-}
-
-header .perfil .arrow .iconoFlecha {
-    color: #fff;
-    font-size: 1.5vw;
-}

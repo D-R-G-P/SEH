@@ -10,7 +10,7 @@ $errorLogin = "";
 if (isset($_SESSION['user'])) {
     // Si está iniciada, va a include
     $user->setUser($userSession->getCurrentUser());
-    include_once 'public/index.php';
+    include_once 'public/index.html';
 } else if (isset($_POST['username']) && isset($_POST['password'])) {
     // echo "Validación de login";
 
@@ -23,7 +23,7 @@ if (isset($_SESSION['user'])) {
         $userSession->setCurrentUser($userForm);
         $user->setUser($userForm);
 
-        include_once 'public/index.php';
+        include_once 'public/index.html';
     } else {
         // echo "Nombre de usuario o contraseña incorrecto";
         $errorLogin = "Nombre de usuario o contraseña incorrecto";
