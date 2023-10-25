@@ -25,14 +25,14 @@
 
         <div></div>
 
-        <div class="perfil">
+        <button class="perfil" id="perfilButton">
             <i class="fa-solid fa-user-large iconoPerfil"></i>
             <div class="arrow">
                 <i class="fa-solid fa-caret-down iconoFlecha"></i>
             </div>
-        </div>
+        </button>
 
-        <div class="perfilMenu">
+        <div class="perfilMenu" id="perfilMenu" style="display: none;">
 
             <div class="cabeza">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -60,7 +60,8 @@
                     <p>Ir a Perfil <i class="fa-solid fa-user"></i></p>
                 </button>
 
-                <button onclick="window.location.href='/SEH/app/login/logout.php'" style="border-radius: 0 0 .8vw .8vw;">
+                <button onclick="window.location.href='/SEH/app/login/logout.php'"
+                    style="border-radius: 0 0 .8vw .8vw;">
                     <p>Cerrar sesión <i class="fa-solid fa-power-off"></i></p>
                 </button>
 
@@ -70,6 +71,32 @@
         </div>
     </header>
 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const perfilButton = document.querySelector('.perfil');
+            const perfilMenu = document.querySelector('.perfilMenu');
+            const iconoFlecha = document.querySelector('.iconoFlecha');
+
+            perfilButton.addEventListener('click', function () {
+                if (perfilMenu.style.display === 'flex') {
+                    perfilMenu.style.display = 'none';
+                    iconoFlecha.style.transform = 'rotate(0deg)';
+                } else {
+                    perfilMenu.style.display = 'flex';
+                    iconoFlecha.style.transform = 'rotate(180deg)';
+                }
+            });
+
+            // Cerrar el menú si se hace clic en cualquier otro lugar de la pantalla
+            window.addEventListener('click', function (event) {
+                if (event.target !== perfilButton && event.target !== perfilMenu) {
+                    perfilMenu.style.display = 'none';
+                    iconoFlecha.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
