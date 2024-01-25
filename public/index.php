@@ -1,7 +1,5 @@
 <?php
 
-  
-
 $title = "Inicio"
 
 ?>

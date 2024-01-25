@@ -28,7 +28,7 @@
               <div class="icon">
                 <i class="fa-solid fa-address-card"></i>
               </div>
-              <input type="text" name="dni" placeholder="D.N.I." required>
+              <input type="text" name="dni" placeholder="D.N.I." oninput="formatNumber(this)" required>
             </div>
             <div class="row">
               <div class="icon">
@@ -42,6 +42,19 @@
           </form>
         </div>
       </div>
+
+      <script>
+        function formatNumber(input) {
+            // Eliminar caracteres que no son números
+            const inputValue = input.value.replace(/\D/g, '');
+
+            // Formatear el número con puntos si no está vacío, de lo contrario, dejar en blanco
+            const formattedNumber = inputValue !== '' ? Number(inputValue).toLocaleString('es-AR') : '';
+
+            // Actualizar el valor del campo de entrada
+            input.value = formattedNumber;
+        }
+    </script>
 
 </body>
 </html>
