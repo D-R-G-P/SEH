@@ -43,7 +43,7 @@ $pdo = $db->connect();
 
         <div class="seccond">
             <div class="logoHSM">
-                <img src="/SGH/public/resources/image/hsmlogosol.png" alt="HIGA San Martín - Logo">
+                <img src="/SGH/public/resources/image/hsmlogoheader.png" alt="HIGA San Martín - Logo">
                 <h2>H I G A </br> General San Martín</h2>
             </div>
         </div>
