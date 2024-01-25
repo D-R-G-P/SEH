@@ -53,7 +53,7 @@ header .first .titleLogo .iconoLogo {
     font-size: 3vw;
 }
 
-header .first .titleLogo h1.openHeader {
+header .first .titleLogo h1 {
     color: #fff;
     font-size: 1.1vw;
     text-align: center;
@@ -71,24 +71,132 @@ header .seccond .logoHSM img {
     height: 3vw;
 }
 
-header .seccond .logoHSM h2.openHeader {
+header .seccond .logoHSM h2 {
     color: #fff;
     font-size: 1.1vw;
     text-align: center;
     width: 11vw;
 }
 
-
-
-
-
-
 .headerLeft {
     background-color: var(--color1);
-    padding: 0.5vw 1vw;
+
     display: flex;
     flex-direction: column;
     align-items: start;
+    justify-content: space-between;
     width: fit-content;
-    height: 100%;
+    max-width: 17vw;
+    height: calc(100% - 4.5vw - 1.8vw);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transition: width 0.2s ease-in-out;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.headerLeft {
+    scrollbar-width: auto;
+    scrollbar-color: #26a9dc #094c98;
+}
+
+/* Chrome, Edge, and Safari */
+.headerLeft::-webkit-scrollbar {
+    width: 1vw;
+}
+
+.headerLeft::-webkit-scrollbar-track {
+    background: #094c98;
+}
+
+.headerLeft::-webkit-scrollbar-thumb {
+    background-color: #26a9dc;
+    border-radius: .8vw;
+    border: .25vw solid #094c98;
+}
+
+.headerLeft .info.open {
+    color: #fff;
+    margin-top: .5vw;
+    padding: .5vw;
+    font-size: 1.3vw;
+}
+
+.headerLeft .info.close {
+    display: none;
+}
+
+.headerLeft .sistemas {
+    margin: 1vw 0 1vw 0;
+}
+
+.headerLeft .header {
+    padding: 1vw 1vw;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.3vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    transition: background .2s ease-in-out;
+    border-radius: 0 .8vw .8vw 0;
+}
+
+.headerLeft .header:hover {
+    background: var(--color2);
+    transition: background .2s ease-in-out;
+}
+
+.headerLeft .header p.headerLeftP.open {
+    display: block;
+    margin-left: .5vw;
+}
+
+.headerLeft .header p.headerLeftP.close {
+    display: none;
+}
+
+.headerLeft .user {
+    width: 100%;
+}
+
+.headerLeft .logout {
+    padding: 1vw 1vw;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.3vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    transition: background .2s ease-in-out;
+    border-radius: 0 .8vw .8vw 0;
+}
+
+.headerLeft .logout:hover {
+    background: #ec2222;
+    transition: background .2s ease-in-out;
+}
+
+.headerLeft .logout p.headerLeftP.open {
+    display: block;
+    margin-left: .5vw;
+}
+
+.headerLeft .logout p.headerLeftP.close {
+    display: none;
+}
+
+/* Footer */
+
+footer {
+    background: var(--color1);
+    display: flex;
+    justify-content: space-between;
+    height: 1.8vw;
+    align-items: center;
+    color: #fff;
+    font-size: 1vw;
+    padding: 0 1vw;
 }
