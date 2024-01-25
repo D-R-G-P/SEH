@@ -10,29 +10,26 @@ $errorLogin = "";
 if (isset($_SESSION['user'])) {
     // Si está iniciada, va a include
     $user->setUser($userSession->getCurrentUser());
-    include_once 'public/index.html';
-} else if (isset($_POST['username']) && isset($_POST['password'])) {
+    include_once 'public/index.php';
+} else if (isset($_POST['dni']) && isset($_POST['password'])) {
     // echo "Validación de login";
 
-    $userForm = $_POST['username'];
+    $dniForm = $_POST['dni'];
     $passForm = $_POST['password'];
 
     $user = new User();
-    if($user->userExists($userForm, $passForm)) {
+    if ($user->userExists($dniForm, $passForm)) {
         // echo "usuario validado";
-        $userSession->setCurrentUser($userForm);
-        $user->setUser($userForm);
+        $userSession->setCurrentUser($dniForm);
+        $user->setUser($dniForm);
 
-        include_once 'public/index.html';
+        include_once 'public/index.php';
     } else {
         // echo "Nombre de usuario o contraseña incorrecto";
-        $errorLogin = "Nombre de usuario o contraseña incorrecto";
+        $errorLogin = "Número de documento o contraseña incorrecto";
         include_once 'login.php';
     }
-
 } else {
     // echo "Login";
     include_once 'login.php';
 }
-
-?>

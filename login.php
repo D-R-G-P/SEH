@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.E.H. - Login</title>
+    <title>S.G.H. - Login</title>
     <!-- Sistema de emergentes hospitalarios -->
     <link rel="icon" href="/SEH/node_modules/@fortawesome/fontawesome-free/svg/notes-medical-solid.svg" type="image/svg+xml">
 
-    <link rel="stylesheet" href="/SEH/public/resources/css/base.css">
-    <link rel="stylesheet" href="/SEH/public/resources/css/login.css">
+    <link rel="stylesheet" href="/SGH/public/resources/css/base.css">
+    <link rel="stylesheet" href="/SGH/public/resources/css/login.css">
 
     <!-- FontAwesome -->
-  <script src="/SEH/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
+  <script src="/SGH/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
 </head>
 <body>
 
@@ -20,21 +20,21 @@
         <div class="wrapper">
           <div class="title">
             <span>Iniciar sesión</span>
-            <p>Sistema de Emergentes hospitalarios</p>
+            <p>Sistema de Gestion Hospitalaria</p>
           </div>
           <p id="malLogin"><?php echo $errorLogin ?></p>
           <form method="post">
             <div class="row">
               <div class="icon">
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-address-card"></i>
               </div>
-              <input type="text" name="username" placeholder="Username" required>
+              <input type="text" name="dni" placeholder="D.N.I." required>
             </div>
             <div class="row">
               <div class="icon">
                 <i class="fas fa-lock icono"></i>
               </div>
-              <input type="password" name="password" placeholder="Password" required>
+              <input type="password" name="password" placeholder="Contraseña" required>
             </div>
             <div class="row button">
               <input type="submit" value="Iniciar sesión">
