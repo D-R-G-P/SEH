@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-10-2023 a las 20:02:33
+-- Tiempo de generación: 26-01-2024 a las 02:42:12
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -24,45 +24,50 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `user`
+-- Estructura de tabla para la tabla `personal`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE `personal` (
   `id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `nombre` varchar(255) NOT NULL,
   `apellido` varchar(255) NOT NULL,
-  `servicio` varchar(255) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `dni` varchar(10) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `servicio` longtext NOT NULL,
   `cargo` varchar(255) NOT NULL,
-  `tipo_usuario` varchar(255) NOT NULL
+  `especialidad` longtext NOT NULL,
+  `mn` varchar(7) NOT NULL,
+  `mp` varchar(7) NOT NULL,
+  `sistemas` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
--- Volcado de datos para la tabla `user`
+-- Volcado de datos para la tabla `personal`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `nombre`, `servicio`, `apellido`, `cargo`, `tipo_usuario`) VALUES
-(1, 'clamas', '03c2b9f64446d7c270a9ee84a52ea3d8', 'Cristian Jonathan', 'Lamas', 'DRGP', 'Administrativo', 'admin');
+INSERT INTO `personal` (`id`, `apellido`, `nombre`, `dni`, `password`, `servicio`, `cargo`, `especialidad`, `mn`, `mp`, `sistemas`) VALUES
+(1, 'Lamas', 'Cristian Jonathan', '43.255.000', '464741107fbef0000f0b7b88d0911df8', 'Dirección de Redes y Gestión de Personas', 'Administrativo', '', '', '', '');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `user`
+-- Indices de la tabla `personal`
 --
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `personal`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `password` (`password`),
+  ADD KEY `password_2` (`password`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `user`
+-- AUTO_INCREMENT de la tabla `personal`
 --
-ALTER TABLE `user`
+ALTER TABLE `personal`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
