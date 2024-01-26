@@ -80,18 +80,26 @@ header .seccond .logoHSM h2 {
 
 .headerLeft {
     background-color: var(--color1);
-
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: space-between;
-    width: fit-content;
-    max-width: 17vw;
-    height: calc(100% - 4.5vw - 1.8vw);
+    height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
-    transition: width 0.2s ease-in-out;
+
 }
+
+.headerLeft.open {
+    width: 18.1vw;
+    transition: all .5s ease-in-out;
+}
+
+.headerLeft.close {
+    width: 4vw;
+    transition: all .5s ease-in-out;
+}
+
 
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
@@ -123,7 +131,27 @@ header .seccond .logoHSM h2 {
 }
 
 .headerLeft .info.close {
-    display: none;
+    color: transparent;
+    margin-top: .5vw;
+    padding: .5vw;
+    font-size: 1.3vw;
+    animation: infoToClose .5s ease-in-out;
+}
+
+@keyframes infoToClose {
+    0% {
+        overflow: hidden;
+        direction: rtl;
+        color: #fff;
+    }
+
+    100% {
+        color: transparent;
+    }
+}
+
+.headerLeft .info {
+    overflow: hidden;
 }
 
 .headerLeft .sistemas {
@@ -148,13 +176,34 @@ header .seccond .logoHSM h2 {
     transition: background .2s ease-in-out;
 }
 
-.headerLeft .header p.headerLeftP.open {
-    display: block;
+.headerLeftP {
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    direction: rtl;
     margin-left: .5vw;
 }
 
-.headerLeft .header p.headerLeftP.close {
-    display: none;
+.headerLeftP.close {
+    animation: textToClose .5s ease-in-out;
+    color: transparent;
+}
+
+@keyframes textToClose {
+    0% {
+        white-space: nowrap;
+        overflow: hidden;
+        direction: rtl;
+        color: #fff;
+    }
+
+    99% {
+        color: #fff;
+    }
+
+    100% {
+        color: transparent;
+    }
 }
 
 .headerLeft .user {
@@ -179,15 +228,6 @@ header .seccond .logoHSM h2 {
     transition: background .2s ease-in-out;
 }
 
-.headerLeft .logout p.headerLeftP.open {
-    display: block;
-    margin-left: .5vw;
-}
-
-.headerLeft .logout p.headerLeftP.close {
-    display: none;
-}
-
 /* Footer */
 
 footer {
@@ -199,4 +239,14 @@ footer {
     color: #fff;
     font-size: 1vw;
     padding: 0 1vw;
+}
+
+article {
+    display: flex;
+    flex-direction: row;
+    height: calc(100% - 4.5vw - 1.8vw);
+}
+
+.content {
+    width: calc(100% - var(--headerLeftWidth));
 }

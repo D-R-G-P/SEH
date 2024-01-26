@@ -1,6 +1,6 @@
 <?php
 
-require_once 'app/db/db.php';
+require_once 'db.php';
 
 class User extends DB
 {
