@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S.G.H. - Login</title>
-    <!-- Sistema de emergentes hospitalarios -->
-    <link rel="icon" href="/SEH/node_modules/@fortawesome/fontawesome-free/svg/notes-medical-solid.svg" type="image/svg+xml">
+    <!-- Sistema de gestión hospitalarios -->
+    <link rel="icon" href="/SGH/node_modules/@fortawesome/fontawesome-free/svg/notes-medical-solid.svg" type="image/svg+xml">
 
     <link rel="stylesheet" href="/SGH/public/resources/css/base.css">
     <link rel="stylesheet" href="/SGH/public/resources/css/login.css">
