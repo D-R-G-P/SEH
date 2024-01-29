@@ -72,6 +72,9 @@
                 <a href="" class="header" title="Informes de equipos"><i class="fa-solid fa-hard-drive"></i>
                     <p class="headerLeftP open">Informes de equipos</p>
                 </a>
+                <a href="" class="header" title="Solicitudes de reparación"><i class="fa-solid fa-screwdriver-wrench"></i>
+                    <p class="headerLeftP open">Solicitudes de reparación</p>
+                </a>
 
                 <hr>
             </div>

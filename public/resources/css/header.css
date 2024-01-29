@@ -91,7 +91,7 @@ header .seccond .logoHSM h2 {
 }
 
 .headerLeft.open {
-    width: 18.1vw;
+    width: 24.6vw;
     transition: all .5s ease-in-out;
 }
 
@@ -105,7 +105,7 @@ header .seccond .logoHSM h2 {
 /* Firefox */
 .headerLeft {
     scrollbar-width: auto;
-    scrollbar-color: #26a9dc #094c98;
+    scrollbar-color: var(--color2) var(--color1);
 }
 
 /* Chrome, Edge, and Safari */
@@ -114,13 +114,13 @@ header .seccond .logoHSM h2 {
 }
 
 .headerLeft::-webkit-scrollbar-track {
-    background: #094c98;
+    background: var(--color1);
 }
 
 .headerLeft::-webkit-scrollbar-thumb {
-    background-color: #26a9dc;
+    background-color: var(--color2);
     border-radius: .8vw;
-    border: .25vw solid #094c98;
+    border: .25vw solid var(--color1);
 }
 
 .headerLeft .info.open {
@@ -136,13 +136,18 @@ header .seccond .logoHSM h2 {
     padding: .5vw;
     font-size: 1.3vw;
     animation: infoToClose .5s ease-in-out;
+    /* overflow: hidden; */
+    display: none;
 }
 
 @keyframes infoToClose {
     0% {
-        overflow: hidden;
         direction: rtl;
         color: #fff;
+    }
+
+    50% {
+        overflow: hidden;
     }
 
     100% {
@@ -150,9 +155,9 @@ header .seccond .logoHSM h2 {
     }
 }
 
-.headerLeft .info {
+/* .headerLeft .info {
     overflow: hidden;
-}
+} */
 
 .headerLeft .sistemas {
     margin: 1vw 0 1vw 0;
@@ -223,6 +228,12 @@ header .seccond .logoHSM h2 {
     border-radius: 0 .8vw .8vw 0;
 }
 
+.headerLeft .user a p {
+    white-space: nowrap;
+    overflow: hidden;
+    direction: rtl;
+}
+
 .headerLeft .logout:hover {
     background: #ec2222;
     transition: background .2s ease-in-out;
@@ -248,5 +259,6 @@ article {
 }
 
 .content {
-    width: calc(100% - var(--headerLeftWidth));
+    width: 100%;
+    padding: 1vw;
 }
