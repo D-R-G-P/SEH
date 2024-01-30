@@ -91,7 +91,7 @@ header .seccond .logoHSM h2 {
 }
 
 .headerLeft.open {
-    width: 24.6vw;
+    width: 19vw;
     transition: all .5s ease-in-out;
 }
 
@@ -261,4 +261,8 @@ article {
 .content {
     width: 100%;
     padding: 1vw;
+    background-color: #dddddd;
+    background-image: radial-gradient(#cfcfcfd4 0.1vw, transparent 0);
+    background-size: 1vw 1vw;
+    background-position: -19vw -19vw;
 }

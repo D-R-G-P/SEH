@@ -10,3 +10,6 @@
 </footer>
 
 <script src="/SGH/public/resources/js/header.js"></script>
+</body>
+
+</html>

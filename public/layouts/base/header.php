@@ -57,7 +57,7 @@
                 <a href="" class="header" title="Tablero de mando"><i class="fa-solid fa-house-medical-flag"></i>
                     <p class="headerLeftP open">Tablero de mando</p>
                 </a>
-                <a href="/SGH/public/layouts/modules/personal.php" class="header" title="Gestión de personal"><i class="fa-solid fa-hospital-user"></i>
+                <a href="/SGH/public/layouts/modules/personalPanel/personal.php" class="header" title="Gestión de personal"><i class="fa-solid fa-hospital-user"></i>
                     <p class="headerLeftP open">Gestión de personal</p>
                 </a>
                 <a href="" class="header" title="Informes de turnos"><i class="fa-regular fa-calendar"></i>
@@ -75,7 +75,9 @@
                 <a href="" class="header" title="Solicitudes de reparación"><i class="fa-solid fa-screwdriver-wrench"></i>
                     <p class="headerLeftP open">Solicitudes de reparación</p>
                 </a>
-
+                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Solicitudes de reparación"><i class="fa-solid fa-hammer"></i>
+                    <p class="headerLeftP open">Panel de administración</p>
+                </a>
                 <hr>
             </div>
 

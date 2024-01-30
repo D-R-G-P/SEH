@@ -48,6 +48,7 @@ function toggleMenu() {
     const toggleHeaderP = document.getElementsByClassName("headerLeftP");
     const cookie = getCookie("menuState");
 
+
     if (cookie == "open") {
 
         toggleHeader.classList.remove("open");
@@ -75,5 +76,8 @@ function toggleMenu() {
         }
 
         document.cookie = "menuState=open; expires=Thu, 01 Jan 2100 00:00:00 UTC; path=/; samesite=Lax"
+    } else {
+        document.cookie = "menuState=close; expires=Thu, 01 Jan 2100 00:00:00 UTC; path=/; samesite=Lax"
+        location.reload();
     }
 }
