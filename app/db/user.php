@@ -14,6 +14,7 @@ class User extends DB
     private $mn;
     private $mp;
     private $sistemas;
+    private $rol;
 
     public function userExists($dni, $password)
     {
@@ -31,7 +32,7 @@ class User extends DB
 
     public function setUser($dni)
     {
-        $query = $this->connect()->prepare('SELECT password, apellido, nombre, dni, servicio, cargo, especialidad, mn, mp, sistemas FROM personal WHERE dni = :dni');
+        $query = $this->connect()->prepare('SELECT password, apellido, nombre, dni, servicio, cargo, especialidad, mn, mp, sistemas, rol FROM personal WHERE dni = :dni');
         $query->execute(['dni' => $dni]);
 
         if ($query->rowCount()) {
@@ -46,6 +47,7 @@ class User extends DB
             $this->mn = $result['mn'];
             $this->mp = $result['mp'];
             $this->sistemas = $result['sistemas'];
+            $this->rol = $result['rol'];
         }
     }
 
@@ -81,5 +83,8 @@ class User extends DB
 
     public function getSistemas() {
         return $this->sistemas;
+    }
+    public function getRol() {
+        return $this->rol;
     }
 }

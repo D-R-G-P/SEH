@@ -75,7 +75,13 @@
                 <a href="" class="header" title="Solicitudes de reparación"><i class="fa-solid fa-screwdriver-wrench"></i>
                     <p class="headerLeftP open">Solicitudes de reparación</p>
                 </a>
-                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Solicitudes de reparación"><i class="fa-solid fa-hammer"></i>
+                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Patrimoniales"><i class="fa-solid fa-clipboard-check"></i></i>
+                    <p class="headerLeftP open">Patrimoniales</p>
+                </a>
+                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Informatica"><i class="fa-solid fa-computer"></i>
+                    <p class="headerLeftP open">Informática</p>
+                </a>
+                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Panel de administración"><i class="fa-solid fa-hammer"></i>
                     <p class="headerLeftP open">Panel de administración</p>
                 </a>
                 <hr>

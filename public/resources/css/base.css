@@ -39,3 +39,117 @@ input[type="password"] {
   padding: 0.5vw;
   font-size: 1.8vw;
 }
+
+.btn-green {
+  color: #fff;
+  background-color: #198754;
+  border: #198754;
+  padding: 0.8vw;
+  border-radius: 0.58vw;
+  font-size: 1.05vw;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  margin: .5vw .5vw;
+}
+
+.btn-green:hover {
+  background-color: #157347;
+  border: #157347;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-rojo {
+  color: #fff;
+  background-color: #dc3545;
+  border: #dc3545;
+  padding: 0.5vw;
+  border-radius: 0.5vw;
+  font-size: 1vw;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-rojo:hover {
+  background-color: #b02a37;
+  border: #b02a37;
+  transition: all 0.15s ease-in-out;
+}
+
+table {
+  border: 0.2vw solid #000;
+  border-collapse: separate;
+  border-left: 0;
+  border-radius: 0.8vw;
+  border-spacing: 0px;
+  width: 100%;
+  font-size: 1vw;
+}
+
+thead {
+  display: table-header-group;
+  border-color: inherit;
+  border-collapse: separate;
+  background-color: var(--color2);
+  border-radius: 0.8vw;
+  color: #fff;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+th,
+td {
+  padding: 0.4vw;
+  vertical-align: top;
+  border-left: 0.2vw solid #000;
+}
+
+td {
+  border-top: 0.2vw solid #000;
+  background-color: #e3e3e3;
+}
+
+thead:first-child tr:first-child th:first-child,
+tbody:first-child tr:first-child td:first-child {
+  border-radius: 0.7vw 0 0 0;
+}
+
+thead:last-child tr:last-child th:first-child,
+tbody:last-child tr:last-child td:first-child {
+  border-radius: 0 0 0 0.7vw;
+}
+
+thead tr th:last-child {
+  border-radius: 0 0.6vw 0 0;
+}
+
+table tr:last-child td:last-child {
+  border-radius: 0 0 0.7vw 0;
+}
+
+.table-left {
+  text-align: left;
+}
+
+.table-center {
+  text-align: center;
+}
+
+.table-right {
+  text-align: right;
+}
+
+.table-top {
+  vertical-align: top;
+}
+
+.table-middle {
+  vertical-align: middle;
+}
+
+.table-bottom {
+  vertical-align: bottom;
+}
