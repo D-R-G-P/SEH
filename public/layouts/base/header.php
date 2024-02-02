@@ -6,13 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S.G.H. - <?php echo $title ?></title>
     <!-- Sistema de emergentes hospitalarios -->
-    <link rel="icon" href="/SGH/node_modules/@fortawesome/fontawesome-free/svg/notes-medical-solid.svg" type="image/svg+xml">
-
-    <link rel="stylesheet" href="/SGH/public/resources/css/base.css">
-    <link rel="stylesheet" href="/SGH/public/resources/css/header.css">
+    <link rel="icon" href="/SGH/node_modules/@fortawesome/fontawesome-free/svgs/solid/notes-medical.svg" type="image/svg+xml">
 
     <!-- FontAwesome -->
     <script src="/SGH/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
+
+    <!-- JQuery -->
+    <script src="/SGH/node_modules/jquery/dist/jquery.min.js"></script>
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/SGH/node_modules/select2/dist/css/select2.min.css">
+    <script src="/SGH/node_modules/select2/dist/js/select2.min.js"></script>
+
+    <link rel="stylesheet" href="/SGH/public/resources/css/base.css">
+    <link rel="stylesheet" href="/SGH/public/resources/css/header.css">
 </head>
 
 <body>
@@ -40,6 +47,19 @@
     </header>
 
     <article>
+
+        <?php
+        if (isset($_SESSION['success_message'])) {
+            echo '<div class="success-message">' . $_SESSION['success_message'] . '</div>';
+            // Borrar el mensaje de éxito de la variable de sesión para no mostrarlo nuevamente
+            unset($_SESSION['success_message']);
+        }
+        if (isset($_SESSION['error_message'])) {
+            echo '<div class="error-message">' . $_SESSION['error_message'] . '</div>';
+            // Borrar el mensaje de éxito de la variable de sesión para no mostrarlo nuevamente
+            unset($_SESSION['error_message']);
+        }
+        ?>
 
         <div class="headerLeft open">
 
@@ -72,8 +92,8 @@
                 <a href="" class="header" title="Informes de equipos"><i class="fa-solid fa-hard-drive"></i>
                     <p class="headerLeftP open">Informes de equipos</p>
                 </a>
-                <a href="" class="header" title="Solicitudes de reparación"><i class="fa-solid fa-screwdriver-wrench"></i>
-                    <p class="headerLeftP open">Solicitudes de reparación</p>
+                <a href="" class="header" title="Mantenimiento"><i class="fa-solid fa-screwdriver-wrench"></i>
+                    <p class="headerLeftP open">Mantenimiento</p>
                 </a>
                 <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Patrimoniales"><i class="fa-solid fa-clipboard-check"></i></i>
                     <p class="headerLeftP open">Patrimoniales</p>
@@ -81,8 +101,8 @@
                 <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Informatica"><i class="fa-solid fa-computer"></i>
                     <p class="headerLeftP open">Informática</p>
                 </a>
-                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Panel de administración"><i class="fa-solid fa-hammer"></i>
-                    <p class="headerLeftP open">Panel de administración</p>
+                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Administración"><i class="fa-solid fa-hammer"></i>
+                    <p class="headerLeftP open">Administración</p>
                 </a>
                 <hr>
             </div>

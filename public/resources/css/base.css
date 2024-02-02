@@ -10,12 +10,14 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
+  font-size: 1.3vw;
 }
 
 :root {
   --color1: #417099;
   --color2: #00AEC3;
-  --color3: #E81F76;
+  --color3: #00c4da;
+  --color4: #E81F76;
 }
 
 html {
@@ -58,7 +60,7 @@ input[type="password"] {
   transition: all 0.15s ease-in-out;
 }
 
-.btn-rojo {
+.btn-red {
   color: #fff;
   background-color: #dc3545;
   border: #dc3545;
@@ -69,7 +71,7 @@ input[type="password"] {
   transition: all 0.15s ease-in-out;
 }
 
-.btn-rojo:hover {
+.btn-red:hover {
   background-color: #b02a37;
   border: #b02a37;
   transition: all 0.15s ease-in-out;
@@ -152,4 +154,127 @@ table tr:last-child td:last-child {
 
 .table-bottom {
   vertical-align: bottom;
+}
+
+.back {
+  position: absolute;
+  background-color: #0000007a;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.divBackForm {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #dddddd;
+  border: 0.2vw #000 solid;
+  border-radius: .9vw;
+  padding: 0 0 1vw 0;
+}
+
+.backForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+}
+
+.backForm div {
+  margin-top: .5vw;
+}
+
+.backForm div input {
+  width: 100%;
+}
+
+/* Estilos para los elementos de Select2 */
+.select2-container--default .select2-selection--single {
+  border: #242424 0.2vw solid;
+  border-radius: 0.8vw;
+  width: 100%;
+  height: 3vw;
+  padding: 0.5vw;
+  font-size: 1.8vw;
+  color: #000;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #000;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  transform: translateY(0.5vw);
+  color: #000;
+}
+
+/* Estilos para el contenedor del dropdown de Select2 */
+.select2-container--default .select2-dropdown {
+  border: #242424 0.2vw solid;
+  border-radius: 0 0 0.8vw 0.8vw;
+  width: 80%;
+  font-size: 1.5vw;
+  color: #000;
+}
+
+/* Estilos para las opciones en el dropdown de Select2 */
+.select2-container--default .select2-results__option {
+  font-size: 1.5vw;
+}
+
+.notisContent {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.notis {
+  z-index: 100000;
+  background-color: #198754;
+  border: 0.2vw #157347 solid;
+  color: #fff;
+  top: 10vw;
+  border-radius: 0.8vw;
+  padding: 1vw;
+  transform: translate(0, -20vw);
+  transition: 0.8s ease-in-out;
+}
+
+.notiserror {
+  z-index: 100000;
+  background-color: #a53c3c;
+  border: 0.2vw #731515 solid;
+  color: #fff;
+  top: 10vw;
+  border-radius: 0.8vw;
+  padding: 1vw;
+  transform: translate(0, -20vw);
+  transition: 0.8s ease-in-out;
+}
+
+.notiswarning {
+  z-index: 100000;
+  background-color: rgb(253, 233, 185);
+  border: 0.2vw #ffe69c solid;
+  color: #664d03;
+  top: 10vw;
+  border-radius: 0.8vw;
+  padding: 1vw;
+  /* transform: translate(0, -20vw); */
+  transition: 0.8s ease-in-out;
+  font-size: 1.4vw;
+}
+
+.notis.active, .notiserror.active {
+  transform: translate(0, 1vw);
+  transition: 0.8s ease-in-out;
 }

@@ -1,5 +1,6 @@
 <?php
 
+require_once '../../../../app/db/db.php';
 require_once '../../../../app/db/user_session.php';
 require_once '../../../../app/db/user.php';
 require_once '../../../../app/db/user.php';
@@ -9,7 +10,10 @@ $userSession = new UserSession();
 $currentUser = $userSession->getCurrentUser();
 $user->setUser($currentUser);
 
-$title = "Panel de administración"
+$title = "Panel de administración";
+
+$db = new DB();
+$pdo = $db->connect();
 
 
 ?>
@@ -19,70 +23,114 @@ $title = "Panel de administración"
 
 
 <div class="content">
-    <?php
+	<?php
 
-    if ($user->getRol() === "Administrador") {
+	if ($user->getRol() === "Administrador") {
 
-    ?>
-
-
-        <div class="modulo" style="flex-direction: column; text-align: center;">
-            <h3>Panel de administración</h3>
-            <p>Este modulo esta orientado a la configuración del sistema.</p>
-        </div>
-
-        <div class="modulo">
-            <div>
-                <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Agregar servicio</b></button>
-
-                <div class="back">
-                    <form action="">
-                        <div>
-                            <label for="servicio">Nombre del servicio</label>
-                            <input type="text" name="servicio" id="servicio">
-                        </div>
-
-                        <div>
-                            <label for="jefe">Jefe del servicio</label>
-                            <input type="text" name="servicio" id="servicio">
-                        </div>
-
-                        
-                    </form>
-                </div>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th class="table-center table-middle">ID</th>
-                        <th>Servicio</th>
-                        <th>Jefe</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="table-center table-middle">a</td>
-                        <td>b</td>
-                        <td>c</td>
-                        <td>d</td>
-                        <td>e</td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
+	?>
 
 
-    <?php
+		<div class="modulo" style="flex-direction: column; text-align: center;">
+			<h3>Panel de administración</h3>
+			<p>Este modulo esta orientado a la configuración del sistema.</p>
+		</div>
 
-    } else {
-        echo 'Acceso denegado, no cuenta con los permisos para acceder a este sistema.';
-    }
+		<div class="modulo">
+			<div>
+				<button onclick="back.style.display = 'flex'" class="btn-green"><b><i class="fa-solid fa-plus"></i> Agregar servicio</b></button>
 
-    ?>
+				<div class="back" id="back">
+					<div class="divBackForm" id="addServicio">
+						<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+							<button class="btn-red" onclick="back.style.display = 'none'" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+						</div>
+						<form action="controllers/addServicioForm.php" method="post" class="backForm">
+							<div>
+								<label for="servicio">Nombre del servicio</label>
+								<input type="text" name="servicio" id="servicio" required>
+							</div>
+
+							<div style="width: 100%;">
+								<label for="miSelect">Jefe del servicio</label>
+								<p style="font-size: .8vw;">*Deberá estar previamente cargado en personal</p>
+								<select id="miSelect" class="select2" name="jefe" style="width: 100%;" required>
+									<option value="" selected disabled>Seleccionar jefe...</option>
+									<?php
+
+									// Realiza la consulta a la tabla servicios
+									$getPersonal = "SELECT apellido, nombre, dni FROM personal";
+									$stmt = $pdo->query($getPersonal);
+
+									// Itera sobre los resultados y muestra las filas en la tabla
+									while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+										echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
+									}
+
+									?>
+								</select>
+							</div>
+
+							<button class="btn-green"><b><i class="fa-solid fa-plus"></i> Añadir servicio</b></button>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<table>
+				<thead>
+					<tr>
+						<th class="table-center table-middle">ID</th>
+						<th>Servicio</th>
+						<th>Jefe</th>
+						<th>Estado</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+
+					// Realiza la consulta a la tabla servicios
+					$getTable = "SELECT * FROM servicios";
+					$stmt = $pdo->query($getTable);
+
+					// Itera sobre los resultados y muestra las filas en la tabla
+					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+						echo '<tr>';
+						echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
+						echo '<td>' . $row['servicio'] . '</td>';
+						// Realiza una consulta para obtener el nombre y apellido del jefe de servicio
+						$getJefeQuery = "SELECT nombre, apellido FROM personal WHERE dni = ?";
+						$getJefeStmt = $pdo->prepare($getJefeQuery);
+						$getJefeStmt->execute([$row['jefe']]);
+						$jefeInfo = $getJefeStmt->fetch(PDO::FETCH_ASSOC);
+						// Muestra el nombre y apellido del jefe de servicio
+						if ($jefeInfo) {
+							echo '<td>' . $jefeInfo['apellido'] . ' ' . $jefeInfo['nombre'] . '</td>';
+						} else {
+							echo '<div>No se encontró información del jefe</div>';
+						}
+						echo '</td>';
+						echo '<td class="table-center table-middle">' . $row['estado'] . '</td>';
+						echo '<td>Acciones</td>'; // Puedes colocar botones de acciones aquí
+						echo '</tr>';
+					}
+
+
+					?>
+				</tbody>
+			</table>
+
+		</div>
+
+
+	<?php
+
+	} else {
+		echo 'Acceso denegado, no cuenta con los permisos para acceder a este sistema.';
+	}
+
+	?>
 </div>
 
-
+<script src="/SGH/public/layouts/modules/adminPanel/js/adminPanel.js"></script>
 <?php require_once '../../base/footer.php'; ?>

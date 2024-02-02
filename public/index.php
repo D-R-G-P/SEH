@@ -10,9 +10,8 @@ $title = "Inicio";
 
 
 <div class="content">
-    HOLAA
-</div>
 
+</div>
 
 
 <?php require_once 'layouts/base/footer.php' ?>
