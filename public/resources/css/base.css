@@ -46,8 +46,8 @@ input[type="password"] {
   color: #fff;
   background-color: #198754;
   border: #198754;
-  padding: 0.8vw;
-  border-radius: 0.58vw;
+  padding: 0.5vw;
+  border-radius: 0.5vw;
   font-size: 1.05vw;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
@@ -67,6 +67,7 @@ input[type="password"] {
   padding: 0.5vw;
   border-radius: 0.5vw;
   font-size: 1vw;
+  margin: .5vw .5vw;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
 }
@@ -74,6 +75,25 @@ input[type="password"] {
 .btn-red:hover {
   background-color: #b02a37;
   border: #b02a37;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-yellow {
+  color: #fff;
+  background-color: #f3b805;
+  border: #f3b805;
+  padding: 0.5vw;
+  border-radius: 0.5vw;
+  font-size: 1vw;
+  margin: .5vw .5vw;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  /* color: #3f3f3f; */
+}
+
+.btn-yellow:hover {
+  background-color: #ffca2c;
+  border: #ffca2c;
   transition: all 0.15s ease-in-out;
 }
 

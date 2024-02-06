@@ -97,7 +97,7 @@ $pdo = $db->connect();
 					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 						echo '<tr>';
 						echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
-						echo '<td>' . $row['servicio'] . '</td>';
+						echo '<td class="table-middle">' . $row['servicio'] . '</td>';
 						// Realiza una consulta para obtener el nombre y apellido del jefe de servicio
 						$getJefeQuery = "SELECT nombre, apellido FROM personal WHERE dni = ?";
 						$getJefeStmt = $pdo->prepare($getJefeQuery);
@@ -105,13 +105,30 @@ $pdo = $db->connect();
 						$jefeInfo = $getJefeStmt->fetch(PDO::FETCH_ASSOC);
 						// Muestra el nombre y apellido del jefe de servicio
 						if ($jefeInfo) {
-							echo '<td>' . $jefeInfo['apellido'] . ' ' . $jefeInfo['nombre'] . '</td>';
+							echo '<td class="table-middle">' . $jefeInfo['apellido'] . ' ' . $jefeInfo['nombre'] . '</td>';
 						} else {
 							echo '<div>No se encontró información del jefe</div>';
 						}
 						echo '</td>';
 						echo '<td class="table-center table-middle">' . $row['estado'] . '</td>';
-						echo '<td>Acciones</td>'; // Puedes colocar botones de acciones aquí
+						echo '<td>';
+
+						if ($row['estado'] == "Activo") {
+
+							echo '<button class="btn-green" title="Desactivar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio\'"><i class="fa-solid fa-circle-check"></i></button>
+
+							<button class="btn-green" title="Editar servicio"><i class="fa-solid fa-pencil"></i></button>';
+						} else if ($row['estado'] == "Inactivo") {
+
+							echo '<button class="btn-red" title="Activar servicio"><i class="fa-solid fa-circle-xmark"></i></button>
+
+							<button class="btn-yellow" title="Eliminar servicio"><i class="fa-solid fa-trash"></i></button>';
+						} else {
+
+							echo 'Error al generar las acciones.';
+						}
+
+						echo '</td>';
 						echo '</tr>';
 					}
 
