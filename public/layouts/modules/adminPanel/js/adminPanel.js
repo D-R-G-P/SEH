@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    $('#miSelect').select2();
+    $('#selectBoss').select2();
+    $('#modifyBoss').select2();
 });
 
 $(".js-example-language").select2({

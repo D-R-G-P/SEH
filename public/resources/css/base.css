@@ -88,7 +88,6 @@ input[type="password"] {
   margin: .5vw .5vw;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
-  /* color: #3f3f3f; */
 }
 
 .btn-yellow:hover {

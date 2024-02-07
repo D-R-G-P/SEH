@@ -37,13 +37,14 @@ $pdo = $db->connect();
 
 		<div class="modulo">
 			<div>
-				<button onclick="back.style.display = 'flex'" class="btn-green"><b><i class="fa-solid fa-plus"></i> Agregar servicio</b></button>
+				<button onclick="back.style.display = 'flex'; addServicio.style.display = 'flex'" class="btn-green"><b><i class="fa-solid fa-plus"></i> Agregar servicio</b></button>
 
 				<div class="back" id="back">
-					<div class="divBackForm" id="addServicio">
+					<div class="divBackForm" id="addServicio" style="display: none;">
 						<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-							<button class="btn-red" onclick="back.style.display = 'none'" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+							<button class="btn-red" onclick="back.style.display = 'none'; addServicio.style.display = 'none'" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
 						</div>
+						<h3>Nuevo servicio</h3>
 						<form action="controllers/addServicioForm.php" method="post" class="backForm">
 							<div>
 								<label for="servicio">Nombre del servicio</label>
@@ -51,9 +52,9 @@ $pdo = $db->connect();
 							</div>
 
 							<div style="width: 100%;">
-								<label for="miSelect">Jefe del servicio</label>
+								<label for="selectBoss">Jefe del servicio</label>
 								<p style="font-size: .8vw;">*Deberá estar previamente cargado en personal</p>
-								<select id="miSelect" class="select2" name="jefe" style="width: 100%;" required>
+								<select id="selectBoss" class="select2" name="jefe" style="width: 100%;" required>
 									<option value="" selected disabled>Seleccionar jefe...</option>
 									<?php
 
@@ -73,7 +74,42 @@ $pdo = $db->connect();
 							<button class="btn-green"><b><i class="fa-solid fa-plus"></i> Añadir servicio</b></button>
 						</form>
 					</div>
+					<div class="divBackForm" id="modServicio" style="display: none;">
+						<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+							<button class="btn-red" onclick="back.style.display = 'none'; modServicio.style.display = 'none'; servicioMod.value = ''; modifyBoss.value = ''" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+						</div>
+						<h3>Modificar servicio</h3>
+						<form action="#" method="post" class="backForm">
+							<input type="hidden" name="id" id="idMod">
+							<div>
+								<label for="servicioMod">Nombre del servicio:</label>
+								<input type="text" name="servicioMod" id="servicioMod">
+							</div>
+
+							<div style="width: 100%;">
+								<label for="modifyBoss">Jefe del servicio</label>
+								<p style="font-size: .8vw;">*Deberá estar previamente cargado en personal</p>
+								<select id="modifyBoss" class="select2" name="jefe" style="width: 100%;" required>
+									<option value="" selected disabled>Seleccionar jefe...</option>
+									<?php
+
+									// Realiza la consulta a la tabla servicios
+									$getPersonal = "SELECT apellido, nombre, dni FROM personal";
+									$stmt = $pdo->query($getPersonal);
+
+									// Itera sobre los resultados y muestra las filas en la tabla
+									while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+										echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
+									}
+
+									?>
+								</select>
+							</div>
+							<button class="btn-green"><b><i class="fa-solid fa-plus"></i> Modificar servicio</b></button>
+						</form>
+					</div>
 				</div>
+
 			</div>
 
 			<table>
@@ -87,6 +123,17 @@ $pdo = $db->connect();
 					</tr>
 				</thead>
 				<tbody>
+					<script>
+						function puto(id, servicio, jefe) {
+							$('#back').css('display', 'flex');
+							$('#modServicio').css('display', 'flex');
+
+							$('#idMod').val(id);
+							$('#servicioMod').val(servicio);
+
+							$('#modifyBoss').val(jefe).trigger('change');
+						}
+					</script>
 					<?php
 
 					// Realiza la consulta a la tabla servicios
@@ -115,12 +162,12 @@ $pdo = $db->connect();
 
 						if ($row['estado'] == "Activo") {
 
-							echo '<button class="btn-green" title="Desactivar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio\'"><i class="fa-solid fa-circle-check"></i></button>
+							echo '<button class="btn-green" title="Desactivar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=desactivar\'"><i class="fa-solid fa-circle-check"></i></button>
 
-							<button class="btn-green" title="Editar servicio"><i class="fa-solid fa-pencil"></i></button>';
+							<button class="btn-green" title="Editar servicio" onclick="puto(' . $row['id'] . ', \'' . $row['servicio'] . '\', \'' . $row['jefe'] . '\')"><i class="fa-solid fa-pencil"></i></button>';
 						} else if ($row['estado'] == "Inactivo") {
 
-							echo '<button class="btn-red" title="Activar servicio"><i class="fa-solid fa-circle-xmark"></i></button>
+							echo '<button class="btn-red" title="Activar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>
 
 							<button class="btn-yellow" title="Eliminar servicio"><i class="fa-solid fa-trash"></i></button>';
 						} else {
