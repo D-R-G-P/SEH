@@ -79,8 +79,8 @@ $pdo = $db->connect();
 							<button class="btn-red" onclick="back.style.display = 'none'; modServicio.style.display = 'none'; servicioMod.value = ''; modifyBoss.value = ''" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
 						</div>
 						<h3>Modificar servicio</h3>
-						<form action="#" method="post" class="backForm">
-							<input type="hidden" name="id" id="idMod">
+						<form action="controllers/modifyService.php" method="post" class="backForm">
+							<input type="hidden" name="idMod" id="idMod" value="5">
 							<div>
 								<label for="servicioMod">Nombre del servicio:</label>
 								<input type="text" name="servicioMod" id="servicioMod">
@@ -89,7 +89,7 @@ $pdo = $db->connect();
 							<div style="width: 100%;">
 								<label for="modifyBoss">Jefe del servicio</label>
 								<p style="font-size: .8vw;">*Deberá estar previamente cargado en personal</p>
-								<select id="modifyBoss" class="select2" name="jefe" style="width: 100%;" required>
+								<select id="modifyBoss" class="select2" name="jefeMod" style="width: 100%;" required>
 									<option value="" selected disabled>Seleccionar jefe...</option>
 									<?php
 
@@ -107,6 +107,24 @@ $pdo = $db->connect();
 							</div>
 							<button class="btn-green"><b><i class="fa-solid fa-plus"></i> Modificar servicio</b></button>
 						</form>
+					</div>
+					<div class="divBackForm" id="advertenciaDelete" style="padding: 1vw; display: none;">
+						<h3 style="margin-bottom: 1vw;">¡Atención!</h3>
+						<p>Está por eliminar un servicio, no podrá revertir esta acción. De ser un error deberá comunicarse con el administrador general.</p>
+						<div class="datosServicio" style="margin-top: 2.5vw; display: flex; flex-direction: column; text-align: start; width: 100%;">
+							<b style="margin-bottom: 1vw;">Servicio a eliminar:</b>
+							<div class="modulo">
+								<b>Nombre del servicio:</b>
+								<div class="servicioName" id="servicioName"></div>
+								<b>Jefe del servicio:</b>
+								<div class="servicioJefe" id="servicioJefe"></div>
+							</div>
+
+						</div>
+						<div class="botones" style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+							<button class="btn-red" id="btnDelete"><i class="fa-solid fa-trash"></i> Eliminar servicio</button>
+							<button class="btn-green" onclick="back.style.display = 'none'; advertenciaDelete.style.display='none';"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+						</div>
 					</div>
 				</div>
 
@@ -137,7 +155,7 @@ $pdo = $db->connect();
 					<?php
 
 					// Realiza la consulta a la tabla servicios
-					$getTable = "SELECT * FROM servicios";
+					$getTable = "SELECT * FROM servicios WHERE estado != 'Eliminado'";
 					$stmt = $pdo->query($getTable);
 
 					// Itera sobre los resultados y muestra las filas en la tabla
@@ -145,16 +163,21 @@ $pdo = $db->connect();
 						echo '<tr>';
 						echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
 						echo '<td class="table-middle">' . $row['servicio'] . '</td>';
-						// Realiza una consulta para obtener el nombre y apellido del jefe de servicio
-						$getJefeQuery = "SELECT nombre, apellido FROM personal WHERE dni = ?";
-						$getJefeStmt = $pdo->prepare($getJefeQuery);
-						$getJefeStmt->execute([$row['jefe']]);
-						$jefeInfo = $getJefeStmt->fetch(PDO::FETCH_ASSOC);
-						// Muestra el nombre y apellido del jefe de servicio
-						if ($jefeInfo) {
-							echo '<td class="table-middle">' . $jefeInfo['apellido'] . ' ' . $jefeInfo['nombre'] . '</td>';
+
+						if ($row['jefe'] != "") {
+							// Realiza una consulta para obtener el nombre y apellido del jefe de servicio
+							$getJefeQuery = "SELECT nombre, apellido FROM personal WHERE dni = ?";
+							$getJefeStmt = $pdo->prepare($getJefeQuery);
+							$getJefeStmt->execute([$row['jefe']]);
+							$jefeInfo = $getJefeStmt->fetch(PDO::FETCH_ASSOC);
+							// Muestra el nombre y apellido del jefe de servicio
+							if ($jefeInfo) {
+								echo '<td class="table-middle">' . $jefeInfo['apellido'] . ' ' . $jefeInfo['nombre'] . '</td>';
+							} else {
+								echo '<div>No se encontró la información del jefe</div>';
+							}
 						} else {
-							echo '<div>No se encontró información del jefe</div>';
+							echo '<td class="table-middle"> No hay jefe registrado';
 						}
 						echo '</td>';
 						echo '<td class="table-center table-middle">' . $row['estado'] . '</td>';
@@ -169,7 +192,7 @@ $pdo = $db->connect();
 
 							echo '<button class="btn-red" title="Activar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>
 
-							<button class="btn-yellow" title="Eliminar servicio"><i class="fa-solid fa-trash"></i></button>';
+							<button class="btn-yellow" title="Eliminar servicio" onclick="showDeleteConfirmation(\'' . $row['id'] . '\', \'' . $row['servicio'] . '\', \'' . $jefeInfo['apellido'] . ' ' . $jefeInfo['nombre'] . '\')"><i class="fa-solid fa-trash"></i></button>';
 						} else {
 
 							echo 'Error al generar las acciones.';

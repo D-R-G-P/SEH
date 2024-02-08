@@ -8,35 +8,16 @@ $pdo = $db->connect();
 session_start();
 
 // Verifica si se han enviado los parámetros id y action en la URL
-if (isset($_GET['id']) && isset($_GET['action'])) {
+if (isset($_POST['idMod'])) {
     // Obtén los valores de id y action desde la URL
-    $id = $_GET['id'];
-    $action = $_GET['action'];
+    $id = $_POST['idMod'];
+    $servicio = $_POST['servicioMod'];
+    $jefe = $_POST['jefeMod'];
 
     try {
-        // Prepara la consulta SQL para actualizar el estado según la acción
-        $estado = '';
-        switch ($action) {
-            case 'activar':
-                $estado = 'Activo';
-                $stmt = $pdo->prepare("UPDATE servicios SET estado = ? WHERE id = ?");
-                $stmt->execute([$estado, $id]);
-                break;
-            case 'desactivar':
-                $estado = 'Inactivo';
-                $stmt = $pdo->prepare("UPDATE servicios SET estado = ? WHERE id = ?");
-                $stmt->execute([$estado, $id]);
-                break;
-            case 'eliminar':
-                $estado = 'Eliminado';
-                $stmt = $pdo->prepare("UPDATE servicios SET jefe = '', estado = ? WHERE id = ?");
-                $stmt->execute([$estado, $id]);
-                break;
-            default:
-                throw new Exception('Acción no válida');
-        }
 
-
+        $stmt = $pdo->prepare("UPDATE servicios SET servicio = ?, jefe = ? WHERE id = ?");
+        $stmt->execute([$servicio, $jefe, $id]);
 
         // Almacena un mensaje de éxito en la sesión
         $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Cambio realizado correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
