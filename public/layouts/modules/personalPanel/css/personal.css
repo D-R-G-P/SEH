@@ -2,3 +2,7 @@ h3 {
     font-size: 2vw;
 }
 
+.back .divBackForm form div {
+    width: 100%;
+    padding: 0 1vw;
+}

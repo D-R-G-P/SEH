@@ -32,7 +32,7 @@ class User extends DB
 
     public function setUser($dni)
     {
-        $query = $this->connect()->prepare('SELECT password, apellido, nombre, dni, servicio, cargo, especialidad, mn, mp, sistemas, rol FROM personal WHERE dni = :dni');
+        $query = $this->connect()->prepare('SELECT password, apellido, nombre, dni, servicio_id, cargo, especialidad, mn, mp, sistemas, rol FROM personal WHERE dni = :dni');
         $query->execute(['dni' => $dni]);
 
         if ($query->rowCount()) {
@@ -41,7 +41,7 @@ class User extends DB
             $this->password = $result['password'];
             $this->apellido = $result['apellido'];
             $this->nombre = $result['nombre'];
-            $this->servicio = $result['servicio'];
+            $this->servicio = $result['servicio_id'];
             $this->cargo = $result['cargo'];
             $this->especialidad = $result['especialidad'];
             $this->mn = $result['mn'];
