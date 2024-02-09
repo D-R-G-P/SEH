@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-02-2024 a las 17:31:25
+-- Tiempo de generación: 09-02-2024 a las 17:33:04
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -24,6 +24,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `cargos`
+--
+
+CREATE TABLE `cargos` (
+  `id` int(11) NOT NULL,
+  `cargo` longtext NOT NULL,
+  `estado` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `cargos`
+--
+
+INSERT INTO `cargos` (`id`, `cargo`, `estado`) VALUES
+(1, 'Secretario', 'Activo');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `especialidades`
 --
 
@@ -32,6 +51,14 @@ CREATE TABLE `especialidades` (
   `especialidad` longtext NOT NULL,
   `servicio_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `especialidades`
+--
+
+INSERT INTO `especialidades` (`id`, `especialidad`, `servicio_id`) VALUES
+(1, 'Gestión de Camas', 1),
+(2, 'Gestión de Turnos', 1);
 
 -- --------------------------------------------------------
 
@@ -81,11 +108,18 @@ CREATE TABLE `servicios` (
 --
 
 INSERT INTO `servicios` (`id`, `servicio`, `jefe`, `estado`) VALUES
-(1, 'Direccion de Redes y Gestión de Personas', '31.795.339', 'Activo');
+(1, 'Direccion de Redes y Gestión de Personas', '31.795.339', 'Activo'),
+(10, 'Dirección Hospitalaria', '43.255.000', 'Activo');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `cargos`
+--
+ALTER TABLE `cargos`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `especialidades`
@@ -113,10 +147,16 @@ ALTER TABLE `servicios`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `cargos`
+--
+ALTER TABLE `cargos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `especialidades`
 --
 ALTER TABLE `especialidades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `personal`
@@ -128,7 +168,7 @@ ALTER TABLE `personal`
 -- AUTO_INCREMENT de la tabla `servicios`
 --
 ALTER TABLE `servicios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -12,8 +12,26 @@ function formatNumber(input) {
 $(document).ready(function () {
     $('#selectServicio').select2();
     $('#selectEspecialidad').select2();
+    $('#selectCargo').select2();
+    $('#selectRol').select2();
 });
 
 $(".js-example-language").select2({
     language: "es"
 });
+
+function selectChange() {
+    var servicioValue = selectServicio.value; // Obtén el valor del servicio seleccionado
+    console.log(servicioValue);
+
+    // Realiza una consulta AJAX al servidor para obtener las especialidades correspondientes al servicio seleccionado
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'controllers/getEspecialidades.php?servicioId=' + servicioValue, true);
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 400) {
+            // Actualiza el select de especialidades con los nuevos valores recibidos del servidor
+            document.getElementById('selectEspecialidad').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+};

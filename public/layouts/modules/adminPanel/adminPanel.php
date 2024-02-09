@@ -42,7 +42,7 @@ $pdo = $db->connect();
 				<div class="back" id="back">
 					<div class="divBackForm" id="addServicio" style="display: none;">
 						<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-							<button class="btn-red" onclick="back.style.display = 'none'; addServicio.style.display = 'none'" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+							<button class="btn-red" onclick="back.style.display = 'none'; addServicio.style.display = 'none';" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
 						</div>
 						<h3>Nuevo servicio</h3>
 						<form action="controllers/addServicioForm.php" method="post" class="backForm">
@@ -142,7 +142,7 @@ $pdo = $db->connect();
 				</thead>
 				<tbody>
 					<script>
-						function puto(id, servicio, jefe) {
+						function setDatos(id, servicio, jefe) {
 							$('#back').css('display', 'flex');
 							$('#modServicio').css('display', 'flex');
 
@@ -187,7 +187,7 @@ $pdo = $db->connect();
 
 							echo '<button class="btn-green" title="Desactivar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=desactivar\'"><i class="fa-solid fa-circle-check"></i></button>
 
-							<button class="btn-green" title="Editar servicio" onclick="puto(' . $row['id'] . ', \'' . $row['servicio'] . '\', \'' . $row['jefe'] . '\')"><i class="fa-solid fa-pencil"></i></button>';
+							<button class="btn-green" title="Editar servicio" onclick="setDatos(' . $row['id'] . ', \'' . $row['servicio'] . '\', \'' . $row['jefe'] . '\')"><i class="fa-solid fa-pencil"></i></button>';
 						} else if ($row['estado'] == "Inactivo") {
 
 							echo '<button class="btn-red" title="Activar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>

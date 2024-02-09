@@ -30,82 +30,183 @@ $pdo = $db->connect();
     <div class="modulo">
 
 
-        <div class="back" id="back" style="display: flex;">
-            <div class="divBackForm" id="newPersonal">
+        <div class="back" id="back" style="display: none;">
+            <div class="divBackForm" id="newPersonal" style="display: none;">
                 <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-                    <button class="btn-red" onclick="back.style.display = 'none'; newPersonal.style.display = 'none'" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+                    <button class="btn-red" onclick="back.style.display = 'none'; newPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#selectRol').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
                 </div>
                 <h3>Declarar nuevo personal</h3>
-                <form action="#" method="post" class="backForm">
+                <form action="#" method="post" class="backForm" id="newPersonalForm">
                     <div style="margin-top: 15vw;">
                         <label for="apellido">Apellido</label>
-                        <input type="text" name="apellido" id="apellido">
+                        <input type="text" name="apellido" id="apellido" required>
                     </div>
                     <div>
                         <label for="nombre">Nombre</label>
-                        <input type="text" name="nombre" id="nombre">
+                        <input type="text" name="nombre" id="nombre" required>
                     </div>
                     <div>
                         <label for="dni">D.N.I.</label>
-                        <input type="text" name="dni" id="dni" width="100%" oninput="formatNumber(this)">
+                        <input type="text" name="dni" id="dni" width="100%" oninput="formatNumber(this)" required>
                     </div>
                     <div>
                         <label for="selectServicio">Servicio</label>
-                            <select id="selectServicio" class="select2" name="servicio" style="width: 100%;" required>
-                                <option value="" selected disabled>Seleccionar servicio...</option>
-                                <?php
+                        <select id="selectServicio" class="select2" name="servicio" style="width: 100%;" required onchange="selectChange()">
+                            <option value="" selected disabled>Seleccionar servicio...</option>
+                            <?php
 
-                                // Realiza la consulta a la tabla servicios
-                                $getPersonal = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
-                                $stmt = $pdo->query($getPersonal);
+                            // Realiza la consulta a la tabla servicios
+                            $getServicio = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
+                            $stmtServicio = $pdo->query($getServicio);
 
-                                // Itera sobre los resultados y muestra las filas en la tabla
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
-                                }
+                            // Itera sobre los resultados y muestra las filas en la tabla
+                            while ($row = $stmtServicio->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+                            }
 
-                                ?>
+                            ?>
                         </select>
                     </div>
                     <div>
                         <label for="selectEspecialidad">Especialidad</label>
                         <select id="selectEspecialidad" class="select2" name="especialidad" style="width: 100%;" required>
                             <option value="" selected disabled>Seleccionar especialidad...</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;">
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="mn">M.N.</label>
+                            <input style="width: 100%;" type="number" name="mn" id="mn">
+                        </div>
+
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="mp">M.P.</label>
+                            <input style="width: 100%;" type="number" name="mp" id="mp">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="selectCargo">Cargo</label>
+                        <select id="selectCargo" class="select2" name="cargo" style="width: 100%;" required>
+                            <option value="" selected disabled>Seleccionar cargo...</option>
                             <?php
 
-                            // Realiza la consulta a la tabla servicios
-                            $getPersonal = "SELECT apellido, nombre, dni FROM personal";
-                            $stmt = $pdo->query($getPersonal);
+                            // Realiza la consulta a la tabla cargo
+                            $getCargo = "SELECT cargo FROM cargos WHERE estado = 'Activo'";
+                            $stmtCargo = $pdo->query($getCargo);
 
                             // Itera sobre los resultados y muestra las filas en la tabla
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
+                            while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value=' . $row['cargo'] . '>' . $row['cargo'] . '</option>';
                             }
 
                             ?>
                         </select>
                     </div>
-                    <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;">
-                        <div style="display: flex; flex-direction: column;">
-                            <label for="">M.N.</label>
-                            <input style="width: 100%;" type="number" name="" id="">
-                        </div>
-
-                        <div style="display: flex; flex-direction: column;">
-                            <label for="">M.P.</label>
-                            <input style="width: 100%;" type="number" name="" id="">
-                        </div>
-                    </div>
                     <div>
-                        <label for="">Cargo</label>
-                        <input type="text" name="" id="">
-                    </div>
-                    <div>
-                        <label for="">Rol</label>
-                        <input type="text" name="" id="">
+                        <label for="selectRol">Rol</label>
+                        <select id="selectRol" class="select2" name="rol" style="width: 100%;" required>
+                            <option value="" disabled selected>Seleccione rol...</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Dirección">Dirección</option>
+                            <option value="Deposito">Deposito</option>
+                            <option value="Mantenimiento">Mantenimiento</option>
+                            <option value="Patrimoniales">Patrimoniales</option>
+                            <option value="Informatica">Informatica</option>
+                            <option value="Jefe de servicio">Jefe de servicio</option>
+                        </select>
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: center;">
                         <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="divBackForm" id="editPersonal" style="display: none;">
+                <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+                    <button class="btn-red" onclick="back.style.display = 'none'; newPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#selectRol').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+                </div>
+                <h3>Declarar nuevo personal</h3>
+                <form action="#" method="post" class="backForm" id="editPersonalForm">
+                    <div style="margin-top: 15vw;">
+                        <label for="editapellido">Apellido</label>
+                        <input type="text" name="editapellido" id="editapellido" required>
+                    </div>
+                    <div>
+                        <label for="editnombre">Nombre</label>
+                        <input type="text" name="editnombre" id="editnombre" required>
+                    </div>
+                    <div>
+                        <label for="editdni">D.N.I.</label>
+                        <input type="text" name="editdni" id="editdni" width="100%" oninput="formatNumber(this)" required>
+                    </div>
+                    <div>
+                        <label for="editselectServicio">Servicio</label>
+                        <select id="editselectServicio" class="select2" name="editservicio" style="width: 100%;" required onchange="selectChange()">
+                            <option value="" selected disabled>Seleccionar servicio...</option>
+                            <?php
+
+                            // Realiza la consulta a la tabla servicios
+                            $getServicio = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
+                            $stmtServicio = $pdo->query($getServicio);
+
+                            // Itera sobre los resultados y muestra las filas en la tabla
+                            while ($row = $stmtServicio->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+                            }
+
+                            ?>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="editselectEspecialidad">Especialidad</label>
+                        <select id="editselectEspecialidad" class="select2" name="editespecialidad" style="width: 100%;" required>
+                            <option value="" selected disabled>Seleccionar especialidad...</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;">
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="editmn">M.N.</label>
+                            <input style="width: 100%;" type="number" name="editmn" id="editmn">
+                        </div>
+
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="editmp">M.P.</label>
+                            <input style="width: 100%;" type="number" name="editmp" id="editmp">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="editselectCargo">Cargo</label>
+                        <select id="editselectCargo" class="select2" name="editcargo" style="width: 100%;" required>
+                            <option value="" selected disabled>Seleccionar cargo...</option>
+                            <?php
+
+                            // Realiza la consulta a la tabla cargo
+                            $getCargo = "SELECT cargo FROM cargos WHERE estado = 'Activo'";
+                            $stmtCargo = $pdo->query($getCargo);
+
+                            // Itera sobre los resultados y muestra las filas en la tabla
+                            while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value=' . $row['cargo'] . '>' . $row['cargo'] . '</option>';
+                            }
+
+                            ?>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="editselectRol">Rol</label>
+                        <select id="editselectRol" class="select2" name="editrol" style="width: 100%;" required>
+                            <option value="" disabled selected>Seleccione rol...</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Dirección">Dirección</option>
+                            <option value="Deposito">Deposito</option>
+                            <option value="Mantenimiento">Mantenimiento</option>
+                            <option value="Patrimoniales">Patrimoniales</option>
+                            <option value="Informatica">Informatica</option>
+                            <option value="Jefe de servicio">Jefe de servicio</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: center;">
+                        <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Confirmar edición</b></button>
                     </div>
                 </form>
             </div>
@@ -113,7 +214,7 @@ $pdo = $db->connect();
 
 
         <div>
-            <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
+            <button class="btn-green" onclick="back.style.display = 'flex'; newPersonal.style.display = 'flex';"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
         </div>
 
         <table>
@@ -135,11 +236,11 @@ $pdo = $db->connect();
                 <?php
 
                 // Realiza la consulta a la tabla servicios
-                $getTable = "SELECT * FROM personal WHERE estado != 'Eliminado'";
-                $stmt = $pdo->query($getTable);
+                $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado'";
+                $stmtPersonal = $pdo->query($getPersonal);
 
                 // Itera sobre los resultados y muestra las filas en la tabla
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
                     echo '<tr>';
                     echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
                     echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
@@ -161,13 +262,20 @@ $pdo = $db->connect();
                         echo '<td class="table-middle"> No hay servicio asignado';
                     }
                     echo '</td>';
-                    
+
                     echo '<td class="table-middle"> ' . $row['especialidad'] . '</td>';
                     echo '<td class="table-middle"> M.N: ' . $row['mn'] . ' </br> M.P: ' . $row['mp'] . '</td>';
                     echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
                     echo '<td class="table-middle"> ' . $row['sistemas'] . '</td>';
                     echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
-                    echo '<td></td>';
+                    echo '<td>
+                    
+                    Editar
+                    Licencias
+                    Jubilacion
+                    Eliminar
+
+                    </td>';
                     echo '</tr>';
                 }
 
