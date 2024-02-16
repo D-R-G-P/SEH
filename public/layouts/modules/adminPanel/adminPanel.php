@@ -187,7 +187,7 @@ $pdo = $db->connect();
 
 							echo '<button class="btn-green" title="Desactivar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=desactivar\'"><i class="fa-solid fa-circle-check"></i></button>
 
-							<button class="btn-green" title="Editar servicio" onclick="setDatos(' . $row['id'] . ', \'' . $row['servicio'] . '\', \'' . $row['jefe'] . '\')"><i class="fa-solid fa-pencil"></i></button>';
+							<button class="btn-green" title="Editar servicio" onclick="setDatos(' . $row['id'] . ', \'' . $row['servicio'] . '\', \'' . $row['jefe'] . '\')"><i class="fa-solid fa-pen"></i></button>';
 						} else if ($row['estado'] == "Inactivo") {
 
 							echo '<button class="btn-red" title="Activar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>

@@ -35,3 +35,19 @@ function selectChange() {
     };
     xhr.send();
 };
+
+function menuPersona(id) {
+    var menu = document.getElementById('menu-' + id);
+    
+    // Si el menú ya está activo, lo cerramos
+    if (menu.classList.contains('activo')) {
+        menu.classList.remove('activo');
+    } else {
+        // Si no está activo, lo abrimos
+        var buttonsDivs = document.getElementsByClassName('buttons-div');
+        for (var i = 0; i < buttonsDivs.length; i++) {
+            buttonsDivs[i].classList.remove('activo');
+        }
+        menu.classList.add('activo');
+    }
+}

@@ -6,3 +6,37 @@ h3 {
     width: 100%;
     padding: 0 1vw;
 }
+
+.contenedor-de-botones {
+    position: relative;
+}
+
+.buttons-div {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: .2vw #000 solid;
+    border-radius: .8vw;
+    width: max-content;
+    transform: translate(-10vw, -11.4vw);
+    padding: 1vw;
+    z-index: 100;
+}
+
+.buttons-div:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(1vw, -50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 1vw 0 1vw 1vw; /* Triángulo hacia la derecha */
+    border-color: transparent transparent transparent #000; /* Blanco */
+}
+
+.buttons-div.activo {
+    display: flex;
+    flex-direction: column;
+}

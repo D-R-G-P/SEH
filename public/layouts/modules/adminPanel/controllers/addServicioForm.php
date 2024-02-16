@@ -53,6 +53,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Ejecuta la consulta con los valores proporcionados
         $stmt->execute([$nombreServicio, $jefeServicio]);
 
+        // Obtener el ID del servicio recién insertado
+        $newServiceId = $pdo->lastInsertId();
+
+
+        $stmtJefe = $pdo->prepare("UPDATE personal SET servicio_id = ?, cargo = ? WHERE dni = ?");
+        $stmtJefe->execute([$newServiceId, "Jefe de servicio", $jefeServicio]);
+
         // Cierra la conexión a la base de datos
         $pdo = null;
 

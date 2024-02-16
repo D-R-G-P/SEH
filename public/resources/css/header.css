@@ -266,7 +266,7 @@ article {
 
 .content {
     width: 100%;
-    padding: 1vw;
+    padding: 1vw .5vw 1vw 1vw;
     background-color: #dddddd;
     background-image: radial-gradient(#cfcfcfd4 0.1vw, transparent 0);
     background-size: 1vw 1vw;

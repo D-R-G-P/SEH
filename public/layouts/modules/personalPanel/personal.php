@@ -36,7 +36,7 @@ $pdo = $db->connect();
                     <button class="btn-red" onclick="back.style.display = 'none'; newPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#selectRol').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
                 </div>
                 <h3>Declarar nuevo personal</h3>
-                <form action="#" method="post" class="backForm" id="newPersonalForm">
+                <form action="/SGH/public/layouts/modules/personalPanel/controllers/addPersonal.php" method="post" class="backForm" id="newPersonalForm">
                     <div style="margin-top: 15vw;">
                         <label for="apellido">Apellido</label>
                         <input type="text" name="apellido" id="apellido" required>
@@ -113,6 +113,7 @@ $pdo = $db->connect();
                             <option value="Patrimoniales">Patrimoniales</option>
                             <option value="Informatica">Informatica</option>
                             <option value="Jefe de servicio">Jefe de servicio</option>
+                            <option value="Docencia e investigación">Docencia e investigación</option>
                         </select>
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: center;">
@@ -125,8 +126,27 @@ $pdo = $db->connect();
                 <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
                     <button class="btn-red" onclick="back.style.display = 'none'; newPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#selectRol').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
                 </div>
+
+                <script>
+						function setDatos(apellido, nombre, dni, servicio, cargo, especialidad, mn, mp, rol) {
+							$('#back').css('display', 'flex');
+							$('#modServicio').css('display', 'flex');
+
+							$('#editapellido').val(apellido);
+                            $('#editnombre').val(nombre);
+                            $('#editdni').val(dni);
+                            $('#editservicio').val(servicio);
+                            $('#editservicio').val(servicio).trigger('change');
+                            $('#editespecialidad').val(especialidad).trigger('change');
+                            $('#editmn').val(mn);
+                            $('#editmp').val(mp);
+                            $('#editcargo').val(cargo).trigger('change');
+                            $('#editrol').val(rol).trigger('change');
+						}
+					</script>
+
                 <h3>Declarar nuevo personal</h3>
-                <form action="#" method="post" class="backForm" id="editPersonalForm">
+                <form action="/SGH/public/layouts/modules/personalPanel/controllers/modifyPersonal.php" method="post" class="backForm" id="editPersonalForm">
                     <div style="margin-top: 15vw;">
                         <label for="editapellido">Apellido</label>
                         <input type="text" name="editapellido" id="editapellido" required>
@@ -158,8 +178,8 @@ $pdo = $db->connect();
                         </select>
                     </div>
                     <div>
-                        <label for="editselectEspecialidad">Especialidad</label>
-                        <select id="editselectEspecialidad" class="select2" name="editespecialidad" style="width: 100%;" required>
+                        <label for="editselectespecialidad">Especialidad</label>
+                        <select id="editespecialidad" class="select2" name="editespecialidad" style="width: 100%;" required>
                             <option value="" selected disabled>Seleccionar especialidad...</option>
                         </select>
                     </div>
@@ -175,8 +195,8 @@ $pdo = $db->connect();
                         </div>
                     </div>
                     <div>
-                        <label for="editselectCargo">Cargo</label>
-                        <select id="editselectCargo" class="select2" name="editcargo" style="width: 100%;" required>
+                        <label for="editcargo">Cargo</label>
+                        <select id="editcargo" class="select2" name="editcargo" style="width: 100%;" required>
                             <option value="" selected disabled>Seleccionar cargo...</option>
                             <?php
 
@@ -193,8 +213,8 @@ $pdo = $db->connect();
                         </select>
                     </div>
                     <div>
-                        <label for="editselectRol">Rol</label>
-                        <select id="editselectRol" class="select2" name="editrol" style="width: 100%;" required>
+                        <label for="editrol">Rol</label>
+                        <select id="editrol" class="select2" name="editrol" style="width: 100%;" required>
                             <option value="" disabled selected>Seleccione rol...</option>
                             <option value="Administrador">Administrador</option>
                             <option value="Dirección">Dirección</option>
@@ -203,6 +223,7 @@ $pdo = $db->connect();
                             <option value="Patrimoniales">Patrimoniales</option>
                             <option value="Informatica">Informatica</option>
                             <option value="Jefe de servicio">Jefe de servicio</option>
+                            <option value="Docencia e investigación">Docencia e investigación</option>
                         </select>
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: center;">
@@ -220,16 +241,16 @@ $pdo = $db->connect();
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nombre y apellido</th>
-                    <th>DNI</th>
-                    <th>Servicio</th>
-                    <th>Especialidad</th>
-                    <th>Matricula</th>
-                    <th>Cargo</th>
-                    <th>Sistemas</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
+                    <th class="table-middle table-center">ID</th>
+                    <th class="table-middle">Nombre y apellido</th>
+                    <th class="table-middle table-center">DNI</th>
+                    <th class="table-middle">Servicio</th>
+                    <th class="table-middle">Especialidad</th>
+                    <th class="table-middle table-center">Matricula</th>
+                    <th class="table-middle table-center">Cargo</th>
+                    <th class="table-middle table-center">Sistemas</th>
+                    <th class="table-middle table-center">Rol</th>
+                    <th class="table-middle table-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -268,19 +289,166 @@ $pdo = $db->connect();
                     echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
                     echo '<td class="table-middle"> ' . $row['sistemas'] . '</td>';
                     echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
-                    echo '<td>
+                    echo '<td class="table-middle table-center">
+
+                    <div class="contenedor-de-botones">
+
+                    <button class="btn-green" onclick="menuPersona(' . $row['id'] . ')" title="Abrir menu de acciones"><i class="fa-solid fa-hand-pointer"></i></button>
                     
-                    Editar
-                    Licencias
-                    Jubilacion
-                    Eliminar
+                    
+                    <div class="buttons-div" id="menu-' . $row['id'] . '">
+                        <button class="btn-green" title="Editar"><i class="fa-solid fa-pen"></i> Editar</button>
+
+                        <button class="btn-green" title="Pase"><i class="fa-solid fa-right-from-bracket"></i> Pase</button>
+                        <button class="btn-green" title="Licencias"><i class="fa-solid fa-person-walking-luggage"></i> Licencias</button>
+
+                        <button class="btn-yellow" title="Jubilar"><i class="fa-solid fa-person-walking-with-cane"></i> Jubilar</button>
+                        <button class="btn-red" title="Eliminar"><i class="fa-solid fa-trash-can"></i> Eliminar</button>
+                        </div>
+                        </div>
 
                     </td>';
                     echo '</tr>';
                 }
-
-
                 ?>
+
+                <script>
+                    
+                </script>
+
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+                <tr>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                    <td>t</td>
+                </tr>
+
             </tbody>
         </table>
     </div>
