@@ -41,7 +41,7 @@ input[type="number"] {
   border-radius: 0.8vw;
   width: 80%;
   padding: 0.5vw;
-  font-size: 1.8vw;
+  font-size: 1.3vw;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -198,6 +198,7 @@ table tr:last-child td:last-child {
   display: none;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .divBackForm {

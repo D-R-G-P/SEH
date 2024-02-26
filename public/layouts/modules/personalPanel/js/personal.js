@@ -14,6 +14,10 @@ $(document).ready(function () {
     $('#selectEspecialidad').select2();
     $('#selectCargo').select2();
     $('#selectRol').select2();
+    $('#editselectServicio').select2();
+    $('#editselectespecialidad').select2();
+    $('#editselectcargo').select2();
+    $('#editselectrol').select2();
 });
 
 $(".js-example-language").select2({
