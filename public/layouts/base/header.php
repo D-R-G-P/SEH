@@ -1,3 +1,19 @@
+<?php
+
+    
+$user = new User();
+$currentUser = $userSession->getCurrentUser();
+$user->setUser($currentUser);
+
+// Verificar si el usuario está actualmente logueado
+if (!$userSession->getCurrentUser()) {
+    // Si no hay un usuario en la sesión, redirigir a la página de inicio
+    header("Location: /SGH/index.php");
+    exit(); // Asegurarse de que el script se detenga después de redirigir
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="es-AR">
 

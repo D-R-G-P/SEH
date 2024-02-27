@@ -93,8 +93,8 @@ input[type=number] {
 
 .btn-yellow {
   color: #fff;
-  background-color: #f3b805;
-  border: #f3b805;
+  background-color: #e6b00f;
+  border: #e6b00f;
   padding: 0.5vw;
   border-radius: 0.5vw;
   font-size: 1vw;
@@ -104,8 +104,8 @@ input[type=number] {
 }
 
 .btn-yellow:hover {
-  background-color: #ffca2c;
-  border: #ffca2c;
+  background-color: #cc9e14;
+  border: #cc9e14;
   transition: all 0.15s ease-in-out;
 }
 

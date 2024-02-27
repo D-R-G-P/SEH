@@ -18,7 +18,7 @@ h3 {
     border: .2vw #000 solid;
     border-radius: .8vw;
     width: max-content;
-    transform: translate(-10vw, -11.4vw);
+    transform: translate(-11vw, -13vw);
     padding: 1vw;
     z-index: 100;
 }

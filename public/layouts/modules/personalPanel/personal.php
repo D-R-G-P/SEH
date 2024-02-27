@@ -15,6 +15,7 @@ $title = "Gestión de personal";
 $db = new DB();
 $pdo = $db->connect();
 
+
 ?>
 
 <?php require_once '../../base/header.php'; ?>
@@ -129,6 +130,16 @@ $pdo = $db->connect();
 
         <script>
           function setDatos(apellido, nombre, dni, servicio, cargo, especialidad, mn, mp, rol) {
+            console.log("Apellido:", apellido);
+            console.log("Nombre:", nombre);
+            console.log("DNI:", dni);
+            console.log("Servicio:", servicio);
+            console.log("Cargo:", cargo);
+            console.log("Especialidad:", especialidad);
+            console.log("MN:", mn);
+            console.log("MP:", mp);
+            console.log("Rol:", rol);
+
             $('#back').css('display', 'flex');
             $('#editPersonal').css('display', 'flex');
 
@@ -136,11 +147,13 @@ $pdo = $db->connect();
             $('#editnombre').val(nombre);
             $('#editdni').val(dni);
             $('#editselectServicio').val(servicio).trigger('change');
-            $('#editselectespecialidad').val(servicio).trigger('change');
             $('#editmn').val(mn);
             $('#editmp').val(mp);
             $('#editselectcargo').val(cargo).trigger('change');
             $('#editselectrol').val(rol).trigger('change');
+
+            // Llama a la función editselectChange para actualizar el select de especialidades
+            editselectChange(especialidad);
           }
         </script>
 
@@ -160,7 +173,7 @@ $pdo = $db->connect();
           </div>
           <div>
             <label for="editselectServicio">Servicio</label>
-            <select id="editselectServicio" class="select2" name="editservicio" style="width: 100%;" required onchange="selectChange()">
+            <select id="editselectServicio" class="select2" name="editservicio" style="width: 100%;" required onchange="editselectChange()">
               <option value="" selected disabled>Seleccionar servicio...</option>
               <?php
 
@@ -290,12 +303,13 @@ $pdo = $db->connect();
           echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
           echo '<td class="table-middle table-center">
     <div class="contenedor-de-botones">
-        <button class="btn-green" onclick="setDatos(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\', \'' . $row['servicio_id'] . '\', \'' . $row['cargo'] . '\', \'' . $row['especialidad'] . '\', \'' . $row['mn'] . '\', \'' . $row['mp'] . '\', \'' . $row['rol'] . '\')" title="Abrir menu de acciones"><i class="fa-solid fa-hand-pointer"></i></button>
+        <button class="btn-green" title="Abrir menu de acciones"  onclick="menuPersona(' . $row['id'] . ')"><i class="fa-solid fa-hand-pointer"></i></button>
         <div class="buttons-div" id="menu-' . $row['id'] . '">
-            <button class="btn-green" title="Editar"><i class="fa-solid fa-pen"></i> Editar</button>
+            <button class="btn-green" title="Editar" onclick="setDatos(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\', \'' . $row['servicio_id'] . '\', \'' . $row['cargo'] . '\', \'' . $row['especialidad'] . '\', \'' . $row['mn'] . '\', \'' . $row['mp'] . '\', \'' . $row['rol'] . '\')"><i class="fa-solid fa-pen"></i> Editar</button>
             <button class="btn-green" title="Pase"><i class="fa-solid fa-right-from-bracket"></i> Pase</button>
             <button class="btn-green" title="Licencias"><i class="fa-solid fa-person-walking-luggage"></i> Licencias</button>
             <button class="btn-yellow" title="Jubilar"><i class="fa-solid fa-person-walking-with-cane"></i> Jubilar</button>
+            <button class="btn-yellow" title="Fin contrato"><i class="fas fa-calendar-times"></i> Fin contrato</button>
             <button class="btn-red" title="Eliminar"><i class="fa-solid fa-trash-can"></i> Eliminar</button>
         </div>
     </div>

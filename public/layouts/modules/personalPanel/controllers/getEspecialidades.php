@@ -26,5 +26,3 @@ if (isset($_GET['servicioId'])) {
     // Si no se recibió el servicioId, devuelve un mensaje de error
     echo 'Error: No se recibió el servicioId.';
 }
-
-?>
