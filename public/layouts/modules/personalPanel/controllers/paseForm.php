@@ -5,16 +5,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verifica que el formulario se ha enviado por el método POST
 
     // Si no hay errores, procesa el formulario
-    $id = $_POST['editid'];
-    $apellido = $_POST["editapellido"];
-    $nombre = $_POST["editnombre"];
-    $dni = $_POST["editdni"];
-    $servicio = $_POST["editservicio"];
-    $especialidad = $_POST["editespecialidad"];
-    $mn = $_POST["editmn"];
-    $mp = $_POST["editmp"];
-    $cargo = $_POST["editcargo"];
-    $rol = $_POST["editrol"];
+    $id = $_POST['paseId'];
+    $servicio = $_POST["paseSelectServicio"];
 
     // Realiza la conexión a la base de datos (utiliza tu propia lógica para la conexión)
     require_once '../../../../../app/db/db.php';
@@ -25,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
 
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare("UPDATE personal SET apellido = ?, nombre = ?, dni = ?, servicio_id = ?, cargo = ?, especialidad = ?, mn = ?, mp = ?, rol = ? WHERE id = ?");
-        $stmt->execute([$apellido, $nombre, $dni, $servicio, $cargo, $especialidad, $mn, $mp, $rol, $id]);
+        $stmt = $pdo->prepare("UPDATE personal SET servicio_id = ? WHERE id = ?");
+        $stmt->execute([$servicio, $id]);
 
 
 
@@ -34,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $pdo = null;
 
         // Almacena un mensaje de éxito en la sesión y redirige a una página de éxito
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Personal modificado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Pase de servicio realizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
         header("Location: ../personal.php");
         exit;
     } catch (PDOException $e) {

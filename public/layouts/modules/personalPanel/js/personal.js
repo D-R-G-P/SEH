@@ -18,6 +18,7 @@ $(document).ready(function () {
     $('#editselectespecialidad').select2();
     $('#editselectcargo').select2();
     $('#editselectrol').select2();
+    $('#paseSelectServicio').select2();
 });
 
 $(".js-example-language").select2({
@@ -91,3 +92,20 @@ function menuPersona(id) {
         }, 5);
     }
 }
+
+function jefeCheck(dni) {
+
+    console.log(dni);
+    $.ajax({
+        url: 'controllers/verificar_jefe_servicio.php?dni=' + dni,
+        method: 'POST',
+        data: { dni: dni },
+        success: function (response) {
+            if (response === 'true') {
+                // Si el DNI está asociado a un jefe de servicio, agregar una opción adicional al select
+                $('#editselectcargo').append('<option value="Jefe de servicio">Jefe de servicio</option>');
+                $('#editselectcargo').val("Jefe de servicio ").trigger('change');
+            }
+        }
+    });
+};
