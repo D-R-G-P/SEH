@@ -25,7 +25,8 @@ $pdo = $db->connect();
 <div class="content">
   <div class="modulo" style="text-align: center;">
     <h3 style="margin-bottom: .5vw;">Sistema de gestión de personal</h3>
-    <p>Este sistema está oreintado a la declaración del personal <br> a cargo y administración de privilegios de los mismos dentro del sistema.</p>
+    <p>Este sistema está oreintado a la declaración del personal <br> a cargo y administración de privilegios de los
+      mismos dentro del sistema.</p>
   </div>
 
   <div class="modulo">
@@ -118,7 +119,8 @@ $pdo = $db->connect();
             </select>
           </div>
           <div style="display: flex; flex-direction: row; justify-content: center;">
-            <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
+            <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Declarar nuevo
+                personal</b></button>
           </div>
         </form>
       </div>
@@ -203,7 +205,8 @@ $pdo = $db->connect();
             <label for="editselectcargo">Cargo</label>
             <select id="editselectcargo" class="select2" name="editcargo" style="width: 100%;" required>
               <option value="" selected disabled>Seleccionar cargo...</option>
-              <option value="Jefe de servicio" disabled="true" id="jefeCheckeado">Jefe de servicio</option>
+              <option value="Jefe de servicio" disabled="true" id="jefeCheckeado">Jefe de servicio
+              </option>
               <?php
               // Realiza la consulta a la tabla cargo
               $getCargo = "SELECT cargo FROM cargos WHERE estado = 'Activo'";
@@ -286,7 +289,8 @@ $pdo = $db->connect();
               ?>
             </select>
           </div>
-          <button type="submit" class="btn-green"><b><i class="fa-solid fa-right-from-bracket"></i> Realizar pase</b></button>
+          <button type="submit" class="btn-green"><b><i class="fa-solid fa-right-from-bracket"></i> Realizar
+              pase</b></button>
         </form>
       </div>
 
@@ -305,12 +309,13 @@ $pdo = $db->connect();
             $('#licenciaApellido').val(apellido);
             $('#licenciaNombre').val(nombre);
             $('#licenciaDni').val(dni);
-
+            $('#licenciaDniHidden').val(dni);
           }
         </script>
 
         <h3>Establecer nueva licencia</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/licenciaForm.php" method="POST" class="backForm" id="newLicenciaForm">
+          <input type="hidden" name="licenciaDniHidden" id="licenciaDniHidden">
 
           <div>
             <label for="licenciaApellido">Apellido</label>
@@ -336,6 +341,36 @@ $pdo = $db->connect();
             <label for="licenciaTipo">Tipo de licencia</label>
             <select name="licenciaTipo" id="licenciaTipo" class="select2" style="width: 100%;" required>
               <option value="" selected disabled>Seleccione tipo de licencia...</option>
+              <option value="Clave 1 - Por razones de enfermedad">Clave 1 - Por razones de enfermedad
+              </option>
+              <option value="Clave 4 - Por accidente de trabajo">Clave 4 - Por accidente de trabajo
+              </option>
+              <option value="Clave 5 - Por atención de familiar enfermo">Clave 5 - Por atención de
+                familiar enfermo</option>
+              <option value="Clave 6 - Por maternidad">Clave 6 - Por maternidad</option>
+              <option value="Clave 8 - Descanso anual (vacaciones)">Clave 8 - Descanso anual (vacaciones)
+              </option>
+              <option value="Clave 14 - Duelo por familiar directo">Clave 14 - Duelo por familiar directo
+              </option>
+              <option value="Clave 15 - Duelo por familiar indirecto">Clave 15 - Duelo por familiar
+                indirecto</option>
+              <option value="Clave 16 - Por matrimonio">Clave 16 - Por matrimonio</option>
+              <option value="Clave 17 - Por pre-examen">Clave 17 - Por pre-examen</option>
+              <option value="Clave 18 - Por examen">Clave 18 - Por examen</option>
+              <option value="Clave 26 - Por causas particulares">Clave 26 - Por causas particulares
+              </option>
+              <option value="Clave 31 - Por paternidad">Clave 31 - Por paternidad</option>
+              <option value="Clave 33 - Por donación de sangre">Clave 33 - Por donación de sangre</option>
+              <option value="Clave 34 - Licencia anual complementaria (estres)">Clave 34 - Licencia anual
+                complementaria (estres)</option>
+              <option value="Clave 35 - Por alimentación y cuidado del hijo">Clave 35 - Por alimentación y
+                cuidado del hijo</option>
+              <option value="Clave DF - Examen de Papanicolau y/o radiografía o ecografía mamaria">Clave
+                DF - Examen de Papanicolau y/o radiografía o ecografía mamaria</option>
+              <option value="Clave JM - Junta médica">Clave JM - Junta médica</option>
+              <option value="Clave NP - Nacimiento prematuro">Clave NP - Nacimiento prematuro</option>
+              <option value="Clave VV - Mujer víctima de violencia de género">Clave VV - Mujer víctima de
+                violencia de género</option>
             </select>
           </div>
 
@@ -346,7 +381,8 @@ $pdo = $db->connect();
             <p style="margin-top: 1vw;">Esta acción es irreversible. Revise todos los datos.</p>
 
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <button class="btn-red" type="submit"><i class="fa-solid fa-person-walking-luggage"></i> Asignar licencia</button>
+              <button class="btn-red" type="submit"><i class="fa-solid fa-person-walking-luggage"></i>
+                Asignar licencia</button>
 
               <button class="btn-green" type="button" onclick="confirmLicencia.style.display = 'none';"><i class="fa-solid fa-xmark"></i> Cancelar</button>
             </div>
@@ -355,6 +391,123 @@ $pdo = $db->connect();
         </form>
 
       </div>
+      <div class="divBackForm" id="newFinContrato" style="display: none;">
+        <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+          <button class="btn-red" onclick="back.style.display = 'none'; newFinContrato.style.display = 'none'; finContratoForm.reset(); $('#paseSelectServicio').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+        </div>
+
+        <script>
+          function setDatosFinContrato(apellido, nombre, dni) {
+            $('#back').css('display', 'flex');
+            $('#newFinContrato').css('display', 'flex');
+
+            $('#finContratoApellido').val(apellido);
+            $('#finContratoNombre').val(nombre);
+            $('#finContratoDni').val(dni);
+            $('#finContratoDniHidden').val(dni);
+          }
+        </script>
+
+        <h3>Informar baja de agente</h3>
+        <form action="/SGH/public/layouts/modules/personalPanel/controllers/finContratoForm.php" method="POST" class="backForm" id="finContratoForm">
+        <input type="hidden" name="finContratoDniHidden" id="finContratoDniHidden">  
+        
+        <div>
+            <label for="finContratoApellido">Apellido</label>
+            <input type="text" name="finContratoApellido" id="finContratoApellido" disabled>
+          </div>
+          <div>
+            <label for="finContratoNombre">Nombre</label>
+            <input type="text" name="finContratoNombre" id="finContratoNombre" disabled>
+          </div>
+          <div>
+            <label for="finContratoDni">DNI</label>
+            <input type="text" name="finContratoDni" id="finContratoDni" disabled>
+          </div>
+          <div>
+            <label for="finContratoFecha">Fecha de cese</label>
+            <input type="date" name="finContratoFecha" id="finContratoFecha" max="<?php echo date('Y-m-d'); ?>">
+          </div>
+          <div>
+            <label for="finContratoMotivo">Motivo del fin de contrato</label>
+            <select name="finContratoMotivo" id="finContratoMotivo" class="select2" style="width: 100%;">
+              <option value="" disabled selected>Seleccione un motivo de fin de contrato</option>
+              <option value="Baja por renuncia">Baja por renuncia</option>
+              <option value="Baja por no renovación">Baja por no renovación</option>
+              <option value="Baja por despido">Baja por despido</option>
+            </select>
+          </div>
+
+          <button class="btn-green" onclick="confirmFinContrato.style.display = 'flex';" type="button"><i class="fas fa-calendar-times"></i> Realizar baja de agente</button>
+
+          <div id="confirmFinContrato" class="divBackForm" style="display: none;">
+            <h4>¿Está seguro que quiere realizar la baja de agente?</h4>
+            <p style="margin-top: 1vw;">Esta acción es irreversible. Revise todos los datos.</p>
+
+            <div style="display: flex; flex-direction: row; justify-content: center;">
+              <button class="btn-red" type="submit"><i class="fas fa-calendar-times"></i>
+                Realizar baja de agente</button>
+
+              <button class="btn-green" type="button" onclick="confirmFinContrato.style.display = 'none';"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="divBackForm" id="newJubilacion" style="display: none;">
+        <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+          <button class="btn-red" onclick="back.style.display = 'none'; newJubilacion.style.display = 'none'; jubilarForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+        </div>
+
+        <script>
+          function setDatosJubilar(apellido, nombre, dni) {
+            $('#back').css('display', 'flex');
+            $('#newJubilacion').css('display', 'flex');
+
+            $('#jubilarApellido').val(apellido);
+            $('#jubilarNombre').val(nombre);
+            $('#jubilarDni').val(dni);
+            $('#jubilarDniHidden').val(dni);
+          }
+        </script>
+
+        <h3>Realizar jubilación</h3>
+        <form action="/SGH/public/layouts/modules/personalPanel/controllers/jubilarForm.php" method="POST" class="backForm" id="jubilarForm">
+        <input type="hidden" name="jubilarDniHidden" id="jubilarDniHidden">  
+        
+        <div>
+            <label for="jubilarApellido">Apellido</label>
+            <input type="text" name="jubilarApellido" id="jubilarApellido" disabled>
+          </div>
+          <div>
+            <label for="jubilarNombre">Nombre</label>
+            <input type="text" name="jubilarNombre" id="jubilarNombre" disabled>
+          </div>
+          <div>
+            <label for="jubilarDni">DNI</label>
+            <input type="text" name="jubilarDni" id="jubilarDni" disabled>
+          </div>
+          <div>
+            <label for="jubilarFecha">Fecha de jubilación</label>
+            <input type="date" name="jubialrFecha" id="jubilarFecha" max="<?php echo date('Y-m-d'); ?>">
+          </div>
+
+          <button class="btn-green" onclick="confirmJubilar.style.display = 'flex';" type="button"><i class="fa-solid fa-person-walking-with-cane"></i> Realizar jubilación</button>
+
+          <div id="confirmJubilar" class="divBackForm" style="display: none;">
+            <h4>¿Está seguro que quiere realizar esta jubilación?</h4>
+            <p style="margin-top: 1vw;">Esta acción es irreversible. Revise todos los datos.</p>
+
+            <div style="display: flex; flex-direction: row; justify-content: center;">
+              <button class="btn-red" type="submit"><i class="fa-solid fa-person-walking-with-cane"></i>
+                Realizar jubilación</button>
+
+              <button class="btn-green" type="button" onclick="confirmJubilar.style.display = 'none';"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
     </div>
 
 
@@ -388,7 +541,41 @@ $pdo = $db->connect();
         while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
           echo '<tr>';
           echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
-          echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
+
+          $fechaHoy = date("Y-m-d");
+
+          $stmtLicencias = $pdo->prepare("SELECT tipo_licencia, fecha_desde, fecha_hasta FROM licencias WHERE dni = ? AND fecha_desde <= ? AND fecha_hasta >= ?");
+          $stmtLicencias->execute([$row['dni'], $fechaHoy, $fechaHoy]);
+          $licencias = $stmtLicencias->fetchAll(PDO::FETCH_ASSOC);
+
+          if (!empty($licencias)) {
+            echo '<td class="table-middle">';
+            echo '<div style="display: flex; flex-direction: row; align-items: center;"><div>' . $row['apellido'] . ' ' . $row['nombre'] . '</div>';
+
+            echo '<button class="avisoWarButton" onclick="avisoLicencia(' . $row['id'] . ')">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </button>';
+
+            foreach ($licencias as $licencia) {
+              // Formatear las fechas
+              $fecha_desde = date("d/m/Y", strtotime($licencia['fecha_desde']));
+              $fecha_hasta = date("d/m/Y", strtotime($licencia['fecha_hasta']));
+
+              echo '<div id="aviso-' . $row['id'] . '" class="avisoWar" style="position: relative">
+            
+            <div class="aviso"><h4>El agente se encuentra de licencia.</h4></br>
+                <b>Tipo de licencia:</b> ' . $licencia['tipo_licencia'] . '. </br>
+                <div style="margin-top: .3vw;"><b>Desde:</b> ' . $fecha_desde . '</br><b>Hasta:</b> ' . $fecha_hasta . '.</div>
+            </div>
+            
+        </div>';
+            }
+
+            echo '</div></td>';
+          } else {
+            echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
+          }
+
           echo '<td class="table-middle table-center">' . $row['dni'] . '</td>';
 
           if ($row['servicio_id'] != "0") {
@@ -414,7 +601,14 @@ $pdo = $db->connect();
 
           echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
 
-          echo '<td class="table-middle"> ' . $row['sistemas'] . '</td>';
+          echo '<td class="table-middle"> ' . $row['sistemas'] . ' <div style="display: flex; flex-direction: column; align-items: stretch;">
+          
+          <button class="btn-green"><i class="fa-solid fa-box"></i> Deposito</button>
+          <button class="btn-green"><i class="fa-solid fa-screwdriver-wrench"></i> Mantenimiento</button>
+          <button class="btn-green"><i class="fa-solid fa-computer"></i> Informatica</button>
+          <button class="btn-green" style="width: max-content"><i class="fa-solid fa-key"></i> Generar contraseña</button>
+          
+          </div></td>';
 
           echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
 
@@ -432,11 +626,9 @@ $pdo = $db->connect();
                     
                     <button class="btn-green" title="Licencias" onclick="setLicencia(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\')"><i class="fa-solid fa-person-walking-luggage"></i> Licencias</button>
                     
-                    <button class="btn-yellow" title="Jubilar"><i class="fa-solid fa-person-walking-with-cane"></i> Jubilar</button>
+                    <button class="btn-yellow" title="Jubilar" onclick="setDatosJubilar(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\')"><i class="fa-solid fa-person-walking-with-cane"></i> Jubilar</button>
                     
-                    <button class="btn-yellow" title="Fin contrato"><i class="fas fa-calendar-times"></i> Fin contrato</button>
-                    
-                    <button class="btn-red" title="Eliminar"><i class="fa-solid fa-trash-can"></i> Eliminar</button>
+                    <button class="btn-yellow" title="Fin contrato" onclick="setDatosFinContrato(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\')"><i class="fas fa-calendar-times"></i> Fin contrato</button>
                   
                     </div>
                 </div>
@@ -449,8 +641,6 @@ $pdo = $db->connect();
       </tbody>
     </table>
   </div>
-
-
 </div>
 
 <script src="/SGH/public/layouts/modules/personalPanel/js/personal.js"></script>

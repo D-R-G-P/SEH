@@ -18,7 +18,7 @@ h3 {
     border: .2vw #000 solid;
     border-radius: .8vw;
     width: max-content;
-    transform: translate(-11vw, -13vw);
+    transform: translate(-11vw, -11.4vw);
     padding: 1vw;
     z-index: 100;
 }
@@ -45,4 +45,65 @@ h3 {
     position: absolute;
     width: max-content;
     padding: 2vw;
+}
+
+#confirmJubilar {
+    position: absolute;
+    width: max-content;
+    padding: 2vw;
+}
+
+#confirmFinContrato {
+    position: absolute;
+    width: max-content;
+    padding: 2vw;
+}
+
+.avisoWarButton {
+    color: #ffa500;
+    padding: .3vw;
+    margin: 0;
+    background-color: #fff;
+    border: .1vw #000 solid;
+    border-radius: .5vw;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.avisoWarButton:hover {
+    color: #e99700;
+    background-color: #f1f1f1;
+    transition: all .2s ease-in-out;
+}
+
+.aviso {
+    position: absolute;
+    background-color: #fff;
+    border: .2vw #000 solid;
+    border-radius: .8vw;
+    width: max-content;
+    transform: translate(.8vw, -5.1vw);
+    padding: 1vw;
+    z-index: 100;
+}
+
+.avisoWar {
+    display: none;
+}
+
+.activoLic {
+    display: block;
+}
+
+.aviso:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0; /* Cambiado a right en lugar de left */
+    transform: translate(-1vw, -50%); /* Ajuste positivo para la traducción horizontal */
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 1vw 1vw 1vw 0; /* Triángulo hacia la izquierda */
+    border-color: transparent #000 transparent transparent; /* Blanco */
 }

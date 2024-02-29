@@ -5,8 +5,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verifica que el formulario se ha enviado por el método POST
 
     // Si no hay errores, procesa el formulario
-    $id = $_POST['paseId'];
-    $servicio = $_POST["paseSelectServicio"];
+    $dni = $_POST['jubilarDniHidden'];
+    $jubilarFecha = $_POST["jubilarFecha"];
 
     // Realiza la conexión a la base de datos (utiliza tu propia lógica para la conexión)
     require_once '../../../../../app/db/db.php';
@@ -17,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
 
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare("UPDATE personal SET servicio_id = ?, especialidad = '' WHERE id = ?");
-        $stmt->execute([$servicio, $id]);
+        $stmt = $pdo->prepare("UPDATE personal SET estado = CONCAT('Jubilado: ', ?) WHERE dni = ?");
+$stmt->execute([$jubilarFecha, $dni]);
 
 
 

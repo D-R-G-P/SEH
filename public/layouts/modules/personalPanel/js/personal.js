@@ -20,6 +20,7 @@ $(document).ready(function () {
     $('#editselectrol').select2();
     $('#paseSelectServicio').select2();
     $('#licenciaTipo').select2();
+    $('#finContratoMotivo').select2();
 });
 
 $(".js-example-language").select2({
@@ -40,6 +41,23 @@ function selectChange() {
     };
     xhr.send();
 };
+
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[type="text"]');
+
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            // Obtén el valor del input y convierte la primera letra de cada palabra a mayúscula
+            let words = this.value.split(' ');
+            for (let i = 0; i < words.length; i++) {
+                words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+            }
+            // Une las palabras nuevamente y establece el valor del input
+            this.value = words.join(' ');
+        });
+    });
+});
+
 
 function editselectChange(especialidad) {
     var editservicioValue = $('#editselectServicio').val(); // Obtén el valor del servicio seleccionado
@@ -108,3 +126,56 @@ function jefeCheck(dni) {
         }
     });
 };
+
+function editselectChange(especialidad) {
+    var editservicioValue = $('#editselectServicio').val(); // Obtén el valor del servicio seleccionado
+
+    // Realiza una consulta AJAX al servidor para obtener las especialidades correspondientes al servicio seleccionado
+    $.ajax({
+        url: 'controllers/getEspecialidades.php',
+        type: 'GET',
+        data: { servicioId: editservicioValue },
+        success: function (response) {
+            // Actualiza el select de especialidades con los nuevos valores recibidos del servidor
+            $('#editselectespecialidad').html(response);
+
+            // Establecemos el valor seleccionado en el select de especialidades
+            $('#editselectespecialidad').val(especialidad).trigger('change');
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+// Agregamos un listener de evento para cerrar el menú si se hace clic fuera de él
+document.addEventListener('click', function (event) {
+    var menuLic = document.querySelectorAll('.menuLic');
+    for (var i = 0; i < menuLic.length; i++) {
+        if (!menuLic[i].contains(event.target)) {
+            menuLic[i].classList.remove('activoLic');
+            menuLic[i].classList.remove('menuLic');
+        }
+    }
+});
+
+function avisoLicencia(id) {
+    var menuLic = document.getElementById('aviso-' + id);
+
+    // Si el menú ya está activo, lo cerramos
+    if (menuLic.classList.contains('activoLic')) {
+        menuLic.classList.remove('activoLic');
+    } else {
+        // Si no está activo, lo abrimos
+        var avisoWar = document.getElementsByClassName('avisoWar');
+        for (var i = 0; i < avisoWar.length; i++) {
+            avisoWar[i].classList.remove('activoLic');
+        }
+        menuLic.classList.add('activoLic');
+
+        // Añadimos la clase 'menu' con un pequeño retardo
+        setTimeout(function () {
+            menuLic.classList.add('menuLic');
+        }, 5);
+    }
+}
