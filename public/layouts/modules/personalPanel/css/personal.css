@@ -40,3 +40,9 @@ h3 {
     display: flex;
     flex-direction: column;
 }
+
+#confirmLicencia {
+    position: absolute;
+    width: max-content;
+    padding: 2vw;
+}

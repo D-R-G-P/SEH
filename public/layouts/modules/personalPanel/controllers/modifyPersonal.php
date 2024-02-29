@@ -9,7 +9,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $apellido = $_POST["editapellido"];
     $nombre = $_POST["editnombre"];
     $dni = $_POST["editdni"];
-    $servicio = $_POST["editservicio"];
     $especialidad = $_POST["editespecialidad"];
     $mn = $_POST["editmn"];
     $mp = $_POST["editmp"];
@@ -25,8 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
 
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare("UPDATE personal SET apellido = ?, nombre = ?, dni = ?, servicio_id = ?, cargo = ?, especialidad = ?, mn = ?, mp = ?, rol = ? WHERE id = ?");
-        $stmt->execute([$apellido, $nombre, $dni, $servicio, $cargo, $especialidad, $mn, $mp, $rol, $id]);
+        $stmt = $pdo->prepare("UPDATE personal SET apellido = ?, nombre = ?, dni = ?, cargo = ?, especialidad = ?, mn = ?, mp = ?, rol = ? WHERE id = ?");
+        $stmt->execute([$apellido, $nombre, $dni, $cargo, $especialidad, $mn, $mp, $rol, $id]);
 
 
 

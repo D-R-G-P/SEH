@@ -125,7 +125,7 @@ $pdo = $db->connect();
 
       <div class="divBackForm" id="editPersonal" style="display: none;">
         <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-          <button class="btn-red" onclick="back.style.display = 'none'; newPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#selectRol').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+          <button class="btn-red" onclick="back.style.display = 'none'; editPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#selectRol').val(null).trigger('change'); $('#jefeCheckeado').prop('disabled', true);" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
         </div>
 
         <script>
@@ -149,7 +149,7 @@ $pdo = $db->connect();
           }
         </script>
 
-        <h3>Declarar nuevo personal</h3>
+        <h3>Editar personal</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/modifyPersonal.php" method="post" class="backForm" id="editPersonalForm">
           <input type="hidden" name="editid" id="editid">
           <div style="margin-top: 15vw;">
@@ -203,10 +203,8 @@ $pdo = $db->connect();
             <label for="editselectcargo">Cargo</label>
             <select id="editselectcargo" class="select2" name="editcargo" style="width: 100%;" required>
               <option value="" selected disabled>Seleccionar cargo...</option>
+              <option value="Jefe de servicio" disabled="true" id="jefeCheckeado">Jefe de servicio</option>
               <?php
-
-
-
               // Realiza la consulta a la tabla cargo
               $getCargo = "SELECT cargo FROM cargos WHERE estado = 'Activo'";
               $stmtCargo = $pdo->query($getCargo);
@@ -215,7 +213,6 @@ $pdo = $db->connect();
               while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
                 echo '<option value=' . $row['cargo'] . '>' . $row['cargo'] . '</option>';
               }
-
               ?>
             </select>
           </div>
@@ -293,106 +290,135 @@ $pdo = $db->connect();
         </form>
       </div>
 
-      <div class="divBackForm" id="newLicencia">
+      <div class="divBackForm" id="newLicencia" style="display: none;">
 
         <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-          <button class="btn-red" onclick="back.style.display = 'none'; newLicencia.style.display = 'none'; licenciaForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
-
-              <h3>Establecer nueva licencia</h3>
-              <form action="/SGH/public/layouts/modules/personalPanel/controllers/licenciaForm.php" method="POST" class="backForm">
-
-              <div>
-                <label for="licenciaApellido">Apellido</label>
-                <input type="text" id="licenciaApellido" disabled>
-              </div>
-              <div>
-                <label for="licenciaNombre">Nombre</label>
-                <input type="text" id="licenciaNombre" disabled>
-              </div>
-              <div>
-                <label for="licenciaDni">DNI</label>
-                <input type="text" id="licenciaDni" name="licenciaDni" disabled>
-              </div>
-              <div>
-                <label for="licenciaDesde">Fecha desde</label>
-                <input type="date" id="licenciaDesde" name="licenciaDesde">
-              </div>
-              <div>
-                <label for="licenciaHasta">Fecha hasta</label>
-                <input type="date" id="licenciaHasta" name="licenciaHasta">
-              </div>
-              <div>
-                <label for="licenciaTipo">Tipo de licencia</label>
-                <input type="text" id="licenciaTipo" name="licenciaTipo">
-              </div>
-
-              </form>
-
+          <button class="btn-red" onclick="back.style.display = 'none'; newLicencia.style.display = 'none'; newLicenciaForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
         </div>
+
+        <script>
+          function setLicencia(apellido, nombre, dni) {
+
+            $('#back').css('display', 'flex');
+            $('#newLicencia').css('display', 'flex');
+
+            $('#licenciaApellido').val(apellido);
+            $('#licenciaNombre').val(nombre);
+            $('#licenciaDni').val(dni);
+
+          }
+        </script>
+
+        <h3>Establecer nueva licencia</h3>
+        <form action="/SGH/public/layouts/modules/personalPanel/controllers/licenciaForm.php" method="POST" class="backForm" id="newLicenciaForm">
+
+          <div>
+            <label for="licenciaApellido">Apellido</label>
+            <input type="text" id="licenciaApellido" disabled>
+          </div>
+          <div>
+            <label for="licenciaNombre">Nombre</label>
+            <input type="text" id="licenciaNombre" disabled>
+          </div>
+          <div>
+            <label for="licenciaDni">DNI</label>
+            <input type="text" id="licenciaDni" name="licenciaDni" disabled required>
+          </div>
+          <div>
+            <label for="licenciaDesde">Fecha desde</label>
+            <input type="date" id="licenciaDesde" name="licenciaDesde" min="<?php echo date('Y-m-d', strtotime('-15 days')); ?>" required>
+          </div>
+          <div>
+            <label for="licenciaHasta">Fecha hasta</label>
+            <input type="date" id="licenciaHasta" name="licenciaHasta" required>
+          </div>
+          <div>
+            <label for="licenciaTipo">Tipo de licencia</label>
+            <select name="licenciaTipo" id="licenciaTipo" class="select2" style="width: 100%;" required>
+              <option value="" selected disabled>Seleccione tipo de licencia...</option>
+            </select>
+          </div>
+
+          <button class="btn-green" onclick="confirmLicencia.style.display = 'flex';" type="button"><i class="fa-solid fa-person-walking-luggage"></i> Establecer licencia</button>
+
+          <div id="confirmLicencia" class="divBackForm" style="display: none;">
+            <h4>¿Está seguro que quiere asignar esta licencia?</h4>
+            <p style="margin-top: 1vw;">Esta acción es irreversible. Revise todos los datos.</p>
+
+            <div style="display: flex; flex-direction: row; justify-content: center;">
+              <button class="btn-red" type="submit"><i class="fa-solid fa-person-walking-luggage"></i> Asignar licencia</button>
+
+              <button class="btn-green" type="button" onclick="confirmLicencia.style.display = 'none';"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+            </div>
+          </div>
+
+        </form>
+
       </div>
+    </div>
 
 
-      <div>
-        <button class="btn-green" onclick="back.style.display = 'flex'; newPersonal.style.display = 'flex';"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
-      </div>
+    <div>
+      <button class="btn-green" onclick="back.style.display = 'flex'; newPersonal.style.display = 'flex';"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
+    </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th class="table-middle table-center">ID</th>
-            <th class="table-middle">Nombre y apellido</th>
-            <th class="table-middle table-center">DNI</th>
-            <th class="table-middle">Servicio</th>
-            <th class="table-middle">Especialidad</th>
-            <th class="table-middle table-center">Matricula</th>
-            <th class="table-middle table-center">Cargo</th>
-            <th class="table-middle table-center">Sistemas</th>
-            <th class="table-middle table-center">Rol</th>
-            <th class="table-middle table-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
+    <table>
+      <thead>
+        <tr>
+          <th class="table-middle table-center">ID</th>
+          <th class="table-middle">Nombre y apellido</th>
+          <th class="table-middle table-center">DNI</th>
+          <th class="table-middle">Servicio</th>
+          <th class="table-middle">Especialidad</th>
+          <th class="table-middle table-center">Matricula</th>
+          <th class="table-middle table-center">Cargo</th>
+          <th class="table-middle table-center">Sistemas</th>
+          <th class="table-middle table-center">Rol</th>
+          <th class="table-middle table-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
 
-          // Realiza la consulta a la tabla servicios
-          $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado'";
-          $stmtPersonal = $pdo->query($getPersonal);
+        // Realiza la consulta a la tabla servicios
+        $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado'";
+        $stmtPersonal = $pdo->query($getPersonal);
 
-          // Itera sobre los resultados y muestra las filas en la tabla
-          while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
-            echo '<tr>';
-            echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
-            echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
-            echo '<td class="table-middle table-center">' . $row['dni'] . '</td>';
+        // Itera sobre los resultados y muestra las filas en la tabla
+        while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
+          echo '<tr>';
+          echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
+          echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
+          echo '<td class="table-middle table-center">' . $row['dni'] . '</td>';
 
-            if ($row['servicio_id'] != "0") {
-              // Realiza una consulta para obtener el nombre y apellido del jefe de servicio
-              $getservicioQuery = "SELECT servicio FROM servicios WHERE id = ?";
-              $getservicioStmt = $pdo->prepare($getservicioQuery);
-              $getservicioStmt->execute([$row['servicio_id']]);
-              $servicioInfo = $getservicioStmt->fetch(PDO::FETCH_ASSOC);
-              // Muestra el nombre y apellido del jefe de servicio
-              if ($servicioInfo) {
-                echo '<td class="table-middle">' . $servicioInfo['servicio'] . '</td>';
-              } else {
-                echo '<div>No se encontró la información del servicio</div>';
-              }
+          if ($row['servicio_id'] != "0") {
+            // Realiza una consulta para obtener el nombre y apellido del jefe de servicio
+            $getservicioQuery = "SELECT servicio FROM servicios WHERE id = ?";
+            $getservicioStmt = $pdo->prepare($getservicioQuery);
+            $getservicioStmt->execute([$row['servicio_id']]);
+            $servicioInfo = $getservicioStmt->fetch(PDO::FETCH_ASSOC);
+            // Muestra el nombre y apellido del jefe de servicio
+            if ($servicioInfo) {
+              echo '<td class="table-middle">' . $servicioInfo['servicio'] . '</td>';
             } else {
-              echo '<td class="table-middle"> No hay servicio asignado';
+              echo '<div>No se encontró la información del servicio</div>';
             }
-            echo '</td>';
+          } else {
+            echo '<td class="table-middle"> No hay servicio asignado';
+          }
+          echo '</td>';
 
-            echo '<td class="table-middle"> ' . $row['especialidad'] . '</td>';
+          echo '<td class="table-middle"> ' . $row['especialidad'] . '</td>';
 
-            echo '<td class="table-middle"> M.N: ' . $row['mn'] . ' </br> M.P: ' . $row['mp'] . '</td>';
+          echo '<td class="table-middle"> M.N: ' . $row['mn'] . ' </br> M.P: ' . $row['mp'] . '</td>';
 
-            echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
+          echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
 
-            echo '<td class="table-middle"> ' . $row['sistemas'] . '</td>';
+          echo '<td class="table-middle"> ' . $row['sistemas'] . '</td>';
 
-            echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
+          echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
 
-            echo '<td class="table-middle table-center">
+          echo '<td class="table-middle table-center">
           
                 <div class="contenedor-de-botones">
 
@@ -416,16 +442,16 @@ $pdo = $db->connect();
                 </div>
               </td>';
 
-            echo '</tr>';
-          }
-          ?>
+          echo '</tr>';
+        }
+        ?>
 
-        </tbody>
-      </table>
-    </div>
-
-
+      </tbody>
+    </table>
   </div>
 
-  <script src="/SGH/public/layouts/modules/personalPanel/js/personal.js"></script>
-  <?php require_once '../../base/footer.php'; ?>
+
+</div>
+
+<script src="/SGH/public/layouts/modules/personalPanel/js/personal.js"></script>
+<?php require_once '../../base/footer.php'; ?>

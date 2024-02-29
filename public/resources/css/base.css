@@ -36,7 +36,8 @@ body {
 
 input[type="text"],
 input[type="password"],
-input[type="number"] {
+input[type="number"],
+input[type="date"] {
   border: #242424 0.2vw solid;
   border-radius: 0.8vw;
   width: 80%;

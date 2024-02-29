@@ -12,7 +12,7 @@ $pdo = $db->connect();
 
 try {
     // Realiza la consulta SQL para verificar si el DNI está asociado a un jefe de servicio
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM personal WHERE dni = ?");
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM servicios WHERE jefe = ?");
     $stmt->execute([$dni]);
     
     // Obtiene el resultado de la consulta
