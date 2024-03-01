@@ -410,9 +410,9 @@ $pdo = $db->connect();
 
         <h3>Informar baja de agente</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/finContratoForm.php" method="POST" class="backForm" id="finContratoForm">
-        <input type="hidden" name="finContratoDniHidden" id="finContratoDniHidden">  
-        
-        <div>
+          <input type="hidden" name="finContratoDniHidden" id="finContratoDniHidden">
+
+          <div>
             <label for="finContratoApellido">Apellido</label>
             <input type="text" name="finContratoApellido" id="finContratoApellido" disabled>
           </div>
@@ -473,9 +473,9 @@ $pdo = $db->connect();
 
         <h3>Realizar jubilación</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/jubilarForm.php" method="POST" class="backForm" id="jubilarForm">
-        <input type="hidden" name="jubilarDniHidden" id="jubilarDniHidden">  
-        
-        <div>
+          <input type="hidden" name="jubilarDniHidden" id="jubilarDniHidden">
+
+          <div>
             <label for="jubilarApellido">Apellido</label>
             <input type="text" name="jubilarApellido" id="jubilarApellido" disabled>
           </div>
@@ -515,53 +515,90 @@ $pdo = $db->connect();
       <button class="btn-green" onclick="back.style.display = 'flex'; newPersonal.style.display = 'flex';"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th class="table-middle table-center">ID</th>
-          <th class="table-middle">Nombre y apellido</th>
-          <th class="table-middle table-center">DNI</th>
-          <th class="table-middle">Servicio</th>
-          <th class="table-middle">Especialidad</th>
-          <th class="table-middle table-center">Matricula</th>
-          <th class="table-middle table-center">Cargo</th>
-          <th class="table-middle table-center">Sistemas</th>
-          <th class="table-middle table-center">Rol</th>
-          <th class="table-middle table-center">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
+    <script>
+      function updateSistem(id, sistema, estado) {
+        // Construir la URL con los parámetros
+        var url = 'controllers/actualizar_sistema.php?id=' + encodeURIComponent(id) + '&sistema=' + encodeURIComponent(sistema) + '&estado=' + encodeURIComponent(estado);
 
-        // Realiza la consulta a la tabla servicios
-        $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado'";
-        $stmtPersonal = $pdo->query($getPersonal);
+        // Redireccionar a la URL
+        window.location.href = url;
+      }
 
-        // Itera sobre los resultados y muestra las filas en la tabla
-        while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
-          echo '<tr>';
-          echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
+      function updatePassword(id, dni) {
+        // Construir la URL con los parámetros
+        var url = 'controllers/actualizar_contrasena.php?id=' + encodeURIComponent(id) + '&dni=' + encodeURIComponent(dni);
 
-          $fechaHoy = date("Y-m-d");
+        // Redireccionar a la URL
+        window.location.href = url;
+      }
+    </script>
 
-          $stmtLicencias = $pdo->prepare("SELECT tipo_licencia, fecha_desde, fecha_hasta FROM licencias WHERE dni = ? AND fecha_desde <= ? AND fecha_hasta >= ?");
-          $stmtLicencias->execute([$row['dni'], $fechaHoy, $fechaHoy]);
-          $licencias = $stmtLicencias->fetchAll(PDO::FETCH_ASSOC);
 
-          if (!empty($licencias)) {
-            echo '<td class="table-middle">';
-            echo '<div style="display: flex; flex-direction: row; align-items: center;"><div>' . $row['apellido'] . ' ' . $row['nombre'] . '</div>';
+    <?php
+    // Establece la cantidad de resultados por página
+    $resultados_por_pagina = 20;
 
-            echo '<button class="avisoWarButton" onclick="avisoLicencia(' . $row['id'] . ')">
+    // Obtiene el número de página actual
+    $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+
+    // Calcula el desplazamiento
+    $desplazamiento = ($pagina_actual - 1) * $resultados_por_pagina;
+
+    // Realiza la consulta a la tabla servicios con el límite y el desplazamiento
+    $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado' LIMIT $resultados_por_pagina OFFSET $desplazamiento";
+    $stmtPersonal = $pdo->query($getPersonal);
+
+    // Itera sobre los resultados y muestra las filas en la tabla
+    while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
+
+    ?>
+      <table>
+        <thead>
+          <tr>
+            <th class="table-middle table-center">ID</th>
+            <th class="table-middle">Nombre y apellido</th>
+            <th class="table-middle table-center">DNI</th>
+            <th class="table-middle">Servicio</th>
+            <th class="table-middle">Especialidad</th>
+            <th class="table-middle table-center">Matricula</th>
+            <th class="table-middle table-center">Cargo</th>
+            <th class="table-middle table-center">Sistemas</th>
+            <th class="table-middle table-center">Rol</th>
+            <th class="table-middle table-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+
+          // Realiza la consulta a la tabla servicios
+          $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado'";
+          $stmtPersonal = $pdo->query($getPersonal);
+
+          // Itera sobre los resultados y muestra las filas en la tabla
+          while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
+            echo '<tr>';
+            echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
+
+            $fechaHoy = date("Y-m-d");
+
+            $stmtLicencias = $pdo->prepare("SELECT tipo_licencia, fecha_desde, fecha_hasta FROM licencias WHERE dni = ? AND fecha_desde <= ? AND fecha_hasta >= ?");
+            $stmtLicencias->execute([$row['dni'], $fechaHoy, $fechaHoy]);
+            $licencias = $stmtLicencias->fetchAll(PDO::FETCH_ASSOC);
+
+            if (!empty($licencias)) {
+              echo '<td class="table-middle">';
+              echo '<div style="display: flex; flex-direction: row; align-items: center;"><div>' . $row['apellido'] . ' ' . $row['nombre'] . '</div>';
+
+              echo '<button class="avisoWarButton" onclick="avisoLicencia(' . $row['id'] . ')">
             <i class="fa-solid fa-triangle-exclamation"></i>
           </button>';
 
-            foreach ($licencias as $licencia) {
-              // Formatear las fechas
-              $fecha_desde = date("d/m/Y", strtotime($licencia['fecha_desde']));
-              $fecha_hasta = date("d/m/Y", strtotime($licencia['fecha_hasta']));
+              foreach ($licencias as $licencia) {
+                // Formatear las fechas
+                $fecha_desde = date("d/m/Y", strtotime($licencia['fecha_desde']));
+                $fecha_hasta = date("d/m/Y", strtotime($licencia['fecha_hasta']));
 
-              echo '<div id="aviso-' . $row['id'] . '" class="avisoWar" style="position: relative">
+                echo '<div id="aviso-' . $row['id'] . '" class="avisoWar" style="position: relative">
             
             <div class="aviso"><h4>El agente se encuentra de licencia.</h4></br>
                 <b>Tipo de licencia:</b> ' . $licencia['tipo_licencia'] . '. </br>
@@ -569,50 +606,94 @@ $pdo = $db->connect();
             </div>
             
         </div>';
+              }
+
+              echo '</div></td>';
+            } else {
+              echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
             }
+
+            echo '<td class="table-middle table-center">' . $row['dni'] . '</td>';
+
+            if ($row['servicio_id'] != "0") {
+              // Realiza una consulta para obtener el nombre y apellido del jefe de servicio
+              $getservicioQuery = "SELECT servicio FROM servicios WHERE id = ?";
+              $getservicioStmt = $pdo->prepare($getservicioQuery);
+              $getservicioStmt->execute([$row['servicio_id']]);
+              $servicioInfo = $getservicioStmt->fetch(PDO::FETCH_ASSOC);
+              // Muestra el nombre y apellido del jefe de servicio
+              if ($servicioInfo) {
+                echo '<td class="table-middle">' . $servicioInfo['servicio'] . '</td>';
+              } else {
+                echo '<div>No se encontró la información del servicio</div>';
+              }
+            } else {
+              echo '<td class="table-middle"> No hay servicio asignado';
+            }
+            echo '</td>';
+
+            echo '<td class="table-middle"> ' . $row['especialidad'] . '</td>';
+
+            echo '<td class="table-middle"> M.N: ' . $row['mn'] . ' </br> M.P: ' . $row['mp'] . '</td>';
+
+            echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
+
+            echo '<td class="table-middle"><div style="display: flex; flex-direction: column; align-items: stretch;">';
+
+
+            // Suponiendo que $sistemas es el array que contiene los datos de la base de datos
+            // Convertir la cadena JSON en un array PHP
+            $sistemas_array = json_decode($row['sistemas'], true);
+
+            // Verificar si la conversión fue exitosa
+            if ($sistemas_array !== null) {
+              // Iterar sobre el array de sistemas
+              foreach ($sistemas_array as $sistema) {
+                // Acceder a cada propiedad del objeto sistema
+                $nombre_sistema = $sistema['sistema'];
+                $activo = $sistema['activo'];
+
+                // Determinar la clase del botón en función del estado activo
+                $claseBoton = ($activo == 'si') ? 'btn-green' : 'btn-red';
+
+                // Determinar el icono del botón en función del nombre del sistema
+                switch ($nombre_sistema) {
+                  case 'Deposito':
+                    $icono = 'fa-box';
+                    $variables = "" . $row['id'] . ", 'Deposito', '" . $activo . "'";
+                    break;
+                  case 'Mantenimiento':
+                    $icono = 'fa-screwdriver-wrench';
+                    $variables = "" . $row['id'] . ", 'Mantenimiento', '" . $activo . "'";
+                    break;
+                  case 'Informatica':
+                    $icono = 'fa-computer';
+                    $variables = "" . $row['id'] . ", 'Informatica', '" . $activo . "'";
+                    break;
+                  default:
+                    $icono = 'fa-question';
+                    break;
+                }
+
+                // Imprimir el botón con la clase y el icono correspondientes
+                echo '<button class="' . $claseBoton . '" onclick="updateSistem(' . $variables . ')"><i class="fa-solid ' . $icono . '"></i> ' . $nombre_sistema . '</button>';
+              }
+            } else {
+              // Manejar el caso en el que la conversión de JSON falla
+              echo 'Error al decodificar la cadena JSON.';
+            }
+
+
+            // Botón "Generar contraseña" fuera del bucle foreach
+            echo '<button class="btn-yellow" onclick="updatePassword(' . $row['id'] . ', \'' . $row['dni'] . '\')" style="width: max-content"><i class="fa-solid fa-key"></i> Generar contraseña</button>';
+
 
             echo '</div></td>';
-          } else {
-            echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
-          }
 
-          echo '<td class="table-middle table-center">' . $row['dni'] . '</td>';
 
-          if ($row['servicio_id'] != "0") {
-            // Realiza una consulta para obtener el nombre y apellido del jefe de servicio
-            $getservicioQuery = "SELECT servicio FROM servicios WHERE id = ?";
-            $getservicioStmt = $pdo->prepare($getservicioQuery);
-            $getservicioStmt->execute([$row['servicio_id']]);
-            $servicioInfo = $getservicioStmt->fetch(PDO::FETCH_ASSOC);
-            // Muestra el nombre y apellido del jefe de servicio
-            if ($servicioInfo) {
-              echo '<td class="table-middle">' . $servicioInfo['servicio'] . '</td>';
-            } else {
-              echo '<div>No se encontró la información del servicio</div>';
-            }
-          } else {
-            echo '<td class="table-middle"> No hay servicio asignado';
-          }
-          echo '</td>';
+            echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
 
-          echo '<td class="table-middle"> ' . $row['especialidad'] . '</td>';
-
-          echo '<td class="table-middle"> M.N: ' . $row['mn'] . ' </br> M.P: ' . $row['mp'] . '</td>';
-
-          echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
-
-          echo '<td class="table-middle"> ' . $row['sistemas'] . ' <div style="display: flex; flex-direction: column; align-items: stretch;">
-          
-          <button class="btn-green"><i class="fa-solid fa-box"></i> Deposito</button>
-          <button class="btn-green"><i class="fa-solid fa-screwdriver-wrench"></i> Mantenimiento</button>
-          <button class="btn-green"><i class="fa-solid fa-computer"></i> Informatica</button>
-          <button class="btn-green" style="width: max-content"><i class="fa-solid fa-key"></i> Generar contraseña</button>
-          
-          </div></td>';
-
-          echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
-
-          echo '<td class="table-middle table-center">
+            echo '<td class="table-middle table-center">
           
                 <div class="contenedor-de-botones">
 
@@ -634,12 +715,28 @@ $pdo = $db->connect();
                 </div>
               </td>';
 
-          echo '</tr>';
-        }
-        ?>
+            echo '</tr>';
+          }
+          ?>
 
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+
+    <?php
+    }
+
+
+    // Calcula la cantidad total de páginas
+    $total_registros = $pdo->query("SELECT COUNT(*) FROM personal WHERE estado != 'Eliminado'")->fetchColumn();
+    $total_paginas = ceil($total_registros / $resultados_por_pagina);
+
+    // Muestra la paginación
+    echo '<div class="pagination" style="margin-top: 1vw; display: flex; flex-direction: row; flex-wrap: wrap;">';
+    for ($i = 1; $i <= $total_paginas; $i++) {
+      echo '<a class="btn-green" style="display: flex; width: max-content; height: 2.3vw; text-align: center; justify-content: center; text-decoration: none;" href="?pagina=' . $i . '">Página ' . $i . '</a>';
+    }
+    echo '</div>';
+    ?>
   </div>
 </div>
 

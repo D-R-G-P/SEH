@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $especialidad = $_POST["especialidad"];
     $mn = $_POST["mn"];
     $mp = $_POST["mp"];
+    $sistemas = '[{"sistema":"Deposito","activo":"no"},{"sistema":"Mantenimiento","activo":"no"},{"sistema":"Informatica","activo":"no"}]';
     $cargo = $_POST["cargo"];
     $rol = $_POST["rol"];
 
@@ -24,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
 
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare("INSERT INTO personal (apellido, nombre, dni, servicio_id, cargo, especialidad, mn, mp, rol, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt->execute([$apellido, $nombre, $dni, $servicio, $cargo, $especialidad, $mn, $mp, $rol, 'Activo']);
+        $stmt = $pdo->prepare("INSERT INTO personal (apellido, nombre, dni, servicio_id, cargo, especialidad, mn, mp, sistemas, rol, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->execute([$apellido, $nombre, $dni, $servicio, $cargo, $especialidad, $mn, $mp, $sistemas, $rol, 'Activo']);
 
 
 
