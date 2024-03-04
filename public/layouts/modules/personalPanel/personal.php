@@ -511,8 +511,65 @@ $pdo = $db->connect();
     </div>
 
 
-    <div>
-      <button class="btn-green" onclick="back.style.display = 'flex'; newPersonal.style.display = 'flex';"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
+    <div style="display: flex; flex-direction: row; width: 100%;">
+      <button class="btn-green" onclick="back.style.display = 'flex'; newPersonal.style.display = 'flex';" style="width: 20.8vw;"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
+
+      <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: calc(100% - 20.8vw)">
+        <select name="selectServicioFilter" id="selectServicioFilter" class="select2" placeholder="Seleccionar un servicio para filtrar" style="width: 45%;">
+          <?php
+          if ($user->getRol() == 'Administrador' || $user->getRol() == 'Dirección') {
+            // Si el usuario tiene el id del servicio igual a 1 o el rol es administrador, generamos todos los servicios
+            echo '<option value="" selected disabled>Seleccionar un servicio...</option>';
+
+            $getServicios = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
+            $stmtServicios = $pdo->query($getServicios);
+
+            while ($row = $stmtServicios->fetch(PDO::FETCH_ASSOC)) {
+              echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+            }
+          } else {
+            // Si no, generamos solo el servicio al que corresponde el usuario
+            $servicioUsuario = $user->getServicio();
+            $getServicioUsuario = "SELECT id, servicio FROM servicios WHERE id = ?";
+            $stmtServicioUsuario = $pdo->prepare($getServicioUsuario);
+            $stmtServicioUsuario->execute([$servicioUsuario]);
+            $rowServicioUsuario = $stmtServicioUsuario->fetch(PDO::FETCH_ASSOC);
+
+            echo '<option value="' . $rowServicioUsuario['id'] . '" selected>' . $rowServicioUsuario['servicio'] . '</option>';
+          }
+          ?>
+        </select>
+
+        <input type="text" name="searchInput" id="searchInput" style="width: 45%; height: 3vw;" placeholder="Buscar por DNI o nombre...">
+      </div>
+
+      <script>
+        // Función para realizar la búsqueda en tiempo real
+        document.getElementById('searchInput').addEventListener('input', function() {
+          // Obtener el valor del campo de búsqueda
+          var searchTerm = this.value;
+
+          // Realizar la solicitud al servidor mediante AJAX
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'controllers/buscar_personal.php?searchTerm=' + encodeURIComponent(searchTerm), true);
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              // Actualizar el contenido de la tabla con los resultados de la búsqueda
+              document.getElementById('tablaPersonal').innerHTML = xhr.responseText;
+            } else {
+              // Manejar errores
+              console.log('Error al realizar la solicitud: ' + xhr.status);
+            }
+          };
+          xhr.send();
+        });
+      </script>
+
+
+
+
+
+
     </div>
 
     <script>

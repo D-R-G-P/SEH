@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
 
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare("UPDATE personal SET estado = CONCAT('Fin de contrato por: ', ?, ' desde el: ', ?) WHERE dni = ?");
+        $stmt = $pdo->prepare('UPDATE personal SET estado = CONCAT("Fin de contrato por: ", ?, " desde el: ", ?), password = "", sistemas = "[{"sistema": "Deposito", "activo": "no"}, {"sistema": "Mantenimiento", "activo": "no"}, {"sistema": "Informatica", "activo": "no"}]" WHERE dni = ?');
         $stmt->execute([$finContratoMotivo, $finContratoFecha, $dni]);
 
 

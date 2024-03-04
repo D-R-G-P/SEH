@@ -17,10 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
 
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare("UPDATE personal SET servicio_id = ?, especialidad = '' WHERE id = ?");
+        $stmt = $pdo->prepare('UPDATE personal SET servicio_id = ?, especialidad = "", password = "", sistemas = \'[{"sistema": "Deposito", "activo": "no"}, {"sistema": "Mantenimiento", "activo": "no"}, {"sistema": "Informatica", "activo": "no"}]\' WHERE id = ?');
         $stmt->execute([$servicio, $id]);
-
-
 
         // Cierra la conexión a la base de datos
         $pdo = null;
@@ -31,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     } catch (PDOException $e) {
         // Si hay un error en la base de datos, almacena el mensaje de error y redirige al formulario
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);}</script>';
         header("Location: ../personal.php");
         exit;
     }
@@ -40,3 +38,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     header("Location: ../personal.php");
     exit;
 }
+?>

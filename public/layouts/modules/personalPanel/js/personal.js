@@ -21,6 +21,7 @@ $(document).ready(function () {
     $('#paseSelectServicio').select2();
     $('#licenciaTipo').select2();
     $('#finContratoMotivo').select2();
+    $('#selectServicioFilter').select2();
 });
 
 $(".js-example-language").select2({
