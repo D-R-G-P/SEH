@@ -1,10 +1,10 @@
 </article>
 
 <footer>
-    <div class="left">
-        Version Alpha 1.0.1 A
+    <div class="left" style="font-size: 1vw;">
+        Version Alpha 1.0.2
     </div>
-    <div class="right">
+    <div class="right" style="font-size: 1vw;">
         © Dirección de Redes y Gestión de Personas. Todos los derechos reservados
     </div>
 </footer>

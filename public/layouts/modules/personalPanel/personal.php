@@ -107,15 +107,41 @@ $pdo = $db->connect();
           <div>
             <label for="selectRol">Rol</label>
             <select id="selectRol" class="select2" name="rol" style="width: 100%;" required>
-              <option value="" disabled selected>Seleccione rol...</option>
-              <option value="Administrador">Administrador</option>
-              <option value="Dirección">Dirección</option>
-              <option value="Deposito">Deposito</option>
-              <option value="Mantenimiento">Mantenimiento</option>
-              <option value="Patrimoniales">Patrimoniales</option>
-              <option value="Informatica">Informatica</option>
-              <option value="Jefe de servicio">Jefe de servicio</option>
-              <option value="Docencia e investigación">Docencia e investigación</option>
+              <option value="" selected disabled>Seleccionar un rol...</option>
+
+              <?php
+
+              switch ($user->getRol()) {
+                case 'Administrador':
+                  echo '<option value="Sin rol">Sin rol</option>
+                  <option value="Administrador">Administrador</option>
+                  <option value="Dirección">Dirección</option>
+                  <option value="Deposito">Deposito</option>
+                  <option value="Mantenimiento">Mantenimiento</option>
+                  <option value="Patrimoniales">Patrimoniales</option>
+                  <option value="Informatica">Informatica</option>
+                  <option value="Jefe de servicio">Jefe de servicio</option>
+                  <option value="Docencia e investigación">Docencia e investigación</option>';
+                  break;
+
+                case 'Dirección':
+                  echo '<option value="Sin rol">Sin rol</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Dirección">Dirección</option>
+                    <option value="Deposito">Deposito</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                    <option value="Patrimoniales">Patrimoniales</option>
+                    <option value="Informatica">Informatica</option>
+                    <option value="Jefe de servicio">Jefe de servicio</option>
+                    <option value="Docencia e investigación">Docencia e investigación</option>';
+                  break;
+
+                default:
+                  echo '<option value="Sin rol">Sin rol</option>';
+                  break;
+              }
+
+              ?>
             </select>
           </div>
           <div style="display: flex; flex-direction: row; justify-content: center;">
@@ -223,14 +249,40 @@ $pdo = $db->connect();
             <label for="editselectrol">Rol</label>
             <select id="editselectrol" class="select2" name="editrol" style="width: 100%;" required>
               <option value="" disabled selected>Seleccione rol...</option>
-              <option value="Administrador">Administrador</option>
-              <option value="Dirección">Dirección</option>
-              <option value="Deposito">Deposito</option>
-              <option value="Mantenimiento">Mantenimiento</option>
-              <option value="Patrimoniales">Patrimoniales</option>
-              <option value="Informatica">Informatica</option>
-              <option value="Jefe de servicio">Jefe de servicio</option>
-              <option value="Docencia e investigación">Docencia e investigación</option>
+
+              <?php
+
+              switch ($user->getRol()) {
+                case 'Administrador':
+                  echo '<option value="Sin rol">Sin rol</option>
+                  <option value="Administrador">Administrador</option>
+                  <option value="Dirección">Dirección</option>
+                  <option value="Deposito">Deposito</option>
+                  <option value="Mantenimiento">Mantenimiento</option>
+                  <option value="Patrimoniales">Patrimoniales</option>
+                  <option value="Informatica">Informatica</option>
+                  <option value="Jefe de servicio">Jefe de servicio</option>
+                  <option value="Docencia e investigación">Docencia e investigación</option>';
+                  break;
+
+                case 'Dirección':
+                  echo '<option value="Sin rol">Sin rol</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Dirección">Dirección</option>
+                    <option value="Deposito">Deposito</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                    <option value="Patrimoniales">Patrimoniales</option>
+                    <option value="Informatica">Informatica</option>
+                    <option value="Jefe de servicio">Jefe de servicio</option>
+                    <option value="Docencia e investigación">Docencia e investigación</option>';
+                  break;
+
+                default:
+                  echo '<option value="Sin rol">Sin rol</option>';
+                  break;
+              }
+
+              ?>
             </select>
           </div>
           <div style="display: flex; flex-direction: row; justify-content: center;">
@@ -525,7 +577,7 @@ $pdo = $db->connect();
             $stmtServicios = $pdo->query($getServicios);
 
             while ($row = $stmtServicios->fetch(PDO::FETCH_ASSOC)) {
-              echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+              echo '<option value="' . $row['id'] . '">' . $row['servicio'] . '</option>';
             }
           } else {
             // Si no, generamos solo el servicio al que corresponde el usuario
@@ -539,6 +591,78 @@ $pdo = $db->connect();
           }
           ?>
         </select>
+<<<<<<< Updated upstream
+=======
+
+        <script>
+          $(document).ready(function() {
+            $("#selectServicioFilter").select2();
+            $("#selectServicioFilter").val(<?php echo $user->getServicio(); ?>).trigger('change');
+
+            // Función para realizar la búsqueda filtrada por servicio y término de búsqueda
+            function filtrarPorServicioYTermino(searchTerm, selectedService) {
+              var pagina = 1; // Reiniciar la paginación a la primera página después de cambiar el filtro
+              console.log("Valor seleccionado:", selectedService);
+
+              // Ocultar la tabla de resultados mientras se realiza la búsqueda
+              $("#tablaPersonal").hide();
+
+              // Llamar a la función actualizarTabla para enviar la solicitud al servidor
+              actualizarTabla(pagina, searchTerm, selectedService);
+            }
+
+            // Manejar el evento de entrada en el campo de búsqueda con un pequeño retraso
+            var timeout = null;
+            $("#searchInput").on("input", function() {
+              clearTimeout(timeout); // Limpiar el temporizador existente
+              var searchTerm = $(this).val();
+
+              // Establecer un temporizador para esperar antes de realizar la búsqueda
+              timeout = setTimeout(function() {
+                filtrarPorServicioYTermino(searchTerm, $("#selectServicioFilter").val());
+              }, 300); // Esperar 300 milisegundos (0.3 segundos) antes de realizar la búsqueda
+            });
+
+            // Manejar el cambio en el select de servicio
+            $("#selectServicioFilter").on("change", function() {
+              var selectedService = $(this).val(); // Obtener el servicio seleccionado
+              var searchTerm = $("#searchInput").val(); // Obtener el término de búsqueda
+              filtrarPorServicioYTermino(searchTerm, selectedService);
+            });
+
+            // Obtener el servicio seleccionado inicialmente
+            var selectedService = $("#selectServicioFilter").val(); // Obtener el servicio seleccionado del select
+            var searchTerm = $("#searchInput").val(); // Obtener el término de búsqueda inicial
+
+            // Llamar a la función actualizarTabla para enviar la solicitud al servidor
+            actualizarTabla(1, searchTerm, selectedService);
+
+            // Función para actualizar la tabla con los resultados filtrados
+            function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
+              // Realizar la solicitud AJAX al servidor
+              $.ajax({
+                url: "controllers/buscar_personal.php",
+                type: "GET",
+                data: {
+                  pagina: pagina,
+                  searchTerm: searchTerm,
+                  selectServicioFilter: selectServicioFilter
+                },
+                success: function(response) {
+                  $("#tablaPersonal").html(response);
+                  $("#tablaPersonal").show(); // Mostrar la tabla de resultados después de recibir los nuevos resultados
+                },
+                error: function(xhr, status, error) {
+                  console.error("Error al realizar la solicitud: " + status + " - " + error);
+                }
+              });
+            }
+
+            // Seleccionar el servicio al cargar la página
+            $("#selectServicioFilter").val(selectedService).trigger('change'); // Seleccionar el servicio y activar el evento change
+          });
+        </script>
+>>>>>>> Stashed changes
 
         <input type="text" name="searchInput" id="searchInput" style="width: 45%; height: 3vw;" placeholder="Buscar por DNI o nombre...">
       </div>
@@ -591,9 +715,31 @@ $pdo = $db->connect();
     </script>
 
 
+<<<<<<< Updated upstream
     <?php
     // Establece la cantidad de resultados por página
     $resultados_por_pagina = 20;
+=======
+    <table id="tablaPersonal">
+      <thead>
+        <tr>
+          <th class="table-middle table-center">ID</th>
+          <th class="table-middle">Nombre y apellido</th>
+          <th class="table-middle table-center">DNI</th>
+          <th class="table-middle">Servicio</th>
+          <th class="table-middle">Especialidad</th>
+          <th class="table-middle table-center">Matricula</th>
+          <th class="table-middle table-center">Cargo</th>
+          <th class="table-middle table-center">Sistemas</th>
+          <th class="table-middle table-center">Rol</th>
+          <th class="table-middle table-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        // Definir el número de resultados por página
+        $resultados_por_pagina = 10;
+>>>>>>> Stashed changes
 
     // Obtiene el número de página actual
     $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
@@ -746,6 +892,42 @@ $pdo = $db->connect();
 
 
             echo '</div></td>';
+<<<<<<< Updated upstream
+=======
+          } else {
+            echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
+          }
+
+          echo '<td class="table-middle table-center">' . $row['dni'] . '</td>';
+
+          if ($row['servicio_id'] != "0") {
+            // Realiza una consulta para obtener el nombre y apellido del jefe de servicio
+            $getservicioQuery = "SELECT servicio FROM servicios WHERE id = ?";
+            $getservicioStmt = $pdo->prepare($getservicioQuery);
+            $getservicioStmt->execute([$row['servicio_id']]);
+            $servicioInfo = $getservicioStmt->fetch(PDO::FETCH_ASSOC);
+            // Muestra el nombre y apellido del jefe de servicio
+            if ($servicioInfo) {
+              echo '<td class="table-middle">' . $servicioInfo['servicio'] . '</td>';
+            } else {
+              echo '<div>No se encontró la información del servicio</div>';
+            }
+          } else {
+            echo '<td class="table-middle"> No hay servicio asignado';
+          }
+          echo '</td>';
+
+          echo '<td class="table-middle"> ' . $row['especialidad'] . '</td>';
+
+          echo '<td class="table-middle"> M.N: ' . $row['mn'] . ' </br> M.P: ' . $row['mp'] . '</td>';
+
+          echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
+
+          echo '<td class="table-middle"><div style="display: grid; grid-template-columns: repeat(2, 1fr); align-content: center;
+          justify-content: center;
+          align-items: center;
+          justify-items: center;">';
+>>>>>>> Stashed changes
 
 
             echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
@@ -772,6 +954,7 @@ $pdo = $db->connect();
                 </div>
               </td>';
 
+<<<<<<< Updated upstream
             echo '</tr>';
           }
           ?>
@@ -794,6 +977,66 @@ $pdo = $db->connect();
     }
     echo '</div>';
     ?>
+=======
+          echo '</tr>';
+        }
+
+        echo '</tbody>
+        </table>';
+
+        // Código JavaScript para la paginación
+        echo '<script>
+        
+        document.addEventListener("DOMContentLoaded", function() {
+          var total_paginas = ' . $total_paginas . ';
+          var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+          contenedorPaginacion.innerHTML = ""; // Limpiar los botones de paginación existentes antes de generar los nuevos
+      
+          // Generar botones de paginación
+for (var i = 1; i <= total_paginas; i++) {
+    (function(i) {
+        var botonPagina = document.createElement("button");
+        botonPagina.textContent = i;
+        botonPagina.setAttribute("class", "btn-green paginationBtn");
+        botonPagina.setAttribute("data-pagina", i);
+        botonPagina.addEventListener("click", function() {
+            var pagina = this.getAttribute("data-pagina");
+            actualizarTabla(pagina);
+        });
+        contenedorPaginacion.appendChild(botonPagina);
+    })(i);
+}
+      
+          var selectServicioFilter = document.getElementById("selectServicioFilter");
+      
+          selectServicioFilter.addEventListener("change", function() {
+              var searchTerm = document.getElementById("searchInput").value;
+              var selectServicioFilterValue = selectServicioFilter.value; // Obtener el valor seleccionado del filtro de servicio
+              var pagina = 1; // Reiniciar la paginación a la primera página después de cambiar el filtro
+              actualizarTabla(pagina, searchTerm, selectServicioFilterValue);
+          });
+      
+          function actualizarTabla(pagina, searchTerm = "", selectServicioFilter = "") {
+              // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
+              var xhr = new XMLHttpRequest();
+              var url = "controllers/buscar_personal.php?pagina=" + encodeURIComponent(pagina) + "&searchTerm=" + encodeURIComponent(searchTerm) + "&selectServicioFilter=" + encodeURIComponent(selectServicioFilter);
+              xhr.open("GET", url, true);
+              xhr.onload = function() {
+                  if (xhr.status === 200) {
+                      document.getElementById("tablaPersonal").innerHTML = xhr.responseText;
+                  } else {
+                      console.log("Error al realizar la solicitud: " + xhr.status);
+                  }
+              };
+              xhr.send();
+          }
+      });
+    </script>
+    ';
+
+        ?>
+        <div id="contenedorPaginacion"></div>
+>>>>>>> Stashed changes
   </div>
 </div>
 
