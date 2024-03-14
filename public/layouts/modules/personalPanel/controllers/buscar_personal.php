@@ -21,21 +21,20 @@ $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 $offset = ($pagina - 1) * $resultados_por_pagina;
 
 // Consulta para obtener los resultados paginados con término de búsqueda
-// Consulta para obtener los resultados paginados con término de búsqueda y filtro de servicio
 $query = "SELECT * FROM personal WHERE estado = 'Activo'";
 
 // Agregar el filtro de búsqueda si se proporciona un término de búsqueda válido
 if (!empty($searchTerm)) {
     $query .= " AND (dni LIKE :searchTerm OR nombre LIKE :searchTerm2 OR apellido LIKE :searchTerm3)";
-}
 
-// Si se proporciona un valor para el servicio, buscar por servicio_id
-if (!empty($selectServicioFilter)) {
-    $query .= " AND servicio_id = :selectServicioFilter";
+    // Si se proporciona un valor para el servicio, buscar por servicio_id
+    if (!empty($selectServicioFilter)) {
+        $query .= " AND servicio_id = :selectServicioFilter";
+    }
 }
 
 // Agregar LIMIT y OFFSET para la paginación
-$query .= " LIMIT :limit OFFSET :offset";
+$query .= " LIMIT :offset, :limit";
 $stmt = $pdo->prepare($query);
 
 // Bindear los valores de los parámetros de búsqueda y paginación
@@ -50,8 +49,8 @@ if (!empty($selectServicioFilter)) {
     $stmt->bindValue(':selectServicioFilter', $selectServicioFilter, PDO::PARAM_STR);
 }
 
-$stmt->bindValue(':limit', $resultados_por_pagina, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->bindValue(':limit', $resultados_por_pagina, PDO::PARAM_INT);
 
 // Ejecutar la consulta
 $stmt->execute();

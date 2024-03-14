@@ -577,7 +577,7 @@ $pdo = $db->connect();
             $stmtServicios = $pdo->query($getServicios);
 
             while ($row = $stmtServicios->fetch(PDO::FETCH_ASSOC)) {
-              echo '<option value="' . $row['id'] . '">' . $row['servicio'] . '</option>';
+              echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
             }
           } else {
             // Si no, generamos solo el servicio al que corresponde el usuario
@@ -591,135 +591,55 @@ $pdo = $db->connect();
           }
           ?>
         </select>
-<<<<<<< Updated upstream
-=======
-
         <script>
           $(document).ready(function() {
             $("#selectServicioFilter").select2();
-            $("#selectServicioFilter").val(<?php echo $user->getServicio(); ?>).trigger('change');
-
-            // Función para realizar la búsqueda filtrada por servicio y término de búsqueda
-            function filtrarPorServicioYTermino(searchTerm, selectedService) {
-              var pagina = 1; // Reiniciar la paginación a la primera página después de cambiar el filtro
-              console.log("Valor seleccionado:", selectedService);
-
-              // Ocultar la tabla de resultados mientras se realiza la búsqueda
-              $("#tablaPersonal").hide();
-
-              // Llamar a la función actualizarTabla para enviar la solicitud al servidor
-              actualizarTabla(pagina, searchTerm, selectedService);
-            }
-
-            // Manejar el evento de entrada en el campo de búsqueda con un pequeño retraso
-            var timeout = null;
-            $("#searchInput").on("input", function() {
-              clearTimeout(timeout); // Limpiar el temporizador existente
-              var searchTerm = $(this).val();
-
-              // Establecer un temporizador para esperar antes de realizar la búsqueda
-              timeout = setTimeout(function() {
-                filtrarPorServicioYTermino(searchTerm, $("#selectServicioFilter").val());
-              }, 300); // Esperar 300 milisegundos (0.3 segundos) antes de realizar la búsqueda
-            });
-
-            // Manejar el cambio en el select de servicio
-            $("#selectServicioFilter").on("change", function() {
-              var selectedService = $(this).val(); // Obtener el servicio seleccionado
-              var searchTerm = $("#searchInput").val(); // Obtener el término de búsqueda
-              filtrarPorServicioYTermino(searchTerm, selectedService);
-            });
-
-            // Obtener el servicio seleccionado inicialmente
-            var selectedService = $("#selectServicioFilter").val(); // Obtener el servicio seleccionado del select
-            var searchTerm = $("#searchInput").val(); // Obtener el término de búsqueda inicial
-
-            // Llamar a la función actualizarTabla para enviar la solicitud al servidor
-            actualizarTabla(1, searchTerm, selectedService);
-
-            // Función para actualizar la tabla con los resultados filtrados
-            function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
-              // Realizar la solicitud AJAX al servidor
-              $.ajax({
-                url: "controllers/buscar_personal.php",
-                type: "GET",
-                data: {
-                  pagina: pagina,
-                  searchTerm: searchTerm,
-                  selectServicioFilter: selectServicioFilter
-                },
-                success: function(response) {
-                  $("#tablaPersonal").html(response);
-                  $("#tablaPersonal").show(); // Mostrar la tabla de resultados después de recibir los nuevos resultados
-                },
-                error: function(xhr, status, error) {
-                  console.error("Error al realizar la solicitud: " + status + " - " + error);
-                }
-              });
-            }
-
-            // Seleccionar el servicio al cargar la página
-            $("#selectServicioFilter").val(selectedService).trigger('change'); // Seleccionar el servicio y activar el evento change
           });
         </script>
->>>>>>> Stashed changes
 
         <input type="text" name="searchInput" id="searchInput" style="width: 45%; height: 3vw;" placeholder="Buscar por DNI o nombre...">
       </div>
-
-      <script>
-        // Función para realizar la búsqueda en tiempo real
-        document.getElementById('searchInput').addEventListener('input', function() {
-          // Obtener el valor del campo de búsqueda
-          var searchTerm = this.value;
-
-          // Realizar la solicitud al servidor mediante AJAX
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', 'controllers/buscar_personal.php?searchTerm=' + encodeURIComponent(searchTerm), true);
-          xhr.onload = function() {
-            if (xhr.status === 200) {
-              // Actualizar el contenido de la tabla con los resultados de la búsqueda
-              document.getElementById('tablaPersonal').innerHTML = xhr.responseText;
-            } else {
-              // Manejar errores
-              console.log('Error al realizar la solicitud: ' + xhr.status);
-            }
-          };
-          xhr.send();
-        });
-      </script>
-
-
-
-
-
-
     </div>
 
     <script>
-      function updateSistem(id, sistema, estado) {
+      function updateSistem(id, sistema, estado, pagina) {
         // Construir la URL con los parámetros
-        var url = 'controllers/actualizar_sistema.php?id=' + encodeURIComponent(id) + '&sistema=' + encodeURIComponent(sistema) + '&estado=' + encodeURIComponent(estado);
+        var url = 'controllers/actualizar_sistema.php?id=' + encodeURIComponent(id) + '&sistema=' + encodeURIComponent(sistema) + '&estado=' + encodeURIComponent(estado) + '&pagina=' + encodeURIComponent(pagina);
 
         // Redireccionar a la URL
         window.location.href = url;
       }
 
-      function updatePassword(id, dni) {
+      function updatePassword(id, dni, pagina) {
         // Construir la URL con los parámetros
-        var url = 'controllers/actualizar_contrasena.php?id=' + encodeURIComponent(id) + '&dni=' + encodeURIComponent(dni);
+        var url = 'controllers/actualizar_contrasena.php?id=' + encodeURIComponent(id) + '&dni=' + encodeURIComponent(dni) + '&pagina=' + encodeURIComponent(pagina);
 
         // Redireccionar a la URL
         window.location.href = url;
       }
+
+      // Función para realizar la búsqueda en tiempo real
+      document.getElementById('searchInput').addEventListener('input', function() {
+        // Obtener el valor del campo de búsqueda
+        var searchTerm = this.value;
+
+        // Realizar la solicitud al servidor mediante AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'controllers/buscar_personal.php?searchTerm=' + encodeURIComponent(searchTerm), true);
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            // Actualizar el contenido de la tabla con los resultados de la búsqueda
+            document.getElementById('tablaPersonal').innerHTML = xhr.responseText;
+          } else {
+            // Manejar errores
+            console.log('Error al realizar la solicitud: ' + xhr.status);
+          }
+        };
+        xhr.send();
+      });
     </script>
 
 
-<<<<<<< Updated upstream
-    <?php
-    // Establece la cantidad de resultados por página
-    $resultados_por_pagina = 20;
-=======
     <table id="tablaPersonal">
       <thead>
         <tr>
@@ -738,70 +658,53 @@ $pdo = $db->connect();
       <tbody>
         <?php
         // Definir el número de resultados por página
-        $resultados_por_pagina = 10;
->>>>>>> Stashed changes
+        $resultados_por_pagina = 2;
 
-    // Obtiene el número de página actual
-    $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        // Calcular el número total de páginas
+        if (isset($_GET['pagina'])) {
+          $pagina_actual = $_GET['pagina'];
+        } else {
+          $pagina_actual = 1;
+        }
 
-    // Calcula el desplazamiento
-    $desplazamiento = ($pagina_actual - 1) * $resultados_por_pagina;
+        $offset = ($pagina_actual - 1) * $resultados_por_pagina;
 
-    // Realiza la consulta a la tabla servicios con el límite y el desplazamiento
-    $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado' LIMIT $resultados_por_pagina OFFSET $desplazamiento";
-    $stmtPersonal = $pdo->query($getPersonal);
+        // Realiza la consulta a la tabla servicios
+        $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado'";
+        $stmtPersonal = $pdo->query($getPersonal);
 
-    // Itera sobre los resultados y muestra las filas en la tabla
-    while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
+        $total_resultados = $stmtPersonal->rowCount();
+        $total_paginas = ceil($total_resultados / $resultados_por_pagina);
 
-    ?>
-      <table>
-        <thead>
-          <tr>
-            <th class="table-middle table-center">ID</th>
-            <th class="table-middle">Nombre y apellido</th>
-            <th class="table-middle table-center">DNI</th>
-            <th class="table-middle">Servicio</th>
-            <th class="table-middle">Especialidad</th>
-            <th class="table-middle table-center">Matricula</th>
-            <th class="table-middle table-center">Cargo</th>
-            <th class="table-middle table-center">Sistemas</th>
-            <th class="table-middle table-center">Rol</th>
-            <th class="table-middle table-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
+        // Modificar la consulta para agregar la paginación
+        $getPersonal .= " LIMIT $offset, $resultados_por_pagina";
+        $stmtPersonal = $pdo->query($getPersonal);
 
-          // Realiza la consulta a la tabla servicios
-          $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado'";
-          $stmtPersonal = $pdo->query($getPersonal);
+        // Itera sobre los resultados y muestra las filas en la tabla
+        while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
+          echo '<tr>';
+          echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
 
-          // Itera sobre los resultados y muestra las filas en la tabla
-          while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
-            echo '<tr>';
-            echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
+          $fechaHoy = date("Y-m-d");
 
-            $fechaHoy = date("Y-m-d");
+          $stmtLicencias = $pdo->prepare("SELECT tipo_licencia, fecha_desde, fecha_hasta FROM licencias WHERE dni = ? AND fecha_desde <= ? AND fecha_hasta >= ?");
+          $stmtLicencias->execute([$row['dni'], $fechaHoy, $fechaHoy]);
+          $licencias = $stmtLicencias->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmtLicencias = $pdo->prepare("SELECT tipo_licencia, fecha_desde, fecha_hasta FROM licencias WHERE dni = ? AND fecha_desde <= ? AND fecha_hasta >= ?");
-            $stmtLicencias->execute([$row['dni'], $fechaHoy, $fechaHoy]);
-            $licencias = $stmtLicencias->fetchAll(PDO::FETCH_ASSOC);
+          if (!empty($licencias)) {
+            echo '<td class="table-middle">';
+            echo '<div style="display: flex; flex-direction: row; align-items: center;"><div>' . $row['apellido'] . ' ' . $row['nombre'] . '</div>';
 
-            if (!empty($licencias)) {
-              echo '<td class="table-middle">';
-              echo '<div style="display: flex; flex-direction: row; align-items: center;"><div>' . $row['apellido'] . ' ' . $row['nombre'] . '</div>';
-
-              echo '<button class="avisoWarButton" onclick="avisoLicencia(' . $row['id'] . ')">
+            echo '<button class="avisoWarButton" onclick="avisoLicencia(' . $row['id'] . ')">
             <i class="fa-solid fa-triangle-exclamation"></i>
           </button>';
 
-              foreach ($licencias as $licencia) {
-                // Formatear las fechas
-                $fecha_desde = date("d/m/Y", strtotime($licencia['fecha_desde']));
-                $fecha_hasta = date("d/m/Y", strtotime($licencia['fecha_hasta']));
+            foreach ($licencias as $licencia) {
+              // Formatear las fechas
+              $fecha_desde = date("d/m/Y", strtotime($licencia['fecha_desde']));
+              $fecha_hasta = date("d/m/Y", strtotime($licencia['fecha_hasta']));
 
-                echo '<div id="aviso-' . $row['id'] . '" class="avisoWar" style="position: relative">
+              echo '<div id="aviso-' . $row['id'] . '" class="avisoWar" style="position: relative">
             
             <div class="aviso"><h4>El agente se encuentra de licencia.</h4></br>
                 <b>Tipo de licencia:</b> ' . $licencia['tipo_licencia'] . '. </br>
@@ -809,91 +712,9 @@ $pdo = $db->connect();
             </div>
             
         </div>';
-              }
-
-              echo '</div></td>';
-            } else {
-              echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
             }
-
-            echo '<td class="table-middle table-center">' . $row['dni'] . '</td>';
-
-            if ($row['servicio_id'] != "0") {
-              // Realiza una consulta para obtener el nombre y apellido del jefe de servicio
-              $getservicioQuery = "SELECT servicio FROM servicios WHERE id = ?";
-              $getservicioStmt = $pdo->prepare($getservicioQuery);
-              $getservicioStmt->execute([$row['servicio_id']]);
-              $servicioInfo = $getservicioStmt->fetch(PDO::FETCH_ASSOC);
-              // Muestra el nombre y apellido del jefe de servicio
-              if ($servicioInfo) {
-                echo '<td class="table-middle">' . $servicioInfo['servicio'] . '</td>';
-              } else {
-                echo '<div>No se encontró la información del servicio</div>';
-              }
-            } else {
-              echo '<td class="table-middle"> No hay servicio asignado';
-            }
-            echo '</td>';
-
-            echo '<td class="table-middle"> ' . $row['especialidad'] . '</td>';
-
-            echo '<td class="table-middle"> M.N: ' . $row['mn'] . ' </br> M.P: ' . $row['mp'] . '</td>';
-
-            echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
-
-            echo '<td class="table-middle"><div style="display: flex; flex-direction: column; align-items: stretch;">';
-
-
-            // Suponiendo que $sistemas es el array que contiene los datos de la base de datos
-            // Convertir la cadena JSON en un array PHP
-            $sistemas_array = json_decode($row['sistemas'], true);
-
-            // Verificar si la conversión fue exitosa
-            if ($sistemas_array !== null) {
-              // Iterar sobre el array de sistemas
-              foreach ($sistemas_array as $sistema) {
-                // Acceder a cada propiedad del objeto sistema
-                $nombre_sistema = $sistema['sistema'];
-                $activo = $sistema['activo'];
-
-                // Determinar la clase del botón en función del estado activo
-                $claseBoton = ($activo == 'si') ? 'btn-green' : 'btn-red';
-
-                // Determinar el icono del botón en función del nombre del sistema
-                switch ($nombre_sistema) {
-                  case 'Deposito':
-                    $icono = 'fa-box';
-                    $variables = "" . $row['id'] . ", 'Deposito', '" . $activo . "'";
-                    break;
-                  case 'Mantenimiento':
-                    $icono = 'fa-screwdriver-wrench';
-                    $variables = "" . $row['id'] . ", 'Mantenimiento', '" . $activo . "'";
-                    break;
-                  case 'Informatica':
-                    $icono = 'fa-computer';
-                    $variables = "" . $row['id'] . ", 'Informatica', '" . $activo . "'";
-                    break;
-                  default:
-                    $icono = 'fa-question';
-                    break;
-                }
-
-                // Imprimir el botón con la clase y el icono correspondientes
-                echo '<button class="' . $claseBoton . '" onclick="updateSistem(' . $variables . ')"><i class="fa-solid ' . $icono . '"></i> ' . $nombre_sistema . '</button>';
-              }
-            } else {
-              // Manejar el caso en el que la conversión de JSON falla
-              echo 'Error al decodificar la cadena JSON.';
-            }
-
-
-            // Botón "Generar contraseña" fuera del bucle foreach
-            echo '<button class="btn-yellow" onclick="updatePassword(' . $row['id'] . ', \'' . $row['dni'] . '\')" style="width: max-content"><i class="fa-solid fa-key"></i> Generar contraseña</button>';
-
 
             echo '</div></td>';
-<<<<<<< Updated upstream
-=======
           } else {
             echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
           }
@@ -923,16 +744,64 @@ $pdo = $db->connect();
 
           echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
 
-          echo '<td class="table-middle"><div style="display: grid; grid-template-columns: repeat(2, 1fr); align-content: center;
-          justify-content: center;
-          align-items: center;
-          justify-items: center;">';
->>>>>>> Stashed changes
+          echo '<td class="table-middle"><div style="    display: flex;
+          align-items: stretch;
+          flex-direction: row;
+          flex-wrap: wrap;">';
 
 
-            echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
+          // Suponiendo que $sistemas es el array que contiene los datos de la base de datos
+          // Convertir la cadena JSON en un array PHP
+          $sistemas_array = json_decode($row['sistemas'], true);
 
-            echo '<td class="table-middle table-center">
+          // Verificar si la conversión fue exitosa
+          if ($sistemas_array !== null) {
+            // Iterar sobre el array de sistemas
+            foreach ($sistemas_array as $sistema) {
+              // Acceder a cada propiedad del objeto sistema
+              $nombre_sistema = $sistema['sistema'];
+              $activo = $sistema['activo'];
+
+              // Determinar la clase del botón en función del estado activo
+              $claseBoton = ($activo == 'si') ? 'btn-green' : 'btn-red';
+
+              // Determinar el icono del botón en función del nombre del sistema
+              switch ($nombre_sistema) {
+                case 'Deposito':
+                  $icono = 'fa-box';
+                  $variables = "" . $row['id'] . ", 'Deposito', '" . $activo . "'";
+                  break;
+                case 'Mantenimiento':
+                  $icono = 'fa-screwdriver-wrench';
+                  $variables = "" . $row['id'] . ", 'Mantenimiento', '" . $activo . "'";
+                  break;
+                case 'Informatica':
+                  $icono = 'fa-computer';
+                  $variables = "" . $row['id'] . ", 'Informatica', '" . $activo . "'";
+                  break;
+                default:
+                  $icono = 'fa-question';
+                  break;
+              }
+              // Imprimir el botón con la clase y el icono correspondientes
+              echo '<button style="text-align: center; width: 2.7vw; height: 2.7vw" title="' . $nombre_sistema . '" class="' . $claseBoton . '" onclick="updateSistem(' . $variables . ')"><i class="fa-solid ' . $icono . '"></i></button>';
+            }
+          } else {
+            // Manejar el caso en el que la conversión de JSON falla
+            echo 'Error al decodificar la cadena JSON.';
+          }
+
+
+          // Botón "Generar contraseña" fuera del bucle foreach
+          echo '<button style="width: 2.7vw; height: 2.7vw" class="btn-yellow" title="Generar contraseña" onclick="updatePassword(' . $row['id'] . ', \'' . $row['dni'] . '\')"><i class="fa-solid fa-key"></i></button>';
+
+
+          echo '</div></td>';
+
+
+          echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
+
+          echo '<td class="table-middle table-center">
           
                 <div class="contenedor-de-botones">
 
@@ -954,70 +823,46 @@ $pdo = $db->connect();
                 </div>
               </td>';
 
-<<<<<<< Updated upstream
-            echo '</tr>';
-          }
-          ?>
-
-        </tbody>
-      </table>
-
-    <?php
-    }
-
-
-    // Calcula la cantidad total de páginas
-    $total_registros = $pdo->query("SELECT COUNT(*) FROM personal WHERE estado != 'Eliminado'")->fetchColumn();
-    $total_paginas = ceil($total_registros / $resultados_por_pagina);
-
-    // Muestra la paginación
-    echo '<div class="pagination" style="margin-top: 1vw; display: flex; flex-direction: row; flex-wrap: wrap;">';
-    for ($i = 1; $i <= $total_paginas; $i++) {
-      echo '<a class="btn-green" style="display: flex; width: max-content; height: 2.3vw; text-align: center; justify-content: center; text-decoration: none;" href="?pagina=' . $i . '">Página ' . $i . '</a>';
-    }
-    echo '</div>';
-    ?>
-=======
           echo '</tr>';
         }
-
-        echo '</tbody>
-        </table>';
 
         // Código JavaScript para la paginación
         echo '<script>
         
         document.addEventListener("DOMContentLoaded", function() {
-          var total_paginas = ' . $total_paginas . ';
-          var contenedorPaginacion = document.getElementById("contenedorPaginacion");
-          contenedorPaginacion.innerHTML = ""; // Limpiar los botones de paginación existentes antes de generar los nuevos
+          var total_paginas = $total_paginas ?>;
       
-          // Generar botones de paginación
-for (var i = 1; i <= total_paginas; i++) {
-    (function(i) {
-        var botonPagina = document.createElement("button");
-        botonPagina.textContent = i;
-        botonPagina.setAttribute("class", "btn-green paginationBtn");
-        botonPagina.setAttribute("data-pagina", i);
-        botonPagina.addEventListener("click", function() {
-            var pagina = this.getAttribute("data-pagina");
-            actualizarTabla(pagina);
-        });
-        contenedorPaginacion.appendChild(botonPagina);
-    })(i);
-}
+          var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+          contenedorPaginacion.innerHTML = ""; // Borrar los botones anteriores antes de generar los nuevos
+      
+          for (var i = 1; i <= total_paginas; i++) {
+              var botonPagina = document.createElement("button");
+              botonPagina.textContent = i;
+              botonPagina.setAttribute("class", "btn-green paginationBtn");
+              botonPagina.setAttribute("data-pagina", i);
+              botonPagina.addEventListener("click", function() {
+                  var pagina = this.getAttribute("data-pagina");
+                  actualizarTabla(pagina);
+              });
+              contenedorPaginacion.appendChild(botonPagina);
+          }
+          
       
           var selectServicioFilter = document.getElementById("selectServicioFilter");
       
           selectServicioFilter.addEventListener("change", function() {
               var searchTerm = document.getElementById("searchInput").value;
               var selectServicioFilterValue = selectServicioFilter.value; // Obtener el valor seleccionado del filtro de servicio
+              console.log("Valor de selectServicioFilter:", selectServicioFilterValue);
               var pagina = 1; // Reiniciar la paginación a la primera página después de cambiar el filtro
               actualizarTabla(pagina, searchTerm, selectServicioFilterValue);
           });
       
           function actualizarTabla(pagina, searchTerm = "", selectServicioFilter = "") {
-              // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
+              console.log("Página seleccionada:", pagina);
+              console.log("Valor de searchTerm:", searchTerm);
+              console.log("Valor de selectServicioFilter:", selectServicioFilter);
+              // Resto del código de actualización de la tabla...
               var xhr = new XMLHttpRequest();
               var url = "controllers/buscar_personal.php?pagina=" + encodeURIComponent(pagina) + "&searchTerm=" + encodeURIComponent(searchTerm) + "&selectServicioFilter=" + encodeURIComponent(selectServicioFilter);
               xhr.open("GET", url, true);
@@ -1031,12 +876,14 @@ for (var i = 1; i <= total_paginas; i++) {
               xhr.send();
           }
       });
-    </script>
-    ';
+</script>
+      ';
 
         ?>
-        <div id="contenedorPaginacion"></div>
->>>>>>> Stashed changes
+
+      </tbody>
+    </table>
+    <div id="contenedorPaginacion"></div>
   </div>
 </div>
 
