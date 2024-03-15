@@ -7,7 +7,7 @@ $db = new DB();
 $pdo = $db->connect();
 
 // Definir el número de resultados por página
-$resultados_por_pagina = 10;
+$resultados_por_pagina = 2;
 
 // Obtener el término de búsqueda (si se proporciona)
 $searchTerm = isset($_GET['searchTerm']) ? $_GET['searchTerm'] : '';
@@ -20,21 +20,21 @@ $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 // Calcular el desplazamiento
 $offset = ($pagina - 1) * $resultados_por_pagina;
 
-// Consulta para obtener los resultados paginados con término de búsqueda
+// Consulta para obtener los resultados paginados con término de búsqueda y filtro de servicio
 $query = "SELECT * FROM personal WHERE estado = 'Activo'";
 
 // Agregar el filtro de búsqueda si se proporciona un término de búsqueda válido
 if (!empty($searchTerm)) {
     $query .= " AND (dni LIKE :searchTerm OR nombre LIKE :searchTerm2 OR apellido LIKE :searchTerm3)";
+}
 
-    // Si se proporciona un valor para el servicio, buscar por servicio_id
-    if (!empty($selectServicioFilter)) {
-        $query .= " AND servicio_id = :selectServicioFilter";
-    }
+// Si se proporciona un valor para el servicio, buscar por servicio_id
+if (!empty($selectServicioFilter)) {
+    $query .= " AND servicio_id = :selectServicioFilter";
 }
 
 // Agregar LIMIT y OFFSET para la paginación
-$query .= " LIMIT :offset, :limit";
+$query .= " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($query);
 
 // Bindear los valores de los parámetros de búsqueda y paginación
@@ -49,15 +49,19 @@ if (!empty($selectServicioFilter)) {
     $stmt->bindValue(':selectServicioFilter', $selectServicioFilter, PDO::PARAM_STR);
 }
 
-$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->bindValue(':limit', $resultados_por_pagina, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
 // Ejecutar la consulta
 $stmt->execute();
 
+// Obtener el número total de resultados de personal activo
+$getTotalPersonal = "SELECT COUNT(*) AS total FROM personal WHERE estado != 'Eliminado'";
+$stmtTotalPersonal = $pdo->query($getTotalPersonal);
+$total_resultados = $stmtTotalPersonal->fetchColumn();
 
-
-
+// Calcular el número total de páginas
+$total_paginas = ceil($total_resultados / $resultados_por_pagina);
 
 // Mostrar los resultados en formato JSON
 echo '<thead>

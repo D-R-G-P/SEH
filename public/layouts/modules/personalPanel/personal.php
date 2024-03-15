@@ -591,13 +591,119 @@ $pdo = $db->connect();
           }
           ?>
         </select>
+        <input type="text" name="searchInput" id="searchInput" style="width: 45%; height: 3vw;" placeholder="Buscar por DNI o nombre...">
+
         <script>
           $(document).ready(function() {
             $("#selectServicioFilter").select2();
+            $('#selectServicioFilter').val(<?php echo $user->getServicio(); ?>).trigger('change');
+
+            // Función para generar los botones de paginación
+            function generarBotonesPaginacion(total_paginas) {
+              var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+              console.log("Contenedor de paginación:", contenedorPaginacion);
+
+              contenedorPaginacion.innerHTML = "";
+
+              // Generar botones de paginación
+              for (var i = 1; i <= total_paginas; i++) {
+                var botonPagina = document.createElement("button");
+                botonPagina.textContent = i;
+                botonPagina.setAttribute("class", "btn-green paginationBtn");
+                botonPagina.setAttribute("data-pagina", i);
+                botonPagina.addEventListener("click", function() {
+                  var pagina = this.getAttribute("data-pagina");
+                  console.log("Página seleccionada:", pagina);
+                  actualizarTabla(pagina);
+                });
+                contenedorPaginacion.appendChild(botonPagina);
+              }
+            }
+
+            // Función para actualizar la tabla con los resultados filtrados
+            function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
+              // Ocultar la tabla mientras se cargan los nuevos resultados
+              $("#tablaPersonal").hide();
+
+              // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
+              var xhr = new XMLHttpRequest();
+              var url = "controllers/buscar_personal.php?pagina=" + encodeURIComponent(pagina) + "&searchTerm=" + encodeURIComponent(searchTerm) + "&selectServicioFilter=" + encodeURIComponent(selectServicioFilter);
+              xhr.open("GET", url, true);
+              xhr.onload = function() {
+                if (xhr.status === 200) {
+                  document.getElementById("tablaPersonal").innerHTML = xhr.responseText;
+                  // Mostrar la tabla después de cargar los nuevos resultados
+                  $("#tablaPersonal").show();
+                } else {
+                  console.log("Error al realizar la solicitud: " + xhr.status);
+                }
+              };
+              xhr.send();
+            }
+
+            // Evento change del select para actualizar la tabla al cambiar el servicio
+            $("#selectServicioFilter").on("change", function() {
+              var selectServicioFilterValue = $(this).val(); // Obtener el valor seleccionado del select2
+              console.log("Valor de selectServicioFilter:", selectServicioFilterValue);
+              actualizarTabla(1, $("#searchInput").val(), selectServicioFilterValue); // Llamar a actualizarTabla con el nuevo valor
+            });
+
+            // Cargar la tabla con los resultados iniciales
+            actualizarTabla(1, $("#searchInput").val(), $("#selectServicioFilter").val());
           });
+
+          // Función para realizar la búsqueda en tiempo real
+          document.getElementById('searchInput').addEventListener('input', function() {
+            // Obtener el valor del campo de búsqueda
+            var searchTerm = this.value;
+
+            // Obtener el valor seleccionado del select2
+            var selectServicioFilterValue = $("#selectServicioFilter").val();
+
+            // Llamar a la función actualizarTabla para enviar la solicitud al servidor
+            actualizarTabla(1, searchTerm, selectServicioFilterValue);
+          });
+
+          // Código JavaScript para la paginación
+          document.addEventListener("DOMContentLoaded", function() {
+            var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+
+            contenedorPaginacion.addEventListener("click", function(event) {
+              if (event.target.classList.contains("paginationBtn")) {
+                var pagina = event.target.getAttribute("data-pagina");
+                var searchTerm = $("#searchInput").val();
+                var selectServicioFilter = $("#selectServicioFilter").val();
+                actualizarTabla(pagina, searchTerm, selectServicioFilter);
+              }
+            });
+          });
+
+          function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
+            // Ocultar la tabla mientras se cargan los nuevos resultados
+            $("#tablaPersonal").hide();
+
+            // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
+            var xhr = new XMLHttpRequest();
+            var url = "controllers/buscar_personal.php?pagina=" + encodeURIComponent(pagina) + "&searchTerm=" + encodeURIComponent(searchTerm) + "&selectServicioFilter=" + encodeURIComponent(selectServicioFilter);
+            xhr.open("GET", url, true);
+            xhr.onload = function() {
+              if (xhr.status === 200) {
+                document.getElementById("tablaPersonal").innerHTML = xhr.responseText;
+                // Mostrar la tabla después de cargar los nuevos resultados
+                $("#tablaPersonal").show();
+              } else {
+                console.log("Error al realizar la solicitud: " + xhr.status);
+              }
+            };
+            xhr.send();
+          }
         </script>
 
-        <input type="text" name="searchInput" id="searchInput" style="width: 45%; height: 3vw;" placeholder="Buscar por DNI o nombre...">
+
+
+
+
+
       </div>
     </div>
 
@@ -656,32 +762,30 @@ $pdo = $db->connect();
         </tr>
       </thead>
       <tbody>
-        <?php
-        // Definir el número de resultados por página
-        $resultados_por_pagina = 2;
+      <?php
+// Definir el número de resultados por página
+$resultados_por_pagina = 2;
 
-        // Calcular el número total de páginas
-        if (isset($_GET['pagina'])) {
-          $pagina_actual = $_GET['pagina'];
-        } else {
-          $pagina_actual = 1;
-        }
+// Calcular el número total de resultados
+$getTotalPersonal = "SELECT COUNT(*) AS total FROM personal WHERE estado != 'Eliminado'";
+$stmtTotalPersonal = $pdo->query($getTotalPersonal);
+$total_resultados = $stmtTotalPersonal->fetchColumn();
 
-        $offset = ($pagina_actual - 1) * $resultados_por_pagina;
+// Calcular el número total de páginas
+$total_paginas = ceil($total_resultados / $resultados_por_pagina);
 
-        // Realiza la consulta a la tabla servicios
-        $getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado'";
-        $stmtPersonal = $pdo->query($getPersonal);
+// Obtener la página actual
+$pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
-        $total_resultados = $stmtPersonal->rowCount();
-        $total_paginas = ceil($total_resultados / $resultados_por_pagina);
+// Calcular el desplazamiento
+$offset = ($pagina_actual - 1) * $resultados_por_pagina;
 
-        // Modificar la consulta para agregar la paginación
-        $getPersonal .= " LIMIT $offset, $resultados_por_pagina";
-        $stmtPersonal = $pdo->query($getPersonal);
+// Realizar la consulta a la tabla servicios con paginación
+$getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado' LIMIT $offset, $resultados_por_pagina";
+$stmtPersonal = $pdo->query($getPersonal);
 
-        // Itera sobre los resultados y muestra las filas en la tabla
-        while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
+// Itera sobre los resultados y muestra las filas en la tabla
+while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
           echo '<tr>';
           echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
 
@@ -826,64 +930,71 @@ $pdo = $db->connect();
           echo '</tr>';
         }
 
-        // Código JavaScript para la paginación
-        echo '<script>
-        
-        document.addEventListener("DOMContentLoaded", function() {
-          var total_paginas = $total_paginas ?>;
-      
-          var contenedorPaginacion = document.getElementById("contenedorPaginacion");
-          contenedorPaginacion.innerHTML = ""; // Borrar los botones anteriores antes de generar los nuevos
-      
-          for (var i = 1; i <= total_paginas; i++) {
+        echo '      </tbody>
+        </table>';
+        ?>
+
+
+
+
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            console.log("Documento cargado.");
+
+            var total_paginas = <?php echo $total_paginas; ?>;
+            console.log("Total de páginas:", total_paginas);
+
+            var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+            console.log("Contenedor de paginación:", contenedorPaginacion);
+
+            contenedorPaginacion.innerHTML = "";
+
+            // Generar botones de paginación
+            for (var i = 1; i <= <?php echo $total_paginas; ?>; i++) {
               var botonPagina = document.createElement("button");
               botonPagina.textContent = i;
               botonPagina.setAttribute("class", "btn-green paginationBtn");
               botonPagina.setAttribute("data-pagina", i);
               botonPagina.addEventListener("click", function() {
-                  var pagina = this.getAttribute("data-pagina");
-                  actualizarTabla(pagina);
+                var pagina = this.getAttribute("data-pagina");
+                console.log("Página seleccionada:", pagina);
+                actualizarTabla(pagina);
               });
               contenedorPaginacion.appendChild(botonPagina);
-          }
-          
-      
-          var selectServicioFilter = document.getElementById("selectServicioFilter");
-      
-          selectServicioFilter.addEventListener("change", function() {
-              var searchTerm = document.getElementById("searchInput").value;
-              var selectServicioFilterValue = selectServicioFilter.value; // Obtener el valor seleccionado del filtro de servicio
-              console.log("Valor de selectServicioFilter:", selectServicioFilterValue);
-              var pagina = 1; // Reiniciar la paginación a la primera página después de cambiar el filtro
-              actualizarTabla(pagina, searchTerm, selectServicioFilterValue);
-          });
-      
-          function actualizarTabla(pagina, searchTerm = "", selectServicioFilter = "") {
-              console.log("Página seleccionada:", pagina);
-              console.log("Valor de searchTerm:", searchTerm);
-              console.log("Valor de selectServicioFilter:", selectServicioFilter);
-              // Resto del código de actualización de la tabla...
+            }
+
+            // Función para actualizar la tabla con los resultados filtrados
+            function actualizarTabla(pagina, searchTerm = "", selectServicioFilter = "") {
+              console.log("Actualizando tabla para la página:", pagina);
+              console.log("Término de búsqueda:", searchTerm);
+              console.log("Filtro de servicio:", selectServicioFilter);
+
+              // Ocultar la tabla mientras se cargan los nuevos resultados
+              $("#tablaPersonal").hide();
+
+              // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
               var xhr = new XMLHttpRequest();
               var url = "controllers/buscar_personal.php?pagina=" + encodeURIComponent(pagina) + "&searchTerm=" + encodeURIComponent(searchTerm) + "&selectServicioFilter=" + encodeURIComponent(selectServicioFilter);
               xhr.open("GET", url, true);
               xhr.onload = function() {
-                  if (xhr.status === 200) {
-                      document.getElementById("tablaPersonal").innerHTML = xhr.responseText;
-                  } else {
-                      console.log("Error al realizar la solicitud: " + xhr.status);
-                  }
+                if (xhr.status === 200) {
+                  document.getElementById("tablaPersonal").innerHTML = xhr.responseText;
+                  // Mostrar la tabla después de cargar los nuevos resultados
+                  $("#tablaPersonal").show();
+                  console.log("Tabla actualizada correctamente.");
+                } else {
+                  console.log("Error al realizar la solicitud: " + xhr.status);
+                }
               };
               xhr.send();
-          }
-      });
-</script>
-      ';
+            }
 
-        ?>
+            console.log("Scripts cargados correctamente.");
+          });
+        </script>
 
-      </tbody>
-    </table>
-    <div id="contenedorPaginacion"></div>
+        <div id="contenedorPaginacion"></div>
+
   </div>
 </div>
 
