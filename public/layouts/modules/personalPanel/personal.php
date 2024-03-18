@@ -562,7 +562,6 @@ $pdo = $db->connect();
 
     </div>
 
-
     <div style="display: flex; flex-direction: row; width: 100%;">
       <button class="btn-green" onclick="back.style.display = 'flex'; newPersonal.style.display = 'flex';" style="width: 20.8vw;"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
 
@@ -591,6 +590,7 @@ $pdo = $db->connect();
           }
           ?>
         </select>
+
         <input type="text" name="searchInput" id="searchInput" style="width: 45%; height: 3vw;" placeholder="Buscar por DNI o nombre...">
 
         <script>
@@ -601,7 +601,6 @@ $pdo = $db->connect();
             // Función para generar los botones de paginación
             function generarBotonesPaginacion(total_paginas) {
               var contenedorPaginacion = document.getElementById("contenedorPaginacion");
-              console.log("Contenedor de paginación:", contenedorPaginacion);
 
               contenedorPaginacion.innerHTML = "";
 
@@ -613,7 +612,6 @@ $pdo = $db->connect();
                 botonPagina.setAttribute("data-pagina", i);
                 botonPagina.addEventListener("click", function() {
                   var pagina = this.getAttribute("data-pagina");
-                  console.log("Página seleccionada:", pagina);
                   actualizarTabla(pagina);
                 });
                 contenedorPaginacion.appendChild(botonPagina);
@@ -642,7 +640,7 @@ $pdo = $db->connect();
                   // Mostrar la tabla después de cargar los nuevos resultados
                   $("#tablaPersonal").show();
                   $(".lds-dual-ring").hide(); // Ocultar el elemento de carga
-                  console.log("Tabla actualizada correctamente.");
+                  
 
                   // Generar botones de paginación
                   generarBotonesPaginacion(response.total_paginas);
@@ -656,7 +654,6 @@ $pdo = $db->connect();
             // Evento change del select para actualizar la tabla al cambiar el servicio
             $("#selectServicioFilter").on("change", function() {
               var selectServicioFilterValue = $(this).val(); // Obtener el valor seleccionado del select2
-              console.log("Valor de selectServicioFilter:", selectServicioFilterValue);
               actualizarTabla(1, $("#searchInput").val(), selectServicioFilterValue); // Llamar a actualizarTabla con el nuevo valor
             });
 
@@ -701,28 +698,16 @@ $pdo = $db->connect();
             });
           });
         </script>
-
-
-
-
-
       </div>
     </div>
-
-
 
     <div id="tablaPersonal"></div>
     <div class="lds-dual-ring" style="transform: translate(36vw, 0);"></div>
     <div id="contenedorPaginacion"></div>
 
-
-
     <script>
       // Definir la función actualizarTabla globalmente
       function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
-        console.log("Actualizando tabla para la página:", pagina);
-        console.log("Término de búsqueda:", searchTerm);
-        console.log("Filtro de servicio:", selectServicioFilter);
 
         // Ocultar la tabla mientras se cargan los nuevos resultados
         $("#tablaPersonal").hide();
@@ -742,7 +727,6 @@ $pdo = $db->connect();
             $("#tablaPersonal").html(response);
             // Mostrar la tabla después de cargar los nuevos resultados
             $("#tablaPersonal").show();
-            console.log("Tabla actualizada correctamente.");
 
             // Generar botones de paginación
             var contenedorPaginacion = document.getElementById("contenedorPaginacion");
@@ -754,7 +738,6 @@ $pdo = $db->connect();
               botonPagina.setAttribute("data-pagina", i);
               botonPagina.addEventListener("click", function() {
                 var pagina = this.getAttribute("data-pagina");
-                console.log("Página seleccionada:", pagina);
                 actualizarTabla(pagina, searchTerm, selectServicioFilter);
               });
               contenedorPaginacion.appendChild(botonPagina);
@@ -773,7 +756,6 @@ $pdo = $db->connect();
         // Función para generar los botones de paginación
         function generarBotonesPaginacion(total_paginas) {
           var contenedorPaginacion = document.getElementById("contenedorPaginacion");
-          console.log("Contenedor de paginación:", contenedorPaginacion);
 
           contenedorPaginacion.innerHTML = "";
 
@@ -785,7 +767,6 @@ $pdo = $db->connect();
             botonPagina.setAttribute("data-pagina", i);
             botonPagina.addEventListener("click", function() {
               var pagina = this.getAttribute("data-pagina");
-              console.log("Página seleccionada:", pagina);
               actualizarTabla(pagina);
             });
             contenedorPaginacion.appendChild(botonPagina);
@@ -795,7 +776,6 @@ $pdo = $db->connect();
         // Evento change del select para actualizar la tabla al cambiar el servicio
         $("#selectServicioFilter").on("change", function() {
           var selectServicioFilterValue = $(this).val(); // Obtener el valor seleccionado del select2
-          console.log("Valor de selectServicioFilter:", selectServicioFilterValue);
           actualizarTabla(1, $("#searchInput").val(), selectServicioFilterValue); // Llamar a actualizarTabla con el nuevo valor
         });
 
@@ -835,7 +815,6 @@ $pdo = $db->connect();
         actualizarTabla(pagina, searchTerm, selectServicioFilter);
       }
     </script>
-
 
   </div>
 </div>
