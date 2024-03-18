@@ -624,6 +624,7 @@ $pdo = $db->connect();
             function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
               // Ocultar la tabla mientras se cargan los nuevos resultados
               $("#tablaPersonal").hide();
+              $(".lds-dual-ring").show(); // Mostrar el elemento de carga
 
               // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
               $.ajax({
@@ -640,6 +641,7 @@ $pdo = $db->connect();
                   $("#tablaPersonal").html(response);
                   // Mostrar la tabla después de cargar los nuevos resultados
                   $("#tablaPersonal").show();
+                  $(".lds-dual-ring").hide(); // Ocultar el elemento de carga
                   console.log("Tabla actualizada correctamente.");
 
                   // Generar botones de paginación
@@ -661,16 +663,21 @@ $pdo = $db->connect();
             // Cargar la tabla con los resultados iniciales
             actualizarTabla(1, $("#searchInput").val(), $("#selectServicioFilter").val());
 
-            // Función para realizar la búsqueda en tiempo real
+            // Función para realizar la búsqueda en tiempo real con retardo
+            var timeout = null;
             $("#searchInput").on("input", function() {
-              // Obtener el valor del campo de búsqueda
-              var searchTerm = $(this).val();
+              clearTimeout(timeout); // Limpiar el temporizador existente si hay alguno
+              // Configurar un nuevo temporizador para retrasar la búsqueda
+              timeout = setTimeout(function() {
+                // Obtener el valor del campo de búsqueda
+                var searchTerm = $("#searchInput").val();
 
-              // Obtener el valor seleccionado del select2
-              var selectServicioFilterValue = $("#selectServicioFilter").val();
+                // Obtener el valor seleccionado del select2
+                var selectServicioFilterValue = $("#selectServicioFilter").val();
 
-              // Llamar a la función actualizarTabla para enviar la solicitud al servidor
-              actualizarTabla(1, searchTerm, selectServicioFilterValue);
+                // Llamar a la función actualizarTabla para enviar la solicitud al servidor
+                actualizarTabla(1, searchTerm, selectServicioFilterValue);
+              }, 500); // Retardo de 500 milisegundos (0.5 segundos)
             });
 
             // Función para cambiar de página al hacer clic en los botones de paginación
@@ -697,12 +704,15 @@ $pdo = $db->connect();
 
 
 
+
+
       </div>
     </div>
 
 
 
     <div id="tablaPersonal"></div>
+    <div class="lds-dual-ring" style="transform: translate(36vw, 0);"></div>
     <div id="contenedorPaginacion"></div>
 
 
