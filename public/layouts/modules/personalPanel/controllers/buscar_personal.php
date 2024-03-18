@@ -7,7 +7,7 @@ $db = new DB();
 $pdo = $db->connect();
 
 // Definir el número de resultados por página
-$resultados_por_pagina = 2;
+$resultados_por_pagina = 10;
 
 // Obtener el término de búsqueda (si se proporciona)
 $searchTerm = isset($_GET['searchTerm']) ? $_GET['searchTerm'] : '';
