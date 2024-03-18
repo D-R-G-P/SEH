@@ -107,3 +107,7 @@ h3 {
     border-width: 1vw 1vw 1vw 0; /* Triángulo hacia la izquierda */
     border-color: transparent #000 transparent transparent; /* Blanco */
 }
+
+.buttonPagination {
+    height: 2.2vw;
+}

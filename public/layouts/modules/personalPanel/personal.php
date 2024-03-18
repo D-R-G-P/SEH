@@ -626,19 +626,29 @@ $pdo = $db->connect();
               $("#tablaPersonal").hide();
 
               // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
-              var xhr = new XMLHttpRequest();
-              var url = "controllers/buscar_personal.php?pagina=" + encodeURIComponent(pagina) + "&searchTerm=" + encodeURIComponent(searchTerm) + "&selectServicioFilter=" + encodeURIComponent(selectServicioFilter);
-              xhr.open("GET", url, true);
-              xhr.onload = function() {
-                if (xhr.status === 200) {
-                  document.getElementById("tablaPersonal").innerHTML = xhr.responseText;
+              $.ajax({
+                url: "controllers/buscar_personal.php",
+                type: "GET",
+                dataType: "html",
+                data: {
+                  pagina: pagina,
+                  searchTerm: searchTerm,
+                  selectServicioFilter: selectServicioFilter
+                },
+                success: function(response) {
+                  // Actualizar la tabla con los nuevos resultados
+                  $("#tablaPersonal").html(response);
                   // Mostrar la tabla después de cargar los nuevos resultados
                   $("#tablaPersonal").show();
-                } else {
-                  console.log("Error al realizar la solicitud: " + xhr.status);
+                  console.log("Tabla actualizada correctamente.");
+
+                  // Generar botones de paginación
+                  generarBotonesPaginacion(response.total_paginas);
+                },
+                error: function(xhr, status, error) {
+                  console.log("Error al realizar la solicitud: " + error);
                 }
-              };
-              xhr.send();
+              });
             }
 
             // Evento change del select para actualizar la tabla al cambiar el servicio
@@ -650,307 +660,84 @@ $pdo = $db->connect();
 
             // Cargar la tabla con los resultados iniciales
             actualizarTabla(1, $("#searchInput").val(), $("#selectServicioFilter").val());
-          });
 
-          // Función para realizar la búsqueda en tiempo real
-          document.getElementById('searchInput').addEventListener('input', function() {
-            // Obtener el valor del campo de búsqueda
-            var searchTerm = this.value;
+            // Función para realizar la búsqueda en tiempo real
+            $("#searchInput").on("input", function() {
+              // Obtener el valor del campo de búsqueda
+              var searchTerm = $(this).val();
 
-            // Obtener el valor seleccionado del select2
-            var selectServicioFilterValue = $("#selectServicioFilter").val();
+              // Obtener el valor seleccionado del select2
+              var selectServicioFilterValue = $("#selectServicioFilter").val();
 
-            // Llamar a la función actualizarTabla para enviar la solicitud al servidor
-            actualizarTabla(1, searchTerm, selectServicioFilterValue);
-          });
+              // Llamar a la función actualizarTabla para enviar la solicitud al servidor
+              actualizarTabla(1, searchTerm, selectServicioFilterValue);
+            });
 
-          // Código JavaScript para la paginación
-          document.addEventListener("DOMContentLoaded", function() {
-            var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+            // Función para cambiar de página al hacer clic en los botones de paginación
+            function cambiarPagina(pagina) {
+              // Obtener el valor del campo de búsqueda
+              var searchTerm = $("#searchInput").val();
 
-            contenedorPaginacion.addEventListener("click", function(event) {
-              if (event.target.classList.contains("paginationBtn")) {
-                var pagina = event.target.getAttribute("data-pagina");
-                var searchTerm = $("#searchInput").val();
-                var selectServicioFilter = $("#selectServicioFilter").val();
-                actualizarTabla(pagina, searchTerm, selectServicioFilter);
-              }
+              // Obtener el valor seleccionado del select2
+              var selectServicioFilter = $("#selectServicioFilter").val();
+
+              // Llamar a la función actualizarTabla para enviar la solicitud al servidor con la nueva página
+              actualizarTabla(pagina, searchTerm, selectServicioFilter);
+            }
+
+            // Código JavaScript para la paginación
+            $("#contenedorPaginacion").on("click", ".paginationBtn", function() {
+              var pagina = $(this).data("pagina");
+              var searchTerm = $("#searchInput").val();
+              var selectServicioFilter = $("#selectServicioFilter").val();
+              actualizarTabla(pagina, searchTerm, selectServicioFilter);
             });
           });
-
-          function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
-            // Ocultar la tabla mientras se cargan los nuevos resultados
-            $("#tablaPersonal").hide();
-
-            // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
-            var xhr = new XMLHttpRequest();
-            var url = "controllers/buscar_personal.php?pagina=" + encodeURIComponent(pagina) + "&searchTerm=" + encodeURIComponent(searchTerm) + "&selectServicioFilter=" + encodeURIComponent(selectServicioFilter);
-            xhr.open("GET", url, true);
-            xhr.onload = function() {
-              if (xhr.status === 200) {
-                document.getElementById("tablaPersonal").innerHTML = xhr.responseText;
-                // Mostrar la tabla después de cargar los nuevos resultados
-                $("#tablaPersonal").show();
-              } else {
-                console.log("Error al realizar la solicitud: " + xhr.status);
-              }
-            };
-            xhr.send();
-          }
         </script>
-
-
-
 
 
 
       </div>
     </div>
 
+
+
+    <div id="tablaPersonal"></div>
+    <div id="contenedorPaginacion"></div>
+
+
+
     <script>
-      function updateSistem(id, sistema, estado, pagina) {
-        // Construir la URL con los parámetros
-        var url = 'controllers/actualizar_sistema.php?id=' + encodeURIComponent(id) + '&sistema=' + encodeURIComponent(sistema) + '&estado=' + encodeURIComponent(estado) + '&pagina=' + encodeURIComponent(pagina);
+      // Definir la función actualizarTabla globalmente
+      function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
+        console.log("Actualizando tabla para la página:", pagina);
+        console.log("Término de búsqueda:", searchTerm);
+        console.log("Filtro de servicio:", selectServicioFilter);
 
-        // Redireccionar a la URL
-        window.location.href = url;
-      }
+        // Ocultar la tabla mientras se cargan los nuevos resultados
+        $("#tablaPersonal").hide();
 
-      function updatePassword(id, dni, pagina) {
-        // Construir la URL con los parámetros
-        var url = 'controllers/actualizar_contrasena.php?id=' + encodeURIComponent(id) + '&dni=' + encodeURIComponent(dni) + '&pagina=' + encodeURIComponent(pagina);
-
-        // Redireccionar a la URL
-        window.location.href = url;
-      }
-
-      // Función para realizar la búsqueda en tiempo real
-      document.getElementById('searchInput').addEventListener('input', function() {
-        // Obtener el valor del campo de búsqueda
-        var searchTerm = this.value;
-
-        // Realizar la solicitud al servidor mediante AJAX
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'controllers/buscar_personal.php?searchTerm=' + encodeURIComponent(searchTerm), true);
-        xhr.onload = function() {
-          if (xhr.status === 200) {
-            // Actualizar el contenido de la tabla con los resultados de la búsqueda
-            document.getElementById('tablaPersonal').innerHTML = xhr.responseText;
-          } else {
-            // Manejar errores
-            console.log('Error al realizar la solicitud: ' + xhr.status);
-          }
-        };
-        xhr.send();
-      });
-    </script>
-
-
-    <table id="tablaPersonal">
-      <thead>
-        <tr>
-          <th class="table-middle table-center">ID</th>
-          <th class="table-middle">Nombre y apellido</th>
-          <th class="table-middle table-center">DNI</th>
-          <th class="table-middle">Servicio</th>
-          <th class="table-middle">Especialidad</th>
-          <th class="table-middle table-center">Matricula</th>
-          <th class="table-middle table-center">Cargo</th>
-          <th class="table-middle table-center">Sistemas</th>
-          <th class="table-middle table-center">Rol</th>
-          <th class="table-middle table-center">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-      <?php
-// Definir el número de resultados por página
-$resultados_por_pagina = 2;
-
-// Calcular el número total de resultados
-$getTotalPersonal = "SELECT COUNT(*) AS total FROM personal WHERE estado != 'Eliminado'";
-$stmtTotalPersonal = $pdo->query($getTotalPersonal);
-$total_resultados = $stmtTotalPersonal->fetchColumn();
-
-// Calcular el número total de páginas
-$total_paginas = ceil($total_resultados / $resultados_por_pagina);
-
-// Obtener la página actual
-$pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-
-// Calcular el desplazamiento
-$offset = ($pagina_actual - 1) * $resultados_por_pagina;
-
-// Realizar la consulta a la tabla servicios con paginación
-$getPersonal = "SELECT * FROM personal WHERE estado != 'Eliminado' LIMIT $offset, $resultados_por_pagina";
-$stmtPersonal = $pdo->query($getPersonal);
-
-// Itera sobre los resultados y muestra las filas en la tabla
-while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
-          echo '<tr>';
-          echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
-
-          $fechaHoy = date("Y-m-d");
-
-          $stmtLicencias = $pdo->prepare("SELECT tipo_licencia, fecha_desde, fecha_hasta FROM licencias WHERE dni = ? AND fecha_desde <= ? AND fecha_hasta >= ?");
-          $stmtLicencias->execute([$row['dni'], $fechaHoy, $fechaHoy]);
-          $licencias = $stmtLicencias->fetchAll(PDO::FETCH_ASSOC);
-
-          if (!empty($licencias)) {
-            echo '<td class="table-middle">';
-            echo '<div style="display: flex; flex-direction: row; align-items: center;"><div>' . $row['apellido'] . ' ' . $row['nombre'] . '</div>';
-
-            echo '<button class="avisoWarButton" onclick="avisoLicencia(' . $row['id'] . ')">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-          </button>';
-
-            foreach ($licencias as $licencia) {
-              // Formatear las fechas
-              $fecha_desde = date("d/m/Y", strtotime($licencia['fecha_desde']));
-              $fecha_hasta = date("d/m/Y", strtotime($licencia['fecha_hasta']));
-
-              echo '<div id="aviso-' . $row['id'] . '" class="avisoWar" style="position: relative">
-            
-            <div class="aviso"><h4>El agente se encuentra de licencia.</h4></br>
-                <b>Tipo de licencia:</b> ' . $licencia['tipo_licencia'] . '. </br>
-                <div style="margin-top: .3vw;"><b>Desde:</b> ' . $fecha_desde . '</br><b>Hasta:</b> ' . $fecha_hasta . '.</div>
-            </div>
-            
-        </div>';
-            }
-
-            echo '</div></td>';
-          } else {
-            echo '<td class="table-middle">' . $row['apellido'] . ' ' . $row['nombre'] . '</td>';
-          }
-
-          echo '<td class="table-middle table-center">' . $row['dni'] . '</td>';
-
-          if ($row['servicio_id'] != "0") {
-            // Realiza una consulta para obtener el nombre y apellido del jefe de servicio
-            $getservicioQuery = "SELECT servicio FROM servicios WHERE id = ?";
-            $getservicioStmt = $pdo->prepare($getservicioQuery);
-            $getservicioStmt->execute([$row['servicio_id']]);
-            $servicioInfo = $getservicioStmt->fetch(PDO::FETCH_ASSOC);
-            // Muestra el nombre y apellido del jefe de servicio
-            if ($servicioInfo) {
-              echo '<td class="table-middle">' . $servicioInfo['servicio'] . '</td>';
-            } else {
-              echo '<div>No se encontró la información del servicio</div>';
-            }
-          } else {
-            echo '<td class="table-middle"> No hay servicio asignado';
-          }
-          echo '</td>';
-
-          echo '<td class="table-middle"> ' . $row['especialidad'] . '</td>';
-
-          echo '<td class="table-middle"> M.N: ' . $row['mn'] . ' </br> M.P: ' . $row['mp'] . '</td>';
-
-          echo '<td class="table-middle"> ' . $row['cargo'] . '</td>';
-
-          echo '<td class="table-middle"><div style="    display: flex;
-          align-items: stretch;
-          flex-direction: row;
-          flex-wrap: wrap;">';
-
-
-          // Suponiendo que $sistemas es el array que contiene los datos de la base de datos
-          // Convertir la cadena JSON en un array PHP
-          $sistemas_array = json_decode($row['sistemas'], true);
-
-          // Verificar si la conversión fue exitosa
-          if ($sistemas_array !== null) {
-            // Iterar sobre el array de sistemas
-            foreach ($sistemas_array as $sistema) {
-              // Acceder a cada propiedad del objeto sistema
-              $nombre_sistema = $sistema['sistema'];
-              $activo = $sistema['activo'];
-
-              // Determinar la clase del botón en función del estado activo
-              $claseBoton = ($activo == 'si') ? 'btn-green' : 'btn-red';
-
-              // Determinar el icono del botón en función del nombre del sistema
-              switch ($nombre_sistema) {
-                case 'Deposito':
-                  $icono = 'fa-box';
-                  $variables = "" . $row['id'] . ", 'Deposito', '" . $activo . "'";
-                  break;
-                case 'Mantenimiento':
-                  $icono = 'fa-screwdriver-wrench';
-                  $variables = "" . $row['id'] . ", 'Mantenimiento', '" . $activo . "'";
-                  break;
-                case 'Informatica':
-                  $icono = 'fa-computer';
-                  $variables = "" . $row['id'] . ", 'Informatica', '" . $activo . "'";
-                  break;
-                default:
-                  $icono = 'fa-question';
-                  break;
-              }
-              // Imprimir el botón con la clase y el icono correspondientes
-              echo '<button style="text-align: center; width: 2.7vw; height: 2.7vw" title="' . $nombre_sistema . '" class="' . $claseBoton . '" onclick="updateSistem(' . $variables . ')"><i class="fa-solid ' . $icono . '"></i></button>';
-            }
-          } else {
-            // Manejar el caso en el que la conversión de JSON falla
-            echo 'Error al decodificar la cadena JSON.';
-          }
-
-
-          // Botón "Generar contraseña" fuera del bucle foreach
-          echo '<button style="width: 2.7vw; height: 2.7vw" class="btn-yellow" title="Generar contraseña" onclick="updatePassword(' . $row['id'] . ', \'' . $row['dni'] . '\')"><i class="fa-solid fa-key"></i></button>';
-
-
-          echo '</div></td>';
-
-
-          echo '<td class="table-middle"> ' . $row['rol'] . '</td>';
-
-          echo '<td class="table-middle table-center">
-          
-                <div class="contenedor-de-botones">
-
-                  <button class="btn-green" title="Abrir menu de acciones"  onclick="menuPersona(' . $row['id'] . ')"><i class="fa-solid fa-hand-pointer"></i></button>
-                
-                  <div class="buttons-div" id="menu-' . $row['id'] . '">
-                
-                    <button class="btn-green" title="Editar" onclick="setDatos(\'' . $row['id'] . '\', \'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\', \'' . $row['servicio_id'] . '\', \'' . $row['cargo'] . '\', \'' . $row['especialidad'] . '\', \'' . $row['mn'] . '\', \'' . $row['mp'] . '\', \'' . $row['rol'] . '\')"><i class="fa-solid fa-pen"></i> Editar</button>
-                    
-                    <button class="btn-green" title="Pase" onclick="setDatosPase(\'' . $row['id'] . '\', \'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\')"><i class="fa-solid fa-right-from-bracket"></i> Pase</button>
-                    
-                    <button class="btn-green" title="Licencias" onclick="setLicencia(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\')"><i class="fa-solid fa-person-walking-luggage"></i> Licencias</button>
-                    
-                    <button class="btn-yellow" title="Jubilar" onclick="setDatosJubilar(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\')"><i class="fa-solid fa-person-walking-with-cane"></i> Jubilar</button>
-                    
-                    <button class="btn-yellow" title="Fin contrato" onclick="setDatosFinContrato(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['dni'] . '\')"><i class="fas fa-calendar-times"></i> Fin contrato</button>
-                  
-                    </div>
-                </div>
-              </td>';
-
-          echo '</tr>';
-        }
-
-        echo '      </tbody>
-        </table>';
-        ?>
-
-
-
-
-        <script>
-          document.addEventListener("DOMContentLoaded", function() {
-            console.log("Documento cargado.");
-
-            var total_paginas = <?php echo $total_paginas; ?>;
-            console.log("Total de páginas:", total_paginas);
-
-            var contenedorPaginacion = document.getElementById("contenedorPaginacion");
-            console.log("Contenedor de paginación:", contenedorPaginacion);
-
-            contenedorPaginacion.innerHTML = "";
+        // Realizar la solicitud AJAX a buscar_personal.php para actualizar la tabla
+        $.ajax({
+          url: "controllers/buscar_personal.php",
+          type: "GET",
+          dataType: "html",
+          data: {
+            pagina: pagina,
+            searchTerm: searchTerm,
+            selectServicioFilter: selectServicioFilter
+          },
+          success: function(response) {
+            // Actualizar la tabla con los nuevos resultados
+            $("#tablaPersonal").html(response);
+            // Mostrar la tabla después de cargar los nuevos resultados
+            $("#tablaPersonal").show();
+            console.log("Tabla actualizada correctamente.");
 
             // Generar botones de paginación
-            for (var i = 1; i <= <?php echo $total_paginas; ?>; i++) {
+            var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+            contenedorPaginacion.innerHTML = "";
+            for (var i = 1; i <= response.total_paginas; i++) {
               var botonPagina = document.createElement("button");
               botonPagina.textContent = i;
               botonPagina.setAttribute("class", "btn-green paginationBtn");
@@ -958,42 +745,87 @@ while ($row = $stmtPersonal->fetch(PDO::FETCH_ASSOC)) {
               botonPagina.addEventListener("click", function() {
                 var pagina = this.getAttribute("data-pagina");
                 console.log("Página seleccionada:", pagina);
-                actualizarTabla(pagina);
+                actualizarTabla(pagina, searchTerm, selectServicioFilter);
               });
               contenedorPaginacion.appendChild(botonPagina);
             }
+          },
+          error: function(xhr, status, error) {
+            console.log("Error al realizar la solicitud: " + error);
+          }
+        });
+      }
 
-            // Función para actualizar la tabla con los resultados filtrados
-            function actualizarTabla(pagina, searchTerm = "", selectServicioFilter = "") {
-              console.log("Actualizando tabla para la página:", pagina);
-              console.log("Término de búsqueda:", searchTerm);
-              console.log("Filtro de servicio:", selectServicioFilter);
+      $(document).ready(function() {
+        $("#selectServicioFilter").select2();
+        $('#selectServicioFilter').val(<?php echo $user->getServicio(); ?>).trigger('change');
 
-              // Ocultar la tabla mientras se cargan los nuevos resultados
-              $("#tablaPersonal").hide();
+        // Función para generar los botones de paginación
+        function generarBotonesPaginacion(total_paginas) {
+          var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+          console.log("Contenedor de paginación:", contenedorPaginacion);
 
-              // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
-              var xhr = new XMLHttpRequest();
-              var url = "controllers/buscar_personal.php?pagina=" + encodeURIComponent(pagina) + "&searchTerm=" + encodeURIComponent(searchTerm) + "&selectServicioFilter=" + encodeURIComponent(selectServicioFilter);
-              xhr.open("GET", url, true);
-              xhr.onload = function() {
-                if (xhr.status === 200) {
-                  document.getElementById("tablaPersonal").innerHTML = xhr.responseText;
-                  // Mostrar la tabla después de cargar los nuevos resultados
-                  $("#tablaPersonal").show();
-                  console.log("Tabla actualizada correctamente.");
-                } else {
-                  console.log("Error al realizar la solicitud: " + xhr.status);
-                }
-              };
-              xhr.send();
-            }
+          contenedorPaginacion.innerHTML = "";
 
-            console.log("Scripts cargados correctamente.");
-          });
-        </script>
+          // Generar botones de paginación
+          for (var i = 1; i <= total_paginas; i++) {
+            var botonPagina = document.createElement("button");
+            botonPagina.textContent = i;
+            botonPagina.setAttribute("class", "btn-green paginationBtn");
+            botonPagina.setAttribute("data-pagina", i);
+            botonPagina.addEventListener("click", function() {
+              var pagina = this.getAttribute("data-pagina");
+              console.log("Página seleccionada:", pagina);
+              actualizarTabla(pagina);
+            });
+            contenedorPaginacion.appendChild(botonPagina);
+          }
+        }
 
-        <div id="contenedorPaginacion"></div>
+        // Evento change del select para actualizar la tabla al cambiar el servicio
+        $("#selectServicioFilter").on("change", function() {
+          var selectServicioFilterValue = $(this).val(); // Obtener el valor seleccionado del select2
+          console.log("Valor de selectServicioFilter:", selectServicioFilterValue);
+          actualizarTabla(1, $("#searchInput").val(), selectServicioFilterValue); // Llamar a actualizarTabla con el nuevo valor
+        });
+
+        // Cargar la tabla con los resultados iniciales
+        actualizarTabla(1, $("#searchInput").val(), $("#selectServicioFilter").val());
+
+        // Función para realizar la búsqueda en tiempo real
+        $("#searchInput").on("input", function() {
+          // Obtener el valor del campo de búsqueda
+          var searchTerm = $(this).val();
+
+          // Obtener el valor seleccionado del select2
+          var selectServicioFilterValue = $("#selectServicioFilter").val();
+
+          // Llamar a la función actualizarTabla para enviar la solicitud al servidor
+          actualizarTabla(1, searchTerm, selectServicioFilterValue);
+        });
+
+        // Código JavaScript para la paginación
+        $("#contenedorPaginacion").on("click", ".paginationBtn", function() {
+          var pagina = $(this).data("pagina");
+          var searchTerm = $("#searchInput").val();
+          var selectServicioFilter = $("#selectServicioFilter").val();
+          actualizarTabla(pagina, searchTerm, selectServicioFilter);
+        });
+      });
+
+      // Función para cambiar de página al hacer clic en los botones de paginación
+      function cambiarPagina(pagina) {
+        // Obtener el valor del campo de búsqueda
+        var searchTerm = $("#searchInput").val();
+
+        // Obtener el valor seleccionado del select2
+        var selectServicioFilter = $("#selectServicioFilter").val();
+
+        // Llamar a la función actualizarTabla para enviar la solicitud al servidor con la nueva página
+        actualizarTabla(pagina, searchTerm, selectServicioFilter);
+      }
+    </script>
+
 
   </div>
 </div>

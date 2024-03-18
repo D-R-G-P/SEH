@@ -43,11 +43,11 @@ function selectChange() {
     xhr.send();
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const inputs = document.querySelectorAll('input[type="text"]');
 
     inputs.forEach(input => {
-        input.addEventListener('input', function() {
+        input.addEventListener('input', function () {
             // Obtén el valor del input y convierte la primera letra de cada palabra a mayúscula
             let words = this.value.split(' ');
             for (let i = 0; i < words.length; i++) {
@@ -181,3 +181,38 @@ function avisoLicencia(id) {
     }
 }
 
+function updateSistem(id, sistema, estado, pagina) {
+    // Construir la URL con los parámetros
+    var url = 'controllers/actualizar_sistema.php?id=' + encodeURIComponent(id) + '&sistema=' + encodeURIComponent(sistema) + '&estado=' + encodeURIComponent(estado) + '&pagina=' + encodeURIComponent(pagina);
+
+    // Redireccionar a la URL
+    window.location.href = url;
+}
+
+function updatePassword(id, dni, pagina) {
+    // Construir la URL con los parámetros
+    var url = 'controllers/actualizar_contrasena.php?id=' + encodeURIComponent(id) + '&dni=' + encodeURIComponent(dni) + '&pagina=' + encodeURIComponent(pagina);
+
+    // Redireccionar a la URL
+    window.location.href = url;
+}
+
+// Función para realizar la búsqueda en tiempo real
+document.getElementById('searchInput').addEventListener('input', function () {
+    // Obtener el valor del campo de búsqueda
+    var searchTerm = this.value;
+
+    // Realizar la solicitud al servidor mediante AJAX
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'controllers/buscar_personal.php?searchTerm=' + encodeURIComponent(searchTerm), true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            // Actualizar el contenido de la tabla con los resultados de la búsqueda
+            document.getElementById('tablaPersonal').innerHTML = xhr.responseText;
+        } else {
+            // Manejar errores
+            console.log('Error al realizar la solicitud: ' + xhr.status);
+        }
+    };
+    xhr.send();
+});

@@ -48,7 +48,7 @@ if(isset($_GET['id']) && isset($_GET['sistema']) && isset($_GET['estado'])) {
                 $stmt_update = $pdo->prepare($sql_update);
                 $stmt_update->execute([$sistemas_json_updated, $id]);
 
-                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Sistema actualizado correctamente</br>'.$sistema.' actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Acceso a "'.$sistema.'" actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
             } else {
                 $_SESSION['warning_message'] = "No se encontraron resultados para el ID proporcionado: $id"; // Mensaje de advertencia
             }
