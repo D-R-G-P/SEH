@@ -27,8 +27,6 @@ if(isset($_GET['id']) && isset($_GET['dni'])) {
             $stmt_update = $pdo->prepare($sql_update);
             $stmt_update->execute([$contrasena_md5, $id]);
 
-            $_SESSION['success_message'] .= "<br>Contraseña generada correctamente";
-
             $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Contraseña actualizada correctamente.
             </br>
             Deberá ingresar con su dni separado por punto (<b>'.$dni.'</b>)</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);}</script>';

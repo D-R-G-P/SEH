@@ -37,7 +37,9 @@ body {
 input[type="text"],
 input[type="password"],
 input[type="number"],
-input[type="date"] {
+input[type="date"],
+input[type="email"],
+input[type="tel"] {
   border: #242424 0.2vw solid;
   border-radius: 0.8vw;
   width: 80%;
@@ -223,6 +225,10 @@ form {
   max-height: 90%;
 }
 
+form div {
+  width: 100%;
+}
+
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 form {
@@ -261,14 +267,16 @@ form::-webkit-scrollbar-thumb:hover {
 
 .backForm div {
   margin-top: .5vw;
+  display: flex;
+  flex-direction: column;
 }
 
 .backForm div input {
-  width: 100%;
+  width: 95%;
 }
 
 /* Estilos para los elementos de Select2 */
-.select2-container--default .select2-selection--single {
+.select2-container--default .select2-selection--single, .select2-container--default .select2-selection--multiple {
   border: #242424 0.2vw solid;
   border-radius: 0.8vw;
   width: 100%;
@@ -278,11 +286,15 @@ form::-webkit-scrollbar-thumb:hover {
   color: #000;
 }
 
-.select2-container--default .select2-selection--single .select2-selection__rendered {
+.select2-container--default .select2-selection--multiple {
+  height: auto;
+}
+
+.select2-container--default .select2-selection--single, .select2-container--default .select2-selection--multiple .select2-selection__rendered {
   color: #000;
 }
 
-.select2-container--default .select2-selection--single .select2-selection__arrow {
+.select2-container--default .select2-selection--single, .select2-container--default .select2-selection--multiple .select2-selection__arrow {
   transform: translateY(0.5vw);
   color: #000;
 }

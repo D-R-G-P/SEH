@@ -1,3 +1,17 @@
 h3 {
     font-size: 2vw;
 }
+
+.tables {
+    text-align: center;
+}
+
+table {
+    margin-bottom: 1vw;
+}
+
+#confirmUsuario {
+    position: absolute;
+    width: max-content;
+    padding: 2vw;
+}

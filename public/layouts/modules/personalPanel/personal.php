@@ -3,7 +3,6 @@
 require_once '../../../../app/db/db.php';
 require_once '../../../../app/db/user_session.php';
 require_once '../../../../app/db/user.php';
-require_once '../../../../app/db/user.php';
 
 $user = new User();
 $userSession = new UserSession();
