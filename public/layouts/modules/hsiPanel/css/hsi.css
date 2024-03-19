@@ -15,3 +15,23 @@ table {
     width: max-content;
     padding: 2vw;
 }
+
+.editModule {
+    width: 90%;
+    height: 85%;
+    padding: 2vw;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.cuerpoInfo {
+    margin-top: 2vw;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1.5vw;
+    grid-auto-rows: minmax(1vw, auto);
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}

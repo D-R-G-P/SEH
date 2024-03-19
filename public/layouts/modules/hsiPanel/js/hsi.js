@@ -36,3 +36,9 @@ function checkNews(id) {
         }
     });
 }
+
+function addDocs(dni) {
+    back.style.display = "flex";
+    addDocsDiv.style.display = "flex";
+    docsDniHidden.value = dni
+}
