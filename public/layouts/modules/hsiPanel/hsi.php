@@ -179,15 +179,63 @@ $servicioFilter = $user->getServicio();
       <h3>Información de usuario</h3>
 
       <div class="cuerpoInfo">
-        <div><b>Apellido del agente:</b> Lamas</div>
-        <div><b>Nombre del agente:</b> Cristian Jonathan</div>
-        <div><b>Documento del agente:</b> 43.255.000</div>
-        <div><b>Servicio:</b> Dirección de Redes y Gestión de Personas</div>
-        <div><b>Mail:</b> crslamas@gmail.com</div>
-        <div><b>Telefono:</b> 221 438-0474</div>
+        <table style="max-width: max-content;">
+          <thead>
+            <tr>
+              <th colspan="2">Datos del agente</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="table-middle">Nombre del agente</td>
+              <td class="table-middle">Lamas Cristian Jonathan</td>
+            </tr>
+            <tr>
+              <td class="table-middle">Documento del agente</td>
+              <td class="table-middle">43.255.000</td>
+            </tr>
+            <tr>
+              <td class="table-middle">Mail</td>
+              <td class="table-middle">crslamas@gmail.com</td>
+            </tr>
+            <tr>
+              <td class="table-middle">Telefono</td>
+              <td class="table-middle">221 438-0474</td>
+            </tr>
+            <tr>
+              <td class="table-middle">Servicio</td>
+              <td class="table-middle">Dirección de Redes y Gestión de Personas</td>
+            </tr>
+            <tr>
+              <td class="table-middle">ID de persona</td>
+              <td class="table-middle">1408941</td>
+            </tr>
+            <tr>
+              <td class="table-middle">Nombre de usuario</td>
+              <td class="table-middle">clamas</td>
+            </tr>
+            <tr>
+              <td class="table-middle">ID del usuario</td>
+              <td class="table-middle">25484</td>
+            </tr>
+          </tbody>
+        </table>
+        <table>
+          <thead>
+            <tr>
+              <th>Documentos y permisos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="table-middle">DOCS</td>
+            </tr>
+            <tr>
+              <td class="table-middle">PERMS</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div><b>Documentos</b></div>
-      <div><b>Permisos</b></div>
     </div>
   </div>
 

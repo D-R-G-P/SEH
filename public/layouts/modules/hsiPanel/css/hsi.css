@@ -33,5 +33,6 @@ table {
     align-content: center;
     justify-content: center;
     align-items: center;
-    justify-items: center;
+    justify-items: stretch;
+    align-items: stretch;
 }
