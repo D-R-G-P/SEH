@@ -42,3 +42,28 @@ function addDocs(dni) {
     addDocsDiv.style.display = "flex";
     docsDniHidden.value = dni
 }
+
+function loadInfo(dni) {
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            // Actualizar el contenido de la información del usuario con la respuesta recibida
+            document.getElementById("infoUsuario").innerHTML = this.responseText;
+        }
+    };
+    // Enviar la solicitud POST con el DNI como parámetro
+    xhttp.open("POST", "controllers/infoGen.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("dni=" + dni);
+    back.style.display = "flex";
+    infoModule.style.display = "flex";
+}
+
+function buttonSol(dni, action) {
+    // Construir la URL con las variables dni y action
+    var url = 'controllers/solis.php?dni=' + dni + '&action=' + action;
+    
+    // Redirigir a la página con la URL construida
+    window.location.href = url;
+}

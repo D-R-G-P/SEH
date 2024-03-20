@@ -28,7 +28,38 @@ $servicioFilter = $user->getServicio();
     <p>Este sistema está oreintado a la gestion y </br> solicitud de los usuarios de HSI del personal a cargo.</p>
   </div>
 
-  <div class="back" id="back" style="display: flex;">
+  <?php
+// Función para obtener los permisos por DNI
+function getPermisosPorDni($dni) {
+    // Aquí simulamos la obtención de los permisos desde el JSON proporcionado
+    $json_permisos = '[{"permiso":"Especialista M\u00e9dix","activo":"no"},{"permiso":"Profesional de la Salud","activo":"no"},{"permiso":"Administrativx","activo":"si"},{"permiso":"Enfermero","activo":"no"},{"permiso":"Enfermerx Adultx Mayor","activo":"no"},{"permiso":"Administrador de Agenda","activo":"si"},{"permiso":"Especialista odontol\u00f3gico","activo":"no"},{"permiso":"Administrador de Camas","activo":"si"},{"permiso":"Personal de Im\u00e1genes","activo":"no"},{"permiso":"Personal de Laboratorio","activo":"no"},{"permiso":"Personal de Farmacia","activo":"no"},{"permiso":"Personal de Estad\u00edstica","activo":"no"},{"permiso":"Administrador institucional","activo":"si"}]';
+
+    // Decodificar el JSON y devolverlo como un array
+    return json_decode($json_permisos, true);
+}
+
+// Verificar si el usuario tiene el permiso de "Administrador institucional"
+$userDni = ""; // Aquí debes obtener el DNI del usuario, por ejemplo: $user->getDni();
+$permisos = getPermisosPorDni($userDni);
+
+$tienePermisoAdmin = false;
+foreach ($permisos as $permiso) {
+    if ($permiso['permiso'] === 'Administrador institucional' && $permiso['activo'] === 'si') {
+        $tienePermisoAdmin = true;
+        break;
+    }
+}
+
+// Si el usuario tiene el permiso de "Administrador institucional", mostrar el botón
+if ($tienePermisoAdmin) {
+    echo '<div class="admInst" style="position: relative; top: -6vw; left: -29vw;">';
+    echo '<a class="btn-tematico" style="text-decoration: none;" href="hsiAdmin.php"><i class="fa-solid fa-toolbox"></i> Acceder a panel de administrador</a>';
+    echo '</div>';
+}
+?>
+
+
+  <div class="back" id="back" style="display: none;">
     <div class="divBackForm" id="neUser" style="display: none;">
       <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
         <button class="btn-red" onclick="back.style.display = 'none'; neUser.style.display = 'none'; newUserForm.reset(); $('#dniSelect').val(null).trigger('change'); $('#servicioSelect').val(null).trigger('change'); $('#permisosSelect').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
@@ -38,7 +69,7 @@ $servicioFilter = $user->getServicio();
       <form action="/SGH/public/layouts/modules/hsiPanel/controllers/newUser.php" method="post" class="backForm" id="newUserForm">
 
         <div>
-          <label for="dni">DNI</label>
+          <label for="dniSelect">DNI</label>
           <select name="dni" id="dniSelect" required style="width: 95%;">
             <option value="" selected disabled>Seleccionar agente...</option>
             <?php
@@ -156,7 +187,7 @@ $servicioFilter = $user->getServicio();
         <input type="hidden" name="docsDniHidden" id="docsDniHidden">
         <div>
           <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b style="color: red;">*</b></label>
-          <input type="file" name="docsDni" id="docsDni" required>
+          <input type="file" name="docsDni" id="docsDni">
         </div>
         <div>
           <label for="docsMatricula">Matricula Profesional <br> (frente y dorso en un archivo) si corresponde</label>
@@ -164,80 +195,29 @@ $servicioFilter = $user->getServicio();
         </div>
         <div>
           <label for="docsAnexoI">Solicitud de alta de usuario para HSI <br> (ANEXO I) <b style="color: red;">*</b></label>
-          <input type="file" name="docsAnexoI" id="docsAnexoI" required>
+          <input type="file" name="docsAnexoI" id="docsAnexoI">
         </div>
         <div>
           <label for="docsAnexoII">Declaración Jurada - Convenio de confidencialidad usuarios HSI <br> (ANEXO II) <b style="color: red;">*</b></label>
-          <input type="file" name="docsAnexoII" id="docsAnexoII" required>
+          <input type="file" name="docsAnexoII" id="docsAnexoII">
         </div>
 
         <button class="btn-green" type="submit"><i class="fa-solid fa-file-arrow-up"></i> Subir archivos</button>
       </form>
     </div>
 
-    <div class="divBackForm editModule">
+
+    <div class="divBackForm infoModule" id="infoModule" style="display: none;">
+      <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
+        <button class="btn-red" onclick="back.style.display = 'none'; infoModule.style.display = 'none'; infoForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+      </div>
       <h3>Información de usuario</h3>
 
-      <div class="cuerpoInfo">
-        <table style="max-width: max-content;">
-          <thead>
-            <tr>
-              <th colspan="2">Datos del agente</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="table-middle">Nombre del agente</td>
-              <td class="table-middle">Lamas Cristian Jonathan</td>
-            </tr>
-            <tr>
-              <td class="table-middle">Documento del agente</td>
-              <td class="table-middle">43.255.000</td>
-            </tr>
-            <tr>
-              <td class="table-middle">Mail</td>
-              <td class="table-middle">crslamas@gmail.com</td>
-            </tr>
-            <tr>
-              <td class="table-middle">Telefono</td>
-              <td class="table-middle">221 438-0474</td>
-            </tr>
-            <tr>
-              <td class="table-middle">Servicio</td>
-              <td class="table-middle">Dirección de Redes y Gestión de Personas</td>
-            </tr>
-            <tr>
-              <td class="table-middle">ID de persona</td>
-              <td class="table-middle">1408941</td>
-            </tr>
-            <tr>
-              <td class="table-middle">Nombre de usuario</td>
-              <td class="table-middle">clamas</td>
-            </tr>
-            <tr>
-              <td class="table-middle">ID del usuario</td>
-              <td class="table-middle">25484</td>
-            </tr>
-          </tbody>
-        </table>
-        <table>
-          <thead>
-            <tr>
-              <th>Documentos y permisos</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="table-middle">DOCS</td>
-            </tr>
-            <tr>
-              <td class="table-middle">PERMS</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="cuerpoInfo" id="infoUsuario">
       </div>
     </div>
   </div>
+
 
   <div class="modulo">
 
@@ -316,10 +296,10 @@ $servicioFilter = $user->getServicio();
                     $activo = $permisoNew['activo'];
 
                     if ($activo == "si") {
-                      $permisos_activos[] = '<i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
+                      $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
                     }
                   }
-                  echo implode('<br>', $permisos_activos);
+                  echo implode('</div>', $permisos_activos);
                 }
                 echo '</td>';
 
@@ -400,7 +380,7 @@ $servicioFilter = $user->getServicio();
                   echo '<td>Error al obtener los datos</td>';
                 }
 
-                echo '<td class="table-middle table-left" style="width: max-content;"><div style="display: grid; grid-template-columns: auto min-content; align-items: center;">';
+                echo '<td class="table-middle table-left" style="width: max-content;">';
                 $permisosWorking_array = json_decode($rowWorking['permisos'], true);
 
                 if ($permisosWorking_array !== null) {
@@ -410,18 +390,12 @@ $servicioFilter = $user->getServicio();
                     $activo = $permisoWorking['activo'];
 
                     if ($activo == "si") {
-                      // Determinar el símbolo a mostrar según el estado activo
-                      $icono = '<i class="fa-solid fa-chevron-right"></i>';
-
-                      // Imprimir el nombre del permiso y el icono en las dos columnas del grid
-                      $permisos_activos[] =
-                        '<div>' . $icono . '</div>' .
-                        '<div style="width: max-content">' . $nombre_permiso . '</div>';
+                      $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
                     }
                   }
-                  echo implode('', $permisos_activos);
+                  echo implode('</div>', $permisos_activos);
                 }
-                echo '</div></td>';
+                echo '</td>';
 
 
 
@@ -509,62 +483,62 @@ $servicioFilter = $user->getServicio();
           </thead>
           <tbody>
             <?php
-            $queryNews = "SELECT * FROM hsi WHERE servicio = :servicioFilter AND estado = 'habilitado'";
-            $stmtNews = $pdo->prepare($queryNews);
-            $stmtNews->bindParam(':servicioFilter', $servicioFilter, PDO::PARAM_INT);
-            $stmtNews->execute();
+            $queryAproved = "SELECT * FROM hsi WHERE servicio = :servicioFilter AND estado = 'habilitado'";
+            $stmtAproved = $pdo->prepare($queryAproved);
+            $stmtAproved->bindParam(':servicioFilter', $servicioFilter, PDO::PARAM_INT);
+            $stmtAproved->execute();
 
-            if ($stmtNews->rowCount() == 0) {
-              // Si no hay resultados con estado 'news'
+            if ($stmtAproved->rowCount() == 0) {
+              // Si no hay resultados con estado 'Aproved'
               echo '<tr><td colspan="7">No hay usuarios habilitados</td></tr>';
             } else {
-              while ($rowNews = $stmtNews->fetch(PDO::FETCH_ASSOC)) {
+              while ($rowAproved = $stmtAproved->fetch(PDO::FETCH_ASSOC)) {
                 echo '<tr>';
 
-                echo '<td class="table-center table-middle">' . $rowNews['id'] . '</td>';
+                echo '<td class="table-center table-middle">' . $rowAproved['id'] . '</td>';
 
-                $stmtDniNews = $pdo->prepare("SELECT nombre, apellido FROM personal WHERE dni = ?");
-                $stmtDniNews->execute([$rowNews['dni']]);
-                $rowDatNews = $stmtDniNews->fetch(PDO::FETCH_ASSOC);
+                $stmtDniAproved = $pdo->prepare("SELECT nombre, apellido FROM personal WHERE dni = ?");
+                $stmtDniAproved->execute([$rowAproved['dni']]);
+                $rowDatAproved = $stmtDniAproved->fetch(PDO::FETCH_ASSOC);
 
-                if ($rowDatNews) {
-                  echo '<td class="table-center table-middle">' . $rowDatNews['apellido'] . '</td>';
-                  echo '<td class="table-center table-middle">' . $rowDatNews['nombre'] . '</td>';
+                if ($rowDatAproved) {
+                  echo '<td class="table-center table-middle">' . $rowDatAproved['apellido'] . '</td>';
+                  echo '<td class="table-center table-middle">' . $rowDatAproved['nombre'] . '</td>';
                 } else {
                   echo '<td colspan="2">Error al obtener los datos</td>';
                 }
 
-                echo '<td class="table-center table-middle">' . $rowNews['dni'] . '</td>';
+                echo '<td class="table-center table-middle">' . $rowAproved['dni'] . '</td>';
 
-                $stmtServicioNews = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
-                $stmtServicioNews->execute([$rowNews['servicio']]);
-                $rowServicioNews = $stmtServicioNews->fetch(PDO::FETCH_ASSOC);
+                $stmtServicioAproved = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
+                $stmtServicioAproved->execute([$rowAproved['servicio']]);
+                $rowServicioAproved = $stmtServicioAproved->fetch(PDO::FETCH_ASSOC);
 
-                if ($rowServicioNews) {
-                  echo '<td class="table-center table-middle">' . $rowServicioNews['servicio'] . '</td>';
+                if ($rowServicioAproved) {
+                  echo '<td class="table-center table-middle">' . $rowServicioAproved['servicio'] . '</td>';
                 } else {
                   echo '<td>Error al obtener los datos</td>';
                 }
 
                 echo '<td class="table-left table-middle">';
-                $permisosNew_array = json_decode($rowNews['permisos'], true);
+                $permisoAproved_array = json_decode($rowAproved['permisos'], true);
 
-                if ($permisosNew_array !== null) {
+                if ($permisoAproved_array !== null) {
                   $permisos_activos = [];
-                  foreach ($permisosNew_array as $permisoNew) {
-                    $nombre_permiso = $permisoNew['permiso'];
-                    $activo = $permisoNew['activo'];
+                  foreach ($permisoAproved_array as $permisAproved) {
+                    $nombre_permiso = $permisAproved['permiso'];
+                    $activo = $permisAproved['activo'];
 
                     if ($activo == "si") {
-                      $permisos_activos[] = '<i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
+                      $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
                     }
                   }
-                  echo implode('<br>', $permisos_activos);
+                  echo implode('</div>', $permisos_activos);
                 }
                 echo '</td>';
 
                 echo '<td class="table-center table-middle">
-                <button class="btn-green" onclick=""><i class="fa-solid fa-hand-pointer"></i></button>
+                <button class="btn-green" onclick="loadInfo(\'' . $rowAproved['dni'] . '\')"><i class="fa-solid fa-hand-pointer"></i></button>
             </td>';
 
                 echo '</tr>';

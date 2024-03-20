@@ -40,7 +40,8 @@ input[type="number"],
 input[type="date"],
 input[type="email"],
 input[type="tel"],
-input[type="file"] {
+input[type="file"],
+textarea {
   border: #242424 0.2vw solid;
   border-radius: 0.8vw;
   width: 80%;
@@ -113,6 +114,24 @@ input[type=number] {
   transition: all 0.15s ease-in-out;
 }
 
+.btn-tematico {
+  color: #fff;
+  background-color: var(--color3);
+  border: var(--color3);
+  padding: 0.5vw;
+  border-radius: 0.5vw;
+  font-size: 1vw;
+  margin: .5vw .5vw;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-tematico:hover {
+  background-color: var(--color2);
+  border: var(--color2);
+  transition: all 0.15s ease-in-out;
+}
+
 table {
   border: 0.2vw solid #000;
   border-collapse: separate;
@@ -152,20 +171,20 @@ td {
 
 thead:first-child tr:first-child th:first-child,
 tbody:first-child tr:first-child td:first-child {
-  border-radius: 0.7vw 0 0 0;
+  border-top-left-radius: 0.7vw;
 }
 
 thead:last-child tr:last-child th:first-child,
 tbody:last-child tr:last-child td:first-child {
-  border-radius: 0 0 0 0.7vw;
+  border-bottom-left-radius: 0.7vw;
 }
 
-thead tr th:last-child {
-  border-radius: 0 0.6vw 0 0;
+thead:first-child tr:first-child th:last-child {
+  border-top-right-radius: 0.7vw;
 }
 
-table tr:last-child td:last-child {
-  border-radius: 0 0 0.7vw 0;
+tbody:last-child tr:last-child td:last-child {
+  border-bottom-right-radius: 0.7vw;
 }
 
 .table-left {
@@ -347,6 +366,23 @@ form::-webkit-scrollbar-thumb:hover {
 }
 
 .content::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color3);
+  transition: background-color 1s ease-in-out;
+}
+
+/* Chrome, Edge, and Safari */
+textarea::-webkit-scrollbar {
+  width: .6vw;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: var(--color2);
+  border-radius: .8vw;
+  border: .1vw solid #dddddd;
+  transition: background-color 1s ease-in-out;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
   background-color: var(--color3);
   transition: background-color 1s ease-in-out;
 }

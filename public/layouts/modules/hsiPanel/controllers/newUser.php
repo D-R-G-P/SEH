@@ -18,29 +18,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
         $phone = $_POST['phone'];
 
-        // Procesar los permisos seleccionados
-        $permisos_json = []; // Array para almacenar los permisos
-
-        // Verificar si $_POST['permisos'] es un array (más de una selección) o un único valor (una selección)
-        if (is_array($_POST['permisos'])) {
-            // Si hay múltiples selecciones, procesar cada una individualmente
-            foreach ($_POST['permisos'] as $permiso) {
-                // Agregar cada permiso seleccionado al array de permisos
-                $permisos_json[] = [
-                    "permiso" => $permiso,
-                    "activo" => "si" // Activar los permisos seleccionados
-                ];
+        // Obtener el JSON de permisos existente
+        $permisos_json = '[
+            {
+                "permiso": "Especialista Médix",
+                "activo": "no"
+            },
+            {
+                "permiso": "Profesional de la Salud",
+                "activo": "no"
+            },
+            {
+                "permiso": "Administrativx",
+                "activo": "no"
+            },
+            {
+                "permiso": "Enfermero",
+                "activo": "no"
+            },
+            {
+                "permiso": "Enfermerx Adultx Mayor",
+                "activo": "no"
+            },
+            {
+                "permiso": "Administrador de Agenda",
+                "activo": "no"
+            },
+            {
+                "permiso": "Especialista odontológico",
+                "activo": "no"
+            },
+            {
+                "permiso": "Administrador de Camas",
+                "activo": "no"
+            },
+            {
+                "permiso": "Personal de Imágenes",
+                "activo": "no"
+            },
+            {
+                "permiso": "Personal de Laboratorio",
+                "activo": "no"
+            },
+            {
+                "permiso": "Personal de Farmacia",
+                "activo": "no"
+            },
+            {
+                "permiso": "Personal de Estadística",
+                "activo": "no"
+            },
+            {
+                "permiso": "Administrador institucional",
+                "activo": "no"
             }
-        } else {
-            // Si hay una única selección, agregarla al array de permisos
-            $permisos_json[] = [
-                "permiso" => $_POST['permisos'],
-                "activo" => "si" // Activar el permiso seleccionado
-            ];
+        ]';
+
+        // Decodificar el JSON de permisos
+        $permisos_array = json_decode($permisos_json, true);
+
+        // Procesar los permisos seleccionados
+        foreach ($permisos_array as &$permiso) {
+            // Verificar si el permiso está entre los seleccionados
+            if (in_array($permiso['permiso'], $_POST['permisos'])) {
+                $permiso['activo'] = "si"; // Establecer el permiso como activo
+            } else {
+                $permiso['activo'] = "no"; // Establecer el permiso como inactivo
+            }
         }
 
-        // Convertir el array de permisos en formato JSON
-        $permisos_json = json_encode($permisos_json);
+        // Convertir el array de permisos actualizado en formato JSON
+        $permisos_json = json_encode($permisos_array);
 
         // Crear una consulta preparada para insertar los datos en la base de datos
         $query = "INSERT INTO hsi (dni, servicio, mail, telefono, permisos, documentos, observaciones, estado, new, fecha_solicitud) VALUES (:dni, :servicio, :email, :phone, :permisos, :documentos, :observaciones, :estado, :new, :fecha_solicitud)";
@@ -87,3 +135,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit(); // Finalizar el script después de la redirección
     }
 }
+?>

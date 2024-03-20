@@ -1,7 +1,7 @@
 <?php
 session_start(); // Iniciar la sesión
 // Verificar si se recibieron los archivos
-if (isset($_FILES['docsDni'], $_FILES['docsMatricula'], $_FILES['docsAnexoI'], $_FILES['docsAnexoII'])) {
+if (isset($_POST['docsDniHidden'])) {
     // Obtener el DNI del input hidden
     $dni = $_POST['docsDniHidden'];
 
@@ -16,7 +16,7 @@ if (isset($_FILES['docsDni'], $_FILES['docsMatricula'], $_FILES['docsAnexoI'], $
         $extension = pathinfo($nombre_archivo, PATHINFO_EXTENSION);
 
         // Generar el nuevo nombre del archivo con el formato: DNI_NOMBREARCHIVO
-        $nuevo_nombre = $dni . '_' . $key . '.' . $extension;
+        $nuevo_nombre = $dni . '-' . $key . '.' . $extension;
 
         // Mover el archivo al directorio de destino
         if (move_uploaded_file($archivo['tmp_name'], $directorio_destino . $nuevo_nombre)) {
@@ -45,7 +45,7 @@ if (isset($_FILES['docsDni'], $_FILES['docsMatricula'], $_FILES['docsAnexoI'], $
     // Actualizar el estado de los archivos subidos a "pendiente"
 foreach ($archivos_subidos as $key => $archivo_subido) {
     // Obtener el tamaño del archivo en KB
-    $tamano_archivo_kb = $_FILES[$key]['size'] / 1024;
+    $tamano_archivo_kb = $_FILES[$key]['size'] / 2;
 
     // Verificar si el tamaño del archivo es mayor a 100KB
     if ($tamano_archivo_kb > 100) {
@@ -88,7 +88,7 @@ foreach ($archivos_subidos as $key => $archivo_subido) {
 
     // Registro exitoso, mostrar un mensaje de éxito
     $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Archivos subidos exitosamente, aguarde a su verificación.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 5000);}</script>';
-    // header("Location: ../hsi.php");
+    header("Location: ../hsi.php");
     exit(); // Finalizar el script después de la redirección
 } else {
     // Error al registrar el usuario, mostrar un mensaje de error
