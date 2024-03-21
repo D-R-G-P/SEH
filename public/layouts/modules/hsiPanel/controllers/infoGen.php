@@ -171,7 +171,7 @@
                 echo '<tr>';
                 echo '<td>';
                 echo '<form action="/SGH/public/layouts/modules/hsiPanel/controllers/pedidoForm.php" id="infoForm" style="display: flex; justify-content: center; align-items: center; flex-direction: column;" method="post">';
-                echo '<h4>Realizar pedido de modificación</h4>';
+                echo '<h4 style="margin-bottom: .3vw;">Realizar pedido de modificación</h4>';
                 echo '<input type="hidden" name="dniInfo" value="' . $rowInfo['dni'] . '">';
                 echo '<textarea name="pedidoInfo" id="pedidoInfo" style="width: 90%; height: 13vw; resize: none;" required></textarea>';
                 echo '<button class="btn-green">Realizar pedido</button>';

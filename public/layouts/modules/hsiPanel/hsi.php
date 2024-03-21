@@ -29,34 +29,35 @@ $servicioFilter = $user->getServicio();
   </div>
 
   <?php
-// Función para obtener los permisos por DNI
-function getPermisosPorDni($dni) {
+  // Función para obtener los permisos por DNI
+  function getPermisosPorDni($dni)
+  {
     // Aquí simulamos la obtención de los permisos desde el JSON proporcionado
     $json_permisos = '[{"permiso":"Especialista M\u00e9dix","activo":"no"},{"permiso":"Profesional de la Salud","activo":"no"},{"permiso":"Administrativx","activo":"si"},{"permiso":"Enfermero","activo":"no"},{"permiso":"Enfermerx Adultx Mayor","activo":"no"},{"permiso":"Administrador de Agenda","activo":"si"},{"permiso":"Especialista odontol\u00f3gico","activo":"no"},{"permiso":"Administrador de Camas","activo":"si"},{"permiso":"Personal de Im\u00e1genes","activo":"no"},{"permiso":"Personal de Laboratorio","activo":"no"},{"permiso":"Personal de Farmacia","activo":"no"},{"permiso":"Personal de Estad\u00edstica","activo":"no"},{"permiso":"Administrador institucional","activo":"si"}]';
 
     // Decodificar el JSON y devolverlo como un array
     return json_decode($json_permisos, true);
-}
+  }
 
-// Verificar si el usuario tiene el permiso de "Administrador institucional"
-$userDni = ""; // Aquí debes obtener el DNI del usuario, por ejemplo: $user->getDni();
-$permisos = getPermisosPorDni($userDni);
+  // Verificar si el usuario tiene el permiso de "Administrador institucional"
+  $userDni = ""; // Aquí debes obtener el DNI del usuario, por ejemplo: $user->getDni();
+  $permisos = getPermisosPorDni($userDni);
 
-$tienePermisoAdmin = false;
-foreach ($permisos as $permiso) {
+  $tienePermisoAdmin = false;
+  foreach ($permisos as $permiso) {
     if ($permiso['permiso'] === 'Administrador institucional' && $permiso['activo'] === 'si') {
-        $tienePermisoAdmin = true;
-        break;
+      $tienePermisoAdmin = true;
+      break;
     }
-}
+  }
 
-// Si el usuario tiene el permiso de "Administrador institucional", mostrar el botón
-if ($tienePermisoAdmin) {
+  // Si el usuario tiene el permiso de "Administrador institucional", mostrar el botón
+  if ($tienePermisoAdmin) {
     echo '<div class="admInst" style="position: relative; top: -6vw; left: -29vw;">';
-    echo '<a class="btn-tematico" style="text-decoration: none;" href="hsiAdmin.php"><i class="fa-solid fa-toolbox"></i> Acceder a panel de administrador</a>';
+    echo '<a class="btn-tematico" style="text-decoration: none;" href="hsiAdmin.php"><i class="fa-solid fa-toolbox"></i> <b>Acceder a panel de administrador</b></a>';
     echo '</div>';
-}
-?>
+  }
+  ?>
 
 
   <div class="back" id="back" style="display: none;">
@@ -181,25 +182,25 @@ if ($tienePermisoAdmin) {
         <button class="btn-red" onclick="back.style.display = 'none'; addDocsDiv.style.display = 'none'; addDocsForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
       </div>
       <h3>Agregar documentación</h3>
-      <p style="color: red;">* documentos obligatorios</p>
+      <p style="color: red;">* documentos obligatorios en formato pdf</p>
 
       <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUpload.php" class="backForm" method="post" id="addDocsForm" enctype="multipart/form-data">
         <input type="hidden" name="docsDniHidden" id="docsDniHidden">
         <div>
           <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b style="color: red;">*</b></label>
-          <input type="file" name="docsDni" id="docsDni">
+          <input type="file" name="docsDni" id="docsDni" accept="application/pdf">
         </div>
         <div>
           <label for="docsMatricula">Matricula Profesional <br> (frente y dorso en un archivo) si corresponde</label>
-          <input type="file" name="docsMatricula" id="docsMatricula">
+          <input type="file" name="docsMatricula" id="docsMatricula" accept="application/pdf">
         </div>
         <div>
           <label for="docsAnexoI">Solicitud de alta de usuario para HSI <br> (ANEXO I) <b style="color: red;">*</b></label>
-          <input type="file" name="docsAnexoI" id="docsAnexoI">
+          <input type="file" name="docsAnexoI" id="docsAnexoI" accept="application/pdf">
         </div>
         <div>
           <label for="docsAnexoII">Declaración Jurada - Convenio de confidencialidad usuarios HSI <br> (ANEXO II) <b style="color: red;">*</b></label>
-          <input type="file" name="docsAnexoII" id="docsAnexoII">
+          <input type="file" name="docsAnexoII" id="docsAnexoII" accept="application/pdf">
         </div>
 
         <button class="btn-green" type="submit"><i class="fa-solid fa-file-arrow-up"></i> Subir archivos</button>

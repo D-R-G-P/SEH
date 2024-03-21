@@ -116,8 +116,8 @@ input[type=number] {
 
 .btn-tematico {
   color: #fff;
-  background-color: var(--color3);
-  border: var(--color3);
+  background-color: var(--color2);
+  border: var(--color2);
   padding: 0.5vw;
   border-radius: 0.5vw;
   font-size: 1vw;
@@ -127,8 +127,8 @@ input[type=number] {
 }
 
 .btn-tematico:hover {
-  background-color: var(--color2);
-  border: var(--color2);
+  background-color: var(--color3);
+  border: var(--color3);
   transition: all 0.15s ease-in-out;
 }
 
@@ -243,6 +243,7 @@ form {
   overflow-x: hidden;
   overflow-y: scroll;
   max-height: 90%;
+  
 }
 
 form div {
