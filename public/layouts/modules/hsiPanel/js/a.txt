@@ -1,0 +1,81 @@
+<table id="habilitado">
+
+                <thead>
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>DNI</th>
+                        <th>Servicio</th>
+                        <th>Permisos</th>
+                        <th>Acciones</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $queryAproved = "SELECT * FROM hsi WHERE estado = 'habilitado'";
+                    $stmtAproved = $pdo->prepare($queryAproved);
+                    $stmtAproved->execute();
+
+                    if ($stmtAproved->rowCount() == 0) {
+                        // Si no hay resultados con estado 'Aproved'
+                        echo '<tr><td colspan="7">No hay usuarios habilitados</td></tr>';
+                    } else {
+                        while ($rowAproved = $stmtAproved->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<tr>';
+
+                            echo '<td class="table-center table-middle">' . $rowAproved['id'] . '</td>';
+
+                            $stmtDniAproved = $pdo->prepare("SELECT nombre, apellido FROM personal WHERE dni = ?");
+                            $stmtDniAproved->execute([$rowAproved['dni']]);
+                            $rowDatAproved = $stmtDniAproved->fetch(PDO::FETCH_ASSOC);
+
+                            if ($rowDatAproved) {
+                                echo '<td class="table-center table-middle">' . $rowDatAproved['apellido'] . '</td>';
+                                echo '<td class="table-center table-middle">' . $rowDatAproved['nombre'] . '</td>';
+                            } else {
+                                echo '<td colspan="2">Error al obtener los datos</td>';
+                            }
+
+                            echo '<td class="table-center table-middle">' . $rowAproved['dni'] . '</td>';
+
+                            $stmtServicioAproved = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
+                            $stmtServicioAproved->execute([$rowAproved['servicio']]);
+                            $rowServicioAproved = $stmtServicioAproved->fetch(PDO::FETCH_ASSOC);
+
+                            if ($rowServicioAproved) {
+                                echo '<td class="table-center table-middle">' . $rowServicioAproved['servicio'] . '</td>';
+                            } else {
+                                echo '<td>Error al obtener los datos</td>';
+                            }
+
+                            echo '<td class="table-left table-middle">';
+                            $permisoAproved_array = json_decode($rowAproved['permisos'], true);
+
+                            if ($permisoAproved_array !== null) {
+                                $permisos_activos = [];
+                                foreach ($permisoAproved_array as $permisAproved) {
+                                    $nombre_permiso = $permisAproved['permiso'];
+                                    $activo = $permisAproved['activo'];
+
+                                    if ($activo == "si") {
+                                        $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
+                                    }
+                                }
+                                echo implode('</div>', $permisos_activos);
+                            }
+                            echo '</td>';
+
+                            echo '<td class="table-center table-middle">
+                <button class="btn-green" onclick="loadInfo(\'' . $rowAproved['dni'] . '\')"><i class="fa-solid fa-hand-pointer"></i></button>
+            </td>';
+
+                            echo '</tr>';
+                        }
+                    }
+                    ?>
+
+                </tbody>
+            </table>

@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    $('#servicioFilter').select2();
+});
+
 function loadInfo(dni, servicio) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {

@@ -26,6 +26,10 @@ $pdo = $db->connect();
         <p>Este sistema está oreintado a la gestion y administración de los </br> usuarios de HSI para los administradores institucionales.</p>
     </div>
 
+    <div class="admInst" style="position: relative; top: -6vw; left: -29vw;">
+    <a class="btn-tematico" style="text-decoration: none;" href="hsi.php"><i class="fa-solid fa-toolbox"></i> <b>Acceder a panel general</b></a>
+    </div>
+
     <div class="back" id="back">
         <div class="divBackForm infoModule" id="infoModule" style="display: none;">
             <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
@@ -148,8 +152,85 @@ $pdo = $db->connect();
                 ?>
             </tbody>
         </table>
+
+        <div class="habilitado">
+
+            <style>
+                .select2-container--default .select2-selection--single,
+                .select2-container--default .select2-selection--multiple .select2-selection__arrow {
+                    transform: translateY(0.0vw);
+                }
+
+                #inputFilter {
+                    margin-left: 3vw;
+                    width: 30vw;
+                }
+            </style>
+
+            <h4>Habilitados</h4>
+            <div style="display: flex; flex-direction: row; margin-bottom: 1vw; justify-content: center; margin-top: .5vw;">
+                <select name="servicioFilter" id="servicioFilter" class="select2" style="width: 30vw;">
+                    <option value="">Sin filtro por servicio</option>
+                    <?php
+
+                    // Realiza la consulta a la tabla servicios
+                    $getPersonal = "SELECT id, servicio FROM servicios";
+                    $stmt = $pdo->query($getPersonal);
+
+                    // Itera sobre los resultados y muestra las filas en la tabla
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+                    }
+
+                    ?>
+                    <select>
+
+                        <input type="text" name="inputFilter" id="inputFilter">
+            </div>
+            <div class="tablaHabilitados"></div>
+
+            <script>
+    $(document).ready(function() {
+        // Función para cargar la tabla de usuarios habilitados
+        function cargarTablaHabilitados(page) {
+            var servicioFilter = $("#servicioFilter").val();
+            var inputFilter = $("#inputFilter").val();
+
+            $.ajax({
+                url: "controllers/tablaHabilitadosAdm.php",
+                type: "GET",
+                data: {
+                    page: page,
+                    servicioFilter: servicioFilter,
+                    inputFilter: inputFilter
+                },
+                success: function(response) {
+                    $("#tablaHabilitados").html(response);
+                }
+            });
+        }
+
+        // Cargar la tabla al cargar la página
+        cargarTablaHabilitados(1);
+
+        // Manejar la paginación
+        $(document).on("click", ".pagination li", function() {
+            var page = $(this).text();
+            cargarTablaHabilitados(page);
+        });
+
+        // Manejar el filtrado
+        $("#servicioFilter, #inputFilter").on("change keyup", function() {
+            cargarTablaHabilitados(1);
+        });
+    });
+</script>
+
+
+        </div>
     </div>
+</div>
 
 
-    <script src="/SGH/public/layouts/modules/hsiPanel/js/hsiAdmin.js"></script>
-    <?php require_once '../../base/footer.php'; ?>
+<script src="/SGH/public/layouts/modules/hsiPanel/js/hsiAdmin.js"></script>
+<?php require_once '../../base/footer.php'; ?>

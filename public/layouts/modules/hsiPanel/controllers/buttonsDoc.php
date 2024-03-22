@@ -10,7 +10,17 @@ if(isset($_GET['dni']) && isset($_GET['documento']) && isset($_GET['action'])) {
     $documento = $_GET['documento'];
     $action = $_GET['action'];
 
-    $estadomod = ($action == "verificar") ? "verificado" : "pendiente";
+    switch ($action) {
+        case 'verificar':
+                $estado = "verificado";
+                break;
+            case 'desverificar':
+                $estado = "pendiente";
+                break;
+            case 'anular':
+                $estado = "no";
+                break;
+    }
 
     // Crear una instancia de la clase DB para conectarse a la base de datos
     $db = new DB();
@@ -32,7 +42,7 @@ if(isset($_GET['dni']) && isset($_GET['documento']) && isset($_GET['action'])) {
                 // Iterar sobre el array de documentos y actualizar el estado del documento correspondiente
                 foreach ($documentos_array as &$documento_item) {
                     if ($documento_item['documento'] === $documento) {
-                        $documento_item['activo'] = $estadomod;
+                        $documento_item['activo'] = $estado;
                         break; // Terminar el bucle una vez que se ha encontrado y actualizado el documento
                     }
                 }
