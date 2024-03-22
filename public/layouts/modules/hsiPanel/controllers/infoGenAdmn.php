@@ -154,12 +154,12 @@
                             case 'pendiente':
                                 $simbolo = 'Pendiente de verificación';
                                 $abrirBtn = '</br><a target="_blank" class="btn-green" title="Ver archivo" href="/SGH/app/hsiDocs/' . $rowInfo["dni"] . '-' . $documento_row . '"><i class="fa-solid fa-file-lines"></i></a>';
-                                $verificarBtn = '<button class="btn-green" title="Marcar como verificado"><i class="fa-solid fa-check"></i> Marcar como verificado</button>';
+                                $verificarBtn = '<button class="btn-green" onclick="verificDoc(\'' . $rowInfo['dni'] . '\', \'' . $documento . '\', \'verificar\')" title="Marcar como verificado"><i class="fa-solid fa-check"></i> Marcar como verificado</button>';
                                 break;
                             case 'verificado':
                                 $simbolo = 'Verificado';
                                 $abrirBtn = '</br><a target="_blank" class="btn-green" title="Ver archivo" href="/SGH/app/hsiDocs/' . $rowInfo["dni"] . '-' . $documento_row . '"><i class="fa-solid fa-file-lines"></i></a>';
-                                $verificarBtn = '<button class="btn-red" title="Marcar como sin verificar"><i class="fa-solid fa-xmark"></i></button>';
+                                $verificarBtn = '<button class="btn-yellow" onclick="verificDoc(\'' . $rowInfo['dni'] . '\', \'' . $documento . '\', \'desverificar\')"" title="Marcar como sin verificar"><i class="fa-solid fa-xmark"></i> Marcar como pendiente</button>';
                                 break;
                             default:
                                 $simbolo = 'Error';
@@ -187,10 +187,10 @@
 
                         switch ($activo) {
                             case 'si':
-                                $permisoBtn = '<button class="btn-green"><i class="fa-solid fa-check"></i></button>';
+                                $permisoBtn = '<button class="btn-green" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $permiso . '\', \'si\')""><i class="fa-solid fa-check"></i></button>';
                                 break;
                             case 'no':
-                                $permisoBtn = '<button class="btn-red"><i class="fa-solid fa-xmark"></i></button>';
+                                $permisoBtn = '<button class="btn-red" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $permiso . '\', \'no\')""><i class="fa-solid fa-xmark"></i></button>';
                                 break;
                         }
 
@@ -213,8 +213,9 @@
                 echo '<tbody>';
                 echo '<tr>';
                 echo '<td class="table-center" style="height: max-content">';
-                echo '<button class="btn-red" onclick="buttonSol(\'' . $rowInfo['dni'] . '\', \'baja\')"><i class="fa-solid fa-user-xmark"></i> Notificar baja de usuario</button>';
-                echo '<button class="btn-yellow" onclick="buttonSol(\'' . $rowInfo['dni'] . '\', \'password\')"><i class="fa-solid fa-user-lock"></i> Notificar reinicio de contraseña</button>';
+                echo '<button class="btn-red" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'baja\')"><i class="fa-solid fa-user-xmark"></i> Notificar baja de usuario</button>';
+                echo '<button class="btn-yellow" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'password\')"><i class="fa-solid fa-user-lock"></i> Notificar reinicio de contraseña</button>';
+                echo '<button class="btn-green" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'habilita\')"><i class="fa-solid fa-user-check"></i> Notificar habilitación de usuario</button>';
                 
                 echo '</br><div class="modulo" style="width: 100%;"><h4><u>Pedido</u></h4></br> '.$rowInfo["pedido"].'</div>';
                 
@@ -222,12 +223,13 @@
                 echo '</tr>';
                 echo '<tr>';
 
-                echo '<td>';
-                echo '<form action="/SGH/public/layouts/modules/hsiPanel/controllers/pedidoForm.php" id="infoForm" style="display: flex; justify-content: center; align-items: center; flex-direction: column;" method="post">';
+                echo '<td style="height: 100%;">';
+                echo '<form action="/SGH/public/layouts/modules/hsiPanel/controllers/observacionForm.php" id="infoForm" style="display: flex; justify-content: center; align-items: center; flex-direction: column;" method="post">';
                 echo '<h4 style="margin-bottom: .3vw;">Agregar observación</h4>';
                 echo '<input type="hidden" name="dniInfo" value="' . $rowInfo['dni'] . '">';
                 echo '<div style="display: flex; flex-direction: row; justify-content: center;"><input type="checkbox" name="notiCheck" style="margin-right: .2vw;"></input> Realizar notificación</div>';
-                echo '<textarea name="pedidoInfo" id="pedidoInfo" style="width: 90%; height: 13vw; resize: none;" required></textarea>';
+                echo '<div style="display: flex; flex-direction: row; justify-content: center;"><input type="checkbox" name="habiCheck" style="margin-right: .2vw;"></input> Habilitar usuario</div>';
+                echo '<textarea name="observacionInfo" id="observacionInfo" style="width: 90%; height: 13vw; resize: none;">'. $rowInfo['observaciones'] .'</textarea>';
                 echo '<button class="btn-green">Agregar observación</button>';
                 echo '</form>';
                 echo '</td>';
