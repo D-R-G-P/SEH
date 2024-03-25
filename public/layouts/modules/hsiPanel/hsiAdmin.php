@@ -27,7 +27,7 @@ $pdo = $db->connect();
     </div>
 
     <div class="admInst" style="position: relative; top: -6vw; left: -29vw;">
-    <a class="btn-tematico" style="text-decoration: none;" href="hsi.php"><i class="fa-solid fa-toolbox"></i> <b>Acceder a panel general</b></a>
+        <a class="btn-tematico" style="text-decoration: none;" href="hsi.php"><i class="fa-solid fa-toolbox"></i> <b>Acceder a panel general</b></a>
     </div>
 
     <div class="back" id="back">
@@ -169,62 +169,150 @@ $pdo = $db->connect();
 
             <h4>Habilitados</h4>
             <div style="display: flex; flex-direction: row; margin-bottom: 1vw; justify-content: center; margin-top: .5vw;">
-                <select name="servicioFilter" id="servicioFilter" class="select2" style="width: 30vw;">
-                    <option value="">Sin filtro por servicio</option>
+                <select name="selectServicioFilter" id="selectServicioFilter" class="select2" placeholder="Seleccionar un servicio para filtrar" style="width: 45%;">
                     <?php
+                    echo '<option value=""' . ($selectServicioFilter == '' ? ' selected' : '') . '>Sin filtro por servicio...</option>';
+                    $getServicios = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
+                    $stmtServicios = $pdo->query($getServicios);
 
-                    // Realiza la consulta a la tabla servicios
-                    $getPersonal = "SELECT id, servicio FROM servicios";
-                    $stmt = $pdo->query($getPersonal);
+                    while ($row = $stmtServicios->fetch(PDO::FETCH_ASSOC)) {
+                        $selected = ($row['id'] == $selectServicioFilter) ? 'selected' : ''; // Marcamos como seleccionado si coincide con el filtro actual
+                        echo '<option value="' . $row['id'] . '" ' . $selected . '>' . $row['servicio'] . '</option>';
+                    }
+                    ?>
+                </select>
 
-                    // Itera sobre los resultados y muestra las filas en la tabla
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+
+
+                <input type="text" name="searchInput" id="searchInput" style="width: 45%; height: 3vw; margin-left: 2vw;" placeholder="Buscar por DNI..." oninput="formatNumber(this)">
+
+                <script>
+                    function formatNumber(input) {
+                        // Eliminar caracteres que no son números
+                        const inputValue = input.value.replace(/\D/g, '');
+
+                        // Formatear el número con puntos si no está vacío, de lo contrario, dejar en blanco
+                        const formattedNumber = inputValue !== '' ? Number(inputValue).toLocaleString('es-AR') : '';
+
+                        // Actualizar el valor del campo de entrada
+                        input.value = formattedNumber;
                     }
 
-                    ?>
-                    <select>
+                    $(document).ready(function() {
+                        $("#selectServicioFilter").select2();
 
-                        <input type="text" name="inputFilter" id="inputFilter">
+                        // Función para generar los botones de paginación
+                        function generarBotonesPaginacion(total_paginas) {
+                            var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+
+                            contenedorPaginacion.innerHTML = "";
+
+                            // Generar botones de paginación
+                            for (var i = 1; i <= total_paginas; i++) {
+                                var botonPagina = document.createElement("button");
+                                botonPagina.textContent = i;
+                                botonPagina.setAttribute("class", "btn-green paginationBtn");
+                                botonPagina.setAttribute("data-pagina", i);
+                                botonPagina.addEventListener("click", function() {
+                                    var pagina = this.getAttribute("data-pagina");
+                                    actualizarTabla(pagina);
+                                });
+                                contenedorPaginacion.appendChild(botonPagina);
+                            }
+                        }
+
+                        // Función para actualizar la tabla con los resultados filtrados
+                        function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
+                            // Ocultar la tabla mientras se cargan los nuevos resultados
+                            $("#tablaHabilitados").hide();
+                            $(".lds-dual-ring").show(); // Mostrar el elemento de carga
+
+                            // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
+                            $.ajax({
+                                url: "controllers/tablaHabilitadosAdm.php",
+                                type: "GET",
+                                dataType: "html",
+                                data: {
+                                    pagina: pagina,
+                                    searchTerm: searchTerm,
+                                    selectServicioFilter: selectServicioFilter
+                                },
+                                success: function(response) {
+                                    // Actualizar la tabla con los nuevos resultados
+                                    $("#tablaHabilitados").html(response);
+                                    // Mostrar la tabla después de cargar los nuevos resultados
+                                    $("#tablaHabilitados").show();
+                                    $(".lds-dual-ring").hide(); // Ocultar el elemento de carga
+
+
+                                    // Generar botones de paginación
+                                    generarBotonesPaginacion(response.total_paginas);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.log("Error al realizar la solicitud: " + error);
+                                }
+                            });
+                        }
+
+                        // Evento change del select para actualizar la tabla al cambiar el servicio
+                        $("#selectServicioFilter").on("change", function() {
+                            var selectServicioFilterValue = $(this).val(); // Obtener el valor seleccionado del select2
+                            actualizarTabla(1, $("#searchInput").val(), selectServicioFilterValue); // Llamar a actualizarTabla con el nuevo valor
+                        });
+
+                        // Cargar la tabla con los resultados iniciales
+                        actualizarTabla(1, $("#searchInput").val(), $("#selectServicioFilter").val());
+
+                        // Función para realizar la búsqueda en tiempo real con retardo
+                        var timeout = null;
+                        $("#searchInput").on("input", function() {
+                            clearTimeout(timeout); // Limpiar el temporizador existente si hay alguno
+                            // Configurar un nuevo temporizador para retrasar la búsqueda
+                            timeout = setTimeout(function() {
+                                // Obtener el valor del campo de búsqueda
+                                var searchTerm = $("#searchInput").val();
+
+                                // Obtener el valor seleccionado del select2
+                                var selectServicioFilterValue = $("#selectServicioFilter").val();
+
+                                // Llamar a la función actualizarTabla para enviar la solicitud al servidor
+                                actualizarTabla(1, searchTerm, selectServicioFilterValue);
+                            }, 500); // Retardo de 500 milisegundos (0.5 segundos)
+                        });
+
+                        // Función para cambiar de página al hacer clic en los botones de paginación
+                        function cambiarPagina(pagina) {
+                            // Obtener el valor del campo de búsqueda
+                            var searchTerm = $("#searchInput").val();
+
+                            // Obtener el valor seleccionado del select2
+                            var selectServicioFilter = $("#selectServicioFilter").val();
+
+                            // Llamar a la función actualizarTabla para enviar la solicitud al servidor con la nueva página
+                            actualizarTabla(pagina, searchTerm, selectServicioFilter);
+                        }
+
+                        // Código JavaScript para la paginación
+                        $("#contenedorPaginacion").on("click", ".paginationBtn", function() {
+                            var pagina = $(this).data("pagina");
+                            var searchTerm = $("#searchInput").val();
+                            var selectServicioFilter = $("#selectServicioFilter").val();
+                            actualizarTabla(pagina, searchTerm, selectServicioFilter);
+                        });
+                    });
+                </script>
             </div>
-            <div class="tablaHabilitados"></div>
 
-            <script>
-    $(document).ready(function() {
-        // Función para cargar la tabla de usuarios habilitados
-        function cargarTablaHabilitados(page) {
-            var servicioFilter = $("#servicioFilter").val();
-            var inputFilter = $("#inputFilter").val();
+            <div class="tablaHabilitados" id="tablaHabilitados"></div>
+            <div class="lds-dual-ring" style="transform: translate(36vw, 0);"></div>
+            <div id="contenedorPaginacion"></div>
 
-            $.ajax({
-                url: "controllers/tablaHabilitadosAdm.php",
-                type: "GET",
-                data: {
-                    page: page,
-                    servicioFilter: servicioFilter,
-                    inputFilter: inputFilter
-                },
-                success: function(response) {
-                    $("#tablaHabilitados").html(response);
-                }
-            });
-        }
+            <div class="disabledSearch" style="margin-top: 2vw;">
+                <h4>Buscar usuario por D.N.I.</h4>
+            <input type="text" name="disabledInput" id="disabledInput" style="width: 45%; height: 3vw; margin-left: 2vw;" placeholder="Buscar por DNI..." oninput="formatNumber(this)">
 
-        // Cargar la tabla al cargar la página
-        cargarTablaHabilitados(1);
-
-        // Manejar la paginación
-        $(document).on("click", ".pagination li", function() {
-            var page = $(this).text();
-            cargarTablaHabilitados(page);
-        });
-
-        // Manejar el filtrado
-        $("#servicioFilter, #inputFilter").on("change keyup", function() {
-            cargarTablaHabilitados(1);
-        });
-    });
-</script>
+            <button class="btn-green" onclick="loadInfoDelet(disabledInput.value)"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
 
 
         </div>

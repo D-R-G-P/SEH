@@ -4,11 +4,12 @@ require_once '../../../../../app/db/db.php';
 session_start(); // Iniciar sesión para usar variables de sesión
 
 // Verificar si se recibieron los parámetros GET esperados
-if(isset($_GET['dni']) && isset($_GET['permiso']) && isset($_GET['estado'])) {
+if (isset($_GET['dni']) && isset($_GET['permiso']) && isset($_GET['estado']) && isset($_GET['servicio'])) {
     // Obtener los valores de los parámetros GET
     $dni = $_GET['dni'];
     $permiso = $_GET['permiso'];
     $estado = $_GET['estado'];
+    $servicio = $_GET['servicio'];
 
     $estadomod = ($estado == "si") ? "no" : "si";
 
@@ -17,7 +18,7 @@ if(isset($_GET['dni']) && isset($_GET['permiso']) && isset($_GET['estado'])) {
     $pdo = $db->connect();
 
     // Verificar si la conexión fue exitosa
-    if($pdo) {
+    if ($pdo) {
         try {
             // Modificar el JSON en la base de datos
             $sql = "SELECT permisos FROM hsi WHERE dni = ?";
@@ -25,7 +26,7 @@ if(isset($_GET['dni']) && isset($_GET['permiso']) && isset($_GET['estado'])) {
             $stmt->execute([$dni]);
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($row) {
+            if ($row) {
                 // Decodificar el JSON
                 $permisos_array = json_decode($row["permisos"], true);
 
@@ -45,7 +46,7 @@ if(isset($_GET['dni']) && isset($_GET['permiso']) && isset($_GET['estado'])) {
                 $stmt_update = $pdo->prepare($sql_update);
                 $stmt_update->execute([$permisos_json_updated, $dni]);
 
-                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Permiso "'.$permiso.'" actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Permiso "' . $permiso . '" actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '", "' . $servicio . '"); });</script>';
             } else {
                 $_SESSION['warning_message'] = "No se encontraron resultados para el DNI proporcionado: $dni"; // Mensaje de advertencia
             }
@@ -61,4 +62,3 @@ if(isset($_GET['dni']) && isset($_GET['permiso']) && isset($_GET['estado'])) {
 
 // Redireccionar de nuevo a la página anterior
 header("Location: " . $_SERVER['HTTP_REFERER']);
-?>

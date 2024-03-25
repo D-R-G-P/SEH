@@ -189,10 +189,10 @@
 
                         switch ($activo) {
                             case 'si':
-                                $permisoBtn = '<button class="btn-green" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $permiso . '\', \'si\')""><i class="fa-solid fa-check"></i></button>';
+                                $permisoBtn = '<button class="btn-green" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $permiso . '\', \'' . $rowInfo['servicio'] . '\', \'si\')""><i class="fa-solid fa-check"></i></button>';
                                 break;
                             case 'no':
-                                $permisoBtn = '<button class="btn-red" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $permiso . '\', \'no\')""><i class="fa-solid fa-xmark"></i></button>';
+                                $permisoBtn = '<button class="btn-red" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $permiso . '\', \'' . $rowInfo['servicio'] . '\', \'no\')""><i class="fa-solid fa-xmark"></i></button>';
                                 break;
                         }
 
@@ -232,7 +232,7 @@
                 echo '<div style="display: flex; flex-direction: row; justify-content: center;"><input type="checkbox" name="notiCheck" style="margin-right: .2vw;"></input> Realizar notificación</div>';
                 echo '<div style="display: flex; flex-direction: row; justify-content: center;"><input type="checkbox" name="habiCheck" style="margin-right: .2vw;"></input> Habilitar usuario</div>';
                 echo '<textarea name="observacionInfo" id="observacionInfo" style="width: 90%; height: 13vw; resize: none;">'. $rowInfo['observaciones'] .'</textarea>';
-                echo '<button class="btn-green">Agregar observación</button>';
+                echo '<button class="btn-green">Agregar/Modificar observación</button>';
                 echo '</form>';
                 echo '</td>';
                 echo '</tr>';
