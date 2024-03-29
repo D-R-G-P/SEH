@@ -311,7 +311,7 @@ $pdo = $db->connect();
                 <h4>Buscar usuario por D.N.I.</h4>
             <input type="text" name="disabledInput" id="disabledInput" style="width: 45%; height: 3vw; margin-left: 2vw;" placeholder="Buscar por DNI..." oninput="formatNumber(this)">
 
-            <button class="btn-green" onclick="loadInfoDelet(disabledInput.value)"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="btn-green" onclick="loadInfoDelet(disabledInput.value); disabledInput.value=''"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
 
 

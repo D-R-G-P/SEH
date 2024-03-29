@@ -465,13 +465,43 @@ $servicioFilter = $user->getServicio();
       </div>
 
       <div class="habilitado">
+        <div class="disabledSearch" style="margin-top: 2vw;">
+          <h4>Buscar usuario por D.N.I.</h4>
+          <input type="text" name="disabledInput" id="disabledInput" style="width: 45%; height: 3vw; margin-left: 2vw;" placeholder="Buscar por DNI..." oninput="formatNumber(this)">
+
+          <button class="btn-green" onclick="loadInfo(disabledInput.value); disabledInput.value=''"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
 
         <h4>Habilitados</h4>
-        <table id="habilitado">
+        <?php
+        // Establecer el número de resultados por página y la página actual
+        $resultados_por_pagina = 10;
+        $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $offset = ($pagina_actual - 1) * $resultados_por_pagina;
 
+        // Consulta SQL para obtener los resultados paginados
+        $queryPaginacion = "SELECT * FROM hsi WHERE servicio = :servicioFilter AND estado = 'habilitado' LIMIT :limit OFFSET :offset";
+        $stmtPaginacion = $pdo->prepare($queryPaginacion);
+        $stmtPaginacion->bindParam(':servicioFilter', $servicioFilter, PDO::PARAM_INT);
+        $stmtPaginacion->bindValue(':limit', $resultados_por_pagina, PDO::PARAM_INT);
+        $stmtPaginacion->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmtPaginacion->execute();
+
+        // Consulta SQL para contar el número total de registros
+        $queryCount = "SELECT COUNT(*) FROM hsi WHERE servicio = :servicioFilter AND estado = 'habilitado'";
+        $stmtCount = $pdo->prepare($queryCount);
+        $stmtCount->bindParam(':servicioFilter', $servicioFilter, PDO::PARAM_INT);
+        $stmtCount->execute();
+        $total_registros = $stmtCount->fetchColumn();
+
+        // Calcular el número total de páginas
+        $total_paginas = ceil($total_registros / $resultados_por_pagina);
+        ?>
+
+        <!-- Agregar la tabla HTML -->
+        <table id="habilitado">
           <thead>
             <tr>
-
               <th>ID</th>
               <th>Apellido</th>
               <th>Nombre</th>
@@ -479,76 +509,72 @@ $servicioFilter = $user->getServicio();
               <th>Servicio</th>
               <th>Permisos</th>
               <th>Acciones</th>
-
             </tr>
           </thead>
           <tbody>
             <?php
-            $queryAproved = "SELECT * FROM hsi WHERE servicio = :servicioFilter AND estado = 'habilitado'";
-            $stmtAproved = $pdo->prepare($queryAproved);
-            $stmtAproved->bindParam(':servicioFilter', $servicioFilter, PDO::PARAM_INT);
-            $stmtAproved->execute();
+            // Iterar sobre los resultados paginados
+            while ($rowAproved = $stmtPaginacion->fetch(PDO::FETCH_ASSOC)) {
+              echo '<tr>';
 
-            if ($stmtAproved->rowCount() == 0) {
-              // Si no hay resultados con estado 'Aproved'
-              echo '<tr><td colspan="7">No hay usuarios habilitados</td></tr>';
-            } else {
-              while ($rowAproved = $stmtAproved->fetch(PDO::FETCH_ASSOC)) {
-                echo '<tr>';
+              echo '<td class="table-center table-middle">' . $rowAproved['id'] . '</td>';
 
-                echo '<td class="table-center table-middle">' . $rowAproved['id'] . '</td>';
+              $stmtDniAproved = $pdo->prepare("SELECT nombre, apellido FROM personal WHERE dni = ?");
+              $stmtDniAproved->execute([$rowAproved['dni']]);
+              $rowDatAproved = $stmtDniAproved->fetch(PDO::FETCH_ASSOC);
 
-                $stmtDniAproved = $pdo->prepare("SELECT nombre, apellido FROM personal WHERE dni = ?");
-                $stmtDniAproved->execute([$rowAproved['dni']]);
-                $rowDatAproved = $stmtDniAproved->fetch(PDO::FETCH_ASSOC);
+              if ($rowDatAproved) {
+                echo '<td class="table-center table-middle">' . $rowDatAproved['apellido'] . '</td>';
+                echo '<td class="table-center table-middle">' . $rowDatAproved['nombre'] . '</td>';
+              } else {
+                echo '<td colspan="2">Error al obtener los datos</td>';
+              }
 
-                if ($rowDatAproved) {
-                  echo '<td class="table-center table-middle">' . $rowDatAproved['apellido'] . '</td>';
-                  echo '<td class="table-center table-middle">' . $rowDatAproved['nombre'] . '</td>';
-                } else {
-                  echo '<td colspan="2">Error al obtener los datos</td>';
-                }
+              echo '<td class="table-center table-middle">' . $rowAproved['dni'] . '</td>';
 
-                echo '<td class="table-center table-middle">' . $rowAproved['dni'] . '</td>';
+              $stmtServicioAproved = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
+              $stmtServicioAproved->execute([$rowAproved['servicio']]);
+              $rowServicioAproved = $stmtServicioAproved->fetch(PDO::FETCH_ASSOC);
 
-                $stmtServicioAproved = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
-                $stmtServicioAproved->execute([$rowAproved['servicio']]);
-                $rowServicioAproved = $stmtServicioAproved->fetch(PDO::FETCH_ASSOC);
+              if ($rowServicioAproved) {
+                echo '<td class="table-center table-middle">' . $rowServicioAproved['servicio'] . '</td>';
+              } else {
+                echo '<td>Error al obtener los datos</td>';
+              }
 
-                if ($rowServicioAproved) {
-                  echo '<td class="table-center table-middle">' . $rowServicioAproved['servicio'] . '</td>';
-                } else {
-                  echo '<td>Error al obtener los datos</td>';
-                }
+              echo '<td class="table-left table-middle">';
+              $permisoAproved_array = json_decode($rowAproved['permisos'], true);
 
-                echo '<td class="table-left table-middle">';
-                $permisoAproved_array = json_decode($rowAproved['permisos'], true);
+              if ($permisoAproved_array !== null) {
+                $permisos_activos = [];
+                foreach ($permisoAproved_array as $permisAproved) {
+                  $nombre_permiso = $permisAproved['permiso'];
+                  $activo = $permisAproved['activo'];
 
-                if ($permisoAproved_array !== null) {
-                  $permisos_activos = [];
-                  foreach ($permisoAproved_array as $permisAproved) {
-                    $nombre_permiso = $permisAproved['permiso'];
-                    $activo = $permisAproved['activo'];
-
-                    if ($activo == "si") {
-                      $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
-                    }
+                  if ($activo == "si") {
+                    $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
                   }
-                  echo implode('</div>', $permisos_activos);
                 }
-                echo '</td>';
+                echo implode('</div>', $permisos_activos);
+              }
+              echo '</td>';
 
-                echo '<td class="table-center table-middle">
+              echo '<td class="table-center table-middle">
                 <button class="btn-green" onclick="loadInfo(\'' . $rowAproved['dni'] . '\')"><i class="fa-solid fa-hand-pointer"></i></button>
             </td>';
 
-                echo '</tr>';
-              }
+              echo '</tr>';
             }
             ?>
-
           </tbody>
         </table>
+
+        <!-- Agregar controles de paginación -->
+        <div class="pagination">
+          <?php for ($pagina = 1; $pagina <= $total_paginas; $pagina++) : ?>
+            <button class="btn-green buttonPagination" href="?pagina=<?php echo $pagina; ?>">Página <?php echo $pagina; ?></button>
+          <?php endfor; ?>
+        </div>
       </div>
     </div>
   </div>

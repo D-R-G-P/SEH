@@ -4,6 +4,7 @@ require_once 'db.php';
 
 class User extends DB
 {
+    private $id;
     private $dni;
     private $password;
     private $apellido;
@@ -15,6 +16,7 @@ class User extends DB
     private $mp;
     private $sistemas;
     private $rol;
+    private $pr;
 
     public function userExists($dni, $password)
     {
@@ -32,11 +34,12 @@ class User extends DB
 
     public function setUser($dni)
     {
-        $query = $this->connect()->prepare('SELECT password, apellido, nombre, dni, servicio_id, cargo, especialidad, mn, mp, sistemas, rol FROM personal WHERE dni = :dni');
+        $query = $this->connect()->prepare('SELECT id, password, apellido, nombre, dni, servicio_id, cargo, especialidad, mn, mp, sistemas, rol, pr FROM personal WHERE dni = :dni');
         $query->execute(['dni' => $dni]);
 
         if ($query->rowCount()) {
             $result = $query->fetch(PDO::FETCH_ASSOC);
+            $this->id = $result['id'];
             $this->dni = $result['dni'];
             $this->password = $result['password'];
             $this->apellido = $result['apellido'];
@@ -48,9 +51,13 @@ class User extends DB
             $this->mp = $result['mp'];
             $this->sistemas = $result['sistemas'];
             $this->rol = $result['rol'];
+            $this->pr = $result['pr'];
         }
     }
 
+    public function getId() {
+        return $this->id;
+    }
     public function getDni() {
         return $this->dni;
     }
@@ -86,5 +93,8 @@ class User extends DB
     }
     public function getRol() {
         return $this->rol;
+    }
+    public function getPr() {
+        return $this->pr;
     }
 }

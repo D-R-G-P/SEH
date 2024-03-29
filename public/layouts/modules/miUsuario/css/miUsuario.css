@@ -1,0 +1,16 @@
+.formModulo {
+    height: 76%;
+    width: min-content;
+}
+
+form {
+    height: 100%;
+    margin-top: 1vw;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    margin-top: .8vw;
+}

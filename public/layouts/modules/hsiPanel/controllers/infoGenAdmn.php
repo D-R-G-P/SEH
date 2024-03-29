@@ -35,7 +35,7 @@
                 echo '<tr>';
                 echo '<td class="table-middle">Documento del agente</td>';
                 echo '<td class="table-middle">' . $rowInfo['dni'] . '</td>';
-                echo '<input type="hidden" name="dni" value="'.$rowInfo['dni'].'"></input>';
+                echo '<input type="hidden" name="dni" value="' . $rowInfo['dni'] . '"></input>';
                 echo '</tr>';
 
                 echo '<tr>';
@@ -218,9 +218,9 @@
                 echo '<button class="btn-red" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'baja\')"><i class="fa-solid fa-user-xmark"></i> Notificar baja de usuario</button>';
                 echo '<button class="btn-yellow" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'password\')"><i class="fa-solid fa-user-lock"></i> Notificar reinicio de contraseña</button>';
                 echo '<button class="btn-green" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'habilita\')"><i class="fa-solid fa-user-check"></i> Notificar habilitación de usuario</button>';
-                
-                echo '</br><div class="modulo" style="width: 100%;"><h4><u>Pedido</u></h4></br> '.$rowInfo["pedido"].'</div>';
-                
+
+                echo '</br><div class="modulo" style="width: 100%;"><h4><u>Pedido</u></h4></br> ' . $rowInfo["pedido"] . '</div>';
+
                 echo '</td>';
                 echo '</tr>';
                 echo '<tr>';
@@ -231,7 +231,7 @@
                 echo '<input type="hidden" name="dniInfo" value="' . $rowInfo['dni'] . '">';
                 echo '<div style="display: flex; flex-direction: row; justify-content: center;"><input type="checkbox" name="notiCheck" style="margin-right: .2vw;"></input> Realizar notificación</div>';
                 echo '<div style="display: flex; flex-direction: row; justify-content: center;"><input type="checkbox" name="habiCheck" style="margin-right: .2vw;"></input> Habilitar usuario</div>';
-                echo '<textarea name="observacionInfo" id="observacionInfo" style="width: 90%; height: 13vw; resize: none;">'. $rowInfo['observaciones'] .'</textarea>';
+                echo '<textarea name="observacionInfo" id="observacionInfo" style="width: 90%; height: 13vw; resize: none;">' . $rowInfo['observaciones'] . '</textarea>';
                 echo '<button class="btn-green">Agregar/Modificar observación</button>';
                 echo '</form>';
                 echo '</td>';

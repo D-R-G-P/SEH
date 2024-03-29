@@ -18,6 +18,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
         $phone = $_POST['phone'];
 
+        // Verificar si el DNI ya existe en la base de datos
+        $stmt_check_dni = $pdo->prepare("SELECT dni FROM hsi WHERE dni = :dni");
+        $stmt_check_dni->execute([':dni' => $dni]);
+        $existing_dni = $stmt_check_dni->fetchColumn();
+
+        if ($existing_dni) {
+            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis" style="text-align: center;">El agente ya cuenta con usuario, solicite la reactivación mediante pedido.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);} window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '"); });</script>';
+            header("Location: ../hsi.php");
+            exit(); // Finalizar el script después de la redirección
+        }
+
         // Obtener el JSON de permisos existente
         $permisos_json = '[
             {
@@ -135,4 +146,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit(); // Finalizar el script después de la redirección
     }
 }
-?>

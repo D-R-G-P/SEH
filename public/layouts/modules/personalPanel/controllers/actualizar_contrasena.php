@@ -8,6 +8,7 @@ if(isset($_GET['id']) && isset($_GET['dni'])) {
     // Obtener el valor del parámetro GET
     $id = $_GET['id'];
     $dni = $_GET['dni'];
+    $pr = "si";
 
     // Almacenar los mensajes en variables de sesión
     $_SESSION['success_message'] = "ID: $id, DNI: $dni"; // Mensaje de éxito
@@ -23,9 +24,9 @@ if(isset($_GET['id']) && isset($_GET['dni'])) {
     if($pdo) {
         try {
             // Actualizar la contraseña en la base de datos
-            $sql_update = "UPDATE personal SET password=? WHERE id=?";
+            $sql_update = "UPDATE personal SET password=?, pr = ? WHERE id=?";
             $stmt_update = $pdo->prepare($sql_update);
-            $stmt_update->execute([$contrasena_md5, $id]);
+            $stmt_update->execute([$contrasena_md5, $pr, $id]);
 
             $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Contraseña actualizada correctamente.
             </br>

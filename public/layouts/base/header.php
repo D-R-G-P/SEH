@@ -1,9 +1,10 @@
 <?php
 
-    
+
 $user = new User();
 $currentUser = $userSession->getCurrentUser();
 $user->setUser($currentUser);
+// session_start();
 
 // Verificar si el usuario está actualmente logueado
 if (!$userSession->getCurrentUser()) {
@@ -85,49 +86,51 @@ if (!$userSession->getCurrentUser()) {
             </div>
 
             <div class="sistemas">
-
                 <hr>
                 <a href="/SGH/index.php" class="header" title="Inicio"><i class="fa-solid fa-house"></i>
                     <p class="headerLeftP open">Inicio</p>
                 </a>
-                <a href="" class="header" title="Tablero de mando"><i class="fa-solid fa-house-medical-flag"></i>
+                <a href="" class="header" title="Tablero de mando" style="display: none;"><i class="fa-solid fa-house-medical-flag"></i>
                     <p class="headerLeftP open">Tablero de mando</p>
                 </a>
-                <a href="/SGH/public/layouts/modules/personalPanel/personal.php" class="header" title="Gestión de personal"><i class="fa-solid fa-hospital-user"></i>
+                <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/personalPanel/personal.php" class="header" title="Gestión de personal"><i class="fa-solid fa-hospital-user"></i>
                     <p class="headerLeftP open">Gestión de personal</p>
-                </a>
-                <a href="/SGH/public/layouts/modules/hsiPanel/hsi.php" class="header" title="Solicitudes HSI"><img src="/SGH/public/resources/image/hsiLogo.svg" alt="HSI logo" style="width: 1.5vw; height: auto">
+                </a>';} ?>
+                <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/hsiPanel/hsi.php" class="header" title="Solicitudes HSI"><img src="/SGH/public/resources/image/hsiLogo.svg" alt="HSI logo" style="width: 1.5vw; height: auto">
                     <p class="headerLeftP open">Solicitudes de HSI</p>
-                </a>
-                <a href="" class="header" title="Informes de turnos"><i class="fa-regular fa-calendar"></i>
+                </a>';} ?>
+                <a href="" class="header" title="Informes de turnos" style="display: none;"><i class="fa-regular fa-calendar"></i>
                     <p class="headerLeftP open">Informes de turnos</p>
                 </a>
-                <a href="" class="header" title="Informes de camas"><i class="fa-solid fa-bed"></i>
+                <a href="" class="header" title="Informes de camas" style="display: none;"><i class="fa-solid fa-bed"></i>
                     <p class="headerLeftP open">Informes de camas</p>
                 </a>
-                <a href="" class="header" title="Informes de stock"><i class="fa-solid fa-box"></i>
-                    <p class="headerLeftP open">Control de stock</p>
+                <a href="" class="header" title="Depóstio" style="display: none;"><i class="fa-solid fa-box"></i>
+                    <p class="headerLeftP open">Deposito</p>
                 </a>
-                <a href="" class="header" title="Informes de equipos"><i class="fa-solid fa-hard-drive"></i>
+                <a href="" class="header" title="Informes de equipos" style="display: none;"><i class="fa-solid fa-hard-drive"></i>
                     <p class="headerLeftP open">Informes de equipos</p>
                 </a>
-                <a href="" class="header" title="Mantenimiento"><i class="fa-solid fa-screwdriver-wrench"></i>
+                <a href="" class="header" title="Mantenimiento" style="display: none;"><i class="fa-solid fa-screwdriver-wrench"></i>
                     <p class="headerLeftP open">Mantenimiento</p>
                 </a>
-                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Patrimoniales"><i class="fa-solid fa-clipboard-check"></i></i>
+                <a href="" class="header" title="Arquitectura" style="display: none;"><i class="fa-solid fa-pen-ruler"></i>
+                    <p class="headerLeftP open">Arquitectura</p>
+                </a>
+                <a href="" class="header" title="Patrimoniales" style="display: none;"><i class="fa-solid fa-clipboard-check"></i></i>
                     <p class="headerLeftP open">Patrimoniales</p>
                 </a>
-                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Informatica"><i class="fa-solid fa-computer"></i>
+                <a href="" class="header" title="Informatica" style="display: none;"><i class="fa-solid fa-computer"></i>
                     <p class="headerLeftP open">Informática</p>
                 </a>
-                <a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Administración"><i class="fa-solid fa-hammer"></i>
+                <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Administración"><i class="fa-solid fa-hammer"></i>
                     <p class="headerLeftP open">Administración</p>
-                </a>
+                </a>';} ?>
                 <hr>
             </div>
 
             <div class="user">
-                <a href="" class="header" title="Mi usuario"><i class="fa-solid fa-user"></i>
+                <a href="/SGH/public/layouts/modules/miUsuario/miUsuario.php" class="header" title="Mi usuario"><i class="fa-solid fa-user"></i>
                     <p class="headerLeftP open">Mi usuario</p>
                 </a>
                 <a href="/SGH/app/db/logout.php" class="logout" title="Cerrar sesión"><i class="fa-solid fa-power-off"></i>
