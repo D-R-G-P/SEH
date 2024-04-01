@@ -14,6 +14,8 @@ $title = "Panel de administración";
 $db = new DB();
 $pdo = $db->connect();
 
+$servicioUser = $user->getServicio();
+
 
 ?>
 
@@ -22,17 +24,18 @@ $pdo = $db->connect();
 
 
 <div class="content">
+
+	<div class="modulo" style="flex-direction: column; text-align: center;">
+		<h3>Panel de administración</h3>
+		<p>Este modulo esta orientado a la configuración del sistema.</p>
+	</div>
+
 	<?php
 
-	if ($user->getRol() === "Administrador") {
+	if ($user->getRol() === "Administrador" || $user->getRol() === "Dirección") {
 
 	?>
 
-
-		<div class="modulo" style="flex-direction: column; text-align: center;">
-			<h3>Panel de administración</h3>
-			<p>Este modulo esta orientado a la configuración del sistema.</p>
-		</div>
 
 		<div class="modulo">
 			<div>
@@ -211,10 +214,140 @@ $pdo = $db->connect();
 
 	<?php
 
-	} else {
-		echo 'Acceso denegado, no cuenta con los permisos para acceder a este sistema.';
 	}
 
+	if ($user->getRol() === "Administrador" || $user->getRol() === "Dirección" || $user->getRol() === "Jefe de servicio") {
+
+	?>
+
+		<div class="modulo">
+
+			<div class="back" id="backEsp">
+				<div class="divBackForm" id="addEspecialidad" style="display: none;">
+					<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+						<button class="btn-red" onclick="backEsp.style.display = 'none'; addEspecialidad.style.display = 'none'; espForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+					</div>
+					<h3>Nueva especialidad</h3>
+					<form action="controllers/addEspecialidadForm.php" method="post" class="backForm" id="espForm">
+						<div>
+							<label for="especialidad">Nombre de la especialidad</label>
+							<input type="text" name="especialidad" id="especialidad" required>
+							<input type="hidden" name="servicioEsp" value="<?php echo $servicioUser; ?>">
+						</div>
+
+						<button class="btn-green"><b><i class="fa-solid fa-plus"></i> Añadir especialidad</b></button>
+					</form>
+				</div>
+				<div class="divBackForm" id="modEspecialidad" style="display: none;">
+					<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+						<button class="btn-red" onclick="back.style.display = 'none'; modServicio.style.display = 'none'; servicioMod.value = ''; modifyBoss.value = ''" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+					</div>
+					<h3>Modificar especialidad</h3>
+					<form action="controllers/modifyEspecialidad.php" method="post" class="backForm">
+						<input type="hidden" name="idModEsp" id="idModEsp" value="5">
+						<div>
+							<label for="especialidadMod">Nombre de la especialidad:</label>
+							<input type="text" name="especialidadMod" id="especialidadMod">
+						</div>
+
+						<button class="btn-green"><b><i class="fa-solid fa-plus"></i> Modificar especialidad</b></button>
+					</form>
+				</div>
+
+				<div class="divBackForm" id="advertenciaDeleteEsp" style="padding: 1vw; display: none;">
+					<h3 style="margin-bottom: 1vw;">¡Atención!</h3>
+					<p>Está por eliminar una especialidad, no podrá revertir esta acción. De ser un error deberá comunicarse con el administrador general.</p>
+					<div class="datosServicio" style="margin-top: 2.5vw; display: flex; flex-direction: column; text-align: start; width: 100%;">
+						<b style="margin-bottom: 1vw;">Especialidad a eliminar:</b>
+						<div class="modulo">
+							<b>Nombre del servicio:</b>
+							<div class="servicioEspName" id="servicioEspName"></div>
+							<b>Especialidad:</b>
+							<div class="especialidadJefe" id="especialidadJefe"></div>
+						</div>
+
+					</div>
+					<div class="botones" style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+						<button class="btn-red" id="btnDeleteEsp"><i class="fa-solid fa-trash"></i> Eliminar servicio</button>
+						<button class="btn-green" onclick="backEsp.style.display = 'none'; advertenciaDeleteEsp.style.display='none';"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<button class="btn-green" onclick="backEsp.style.display = 'flex'; addEspecialidad.style.display = 'flex';"><b><i class="fa-solid fa-plus"></i> Agregar especialidad</b></button>
+			</div>
+
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Servicio</th>
+						<th>Especialidad</th>
+						<th>Estado</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<script>
+						function setDatosEspecialidad(id, especialidad) {
+							$('#backEsp').css('display', 'flex');
+							$('#modEspecialidad').css('display', 'flex');
+
+							$('#idModEsp').val(id);
+							$('#especialidadMod').val(especialidad);
+						}
+					</script>
+					<?php
+
+					// Realiza la consulta a la tabla servicios
+					$getTable = "SELECT Especialidades.*, Servicios.servicio AS servicio_nombre FROM Especialidades INNER JOIN Servicios ON Especialidades.servicio_id = Servicios.id WHERE Especialidades.estado != 'Eliminado' AND Especialidades.servicio_id = $servicioUser";
+					$stmt = $pdo->query($getTable);
+
+					// Itera sobre los resultados y muestra las filas en la tabla
+					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+						echo '<tr>';
+						echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
+						echo '<td class="table-middle">' . $row['servicio_nombre'] . '</td>';
+
+
+						echo '<td class="table-middle">' . $row['especialidad'] . '</td>';
+						echo '</td>';
+						echo '<td class="table-center table-middle">' . $row['estado'] . '</td>';
+						echo '<td>';
+
+						if ($row['estado'] == "Activo") {
+
+							echo '<button class="btn-green" title="Desactivar especialidad" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoEspecialidad.php?id=' . $row["id"] . '&action=desactivar\'"><i class="fa-solid fa-circle-check"></i></button>
+
+							<button class="btn-green" title="Editar especialidad" onclick="setDatosEspecialidad(' . $row['id'] . ', \'' . $row['especialidad'] . '\')"><i class="fa-solid fa-pen"></i></button>';
+						} else if ($row['estado'] == "Inactivo") {
+
+							echo '<button class="btn-red" title="Activar especialidad" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoEspecialidad.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>
+
+							<button class="btn-yellow" title="Eliminar especialidad" onclick="showDeleteConfirmationEsp(\'' . $row['id'] . '\', \'' . $row['especialidad'] . '\', \'' . $row['servicio_nombre'] . '\')"><i class="fa-solid fa-trash"></i></button>';
+						} else {
+
+							echo 'Error al generar las acciones.';
+						}
+
+						echo '</td>';
+						echo '</tr>';
+					}
+
+
+					?>
+				</tbody>
+			</table>
+		</div>
+
+
+	<?php
+
+	} else {
+
+		echo 'No cuenta con permisos para acceder a este panel';
+	}
 	?>
 </div>
 
