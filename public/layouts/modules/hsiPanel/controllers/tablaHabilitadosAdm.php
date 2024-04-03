@@ -20,9 +20,9 @@ $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 $offset = ($pagina - 1) * $resultados_por_pagina;
 
 // Consulta para obtener los resultados paginados con término de búsqueda y filtro de servicio
-$query = "SELECT hsi.*, s.servicio AS servicio, p.nombre AS nombre, p.apellido AS apellido
+$query = "SELECT hsi.*, servicios.id AS servicio_id, servicios.servicio AS nombre_servicio, p.nombre AS nombre, p.apellido AS apellido
           FROM hsi 
-          LEFT JOIN servicios AS s ON hsi.servicio = s.id
+          LEFT JOIN servicios ON hsi.servicio = servicios.id
           LEFT JOIN personal AS p ON hsi.dni COLLATE utf8mb4_spanish2_ci = p.dni COLLATE utf8mb4_spanish2_ci 
           WHERE hsi.estado = 'habilitado'";
 
@@ -122,7 +122,7 @@ if ($stmt->rowCount() == 0) {
 
         echo '<td class="table-center table-middle">' . $row['dni'] . '</td>';
 
-        echo '<td class="table-center table-middle">' . $row['servicio'] . '</td>';
+        echo '<td class="table-center table-middle">' . $row['nombre_servicio'] . '</td>';
 
         echo '<td class="table-left table-middle">';
         $permisoAproved_array = json_decode($row['permisos'], true);
@@ -142,7 +142,7 @@ if ($stmt->rowCount() == 0) {
         echo '</td>';
 
         echo '<td class="table-center table-middle">
-                <button class="btn-green" onclick="loadInfo(\'' . $row['dni'] . '\')"><i class="fa-solid fa-hand-pointer"></i></button>
+                <button class="btn-green" onclick="loadInfo(\'' . $row['dni'] . '\', \'' . $row['servicio_id'] . '\')"><i class="fa-solid fa-hand-pointer"></i></button>
             </td>';
 
         echo '</tr>';

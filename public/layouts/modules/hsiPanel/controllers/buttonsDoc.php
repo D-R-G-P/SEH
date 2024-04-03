@@ -4,11 +4,12 @@ require_once '../../../../../app/db/db.php';
 session_start(); // Iniciar sesión para usar variables de sesión
 
 // Verificar si se recibieron los parámetros GET esperados
-if(isset($_GET['dni']) && isset($_GET['documento']) && isset($_GET['action'])) {
+if(isset($_GET['dni']) && isset($_GET['documento']) && isset($_GET['action']) && isset($_GET['servicio'])) {
     // Obtener los valores de los parámetros GET
     $dni = $_GET['dni'];
     $documento = $_GET['documento'];
     $action = $_GET['action'];
+    $servicio = $_GET['servicio'];
 
     switch ($action) {
         case 'verificar':
@@ -55,7 +56,8 @@ if(isset($_GET['dni']) && isset($_GET['documento']) && isset($_GET['action'])) {
                 $stmt_update = $pdo->prepare($sql_update);
                 $stmt_update->execute([$documentos_json_updated, $dni]);
 
-                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Estado de "'.$documento.'" actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Estado de "'.$documento.'" actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; document.addEventListener("DOMContentLoaded", function() { loadInfo(\''.$dni.'\', \''.$servicio.'\'); });</script>';
+
             } else {
                 $_SESSION['warning_message'] = "No se encontraron resultados para el DNI proporcionado: $dni"; // Mensaje de advertencia
             }

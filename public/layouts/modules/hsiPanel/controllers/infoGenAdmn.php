@@ -155,13 +155,13 @@
                             case 'pendiente':
                                 $simbolo = 'Pendiente de verificación';
                                 $abrirBtn = '</br><a target="_blank" class="btn-green" title="Ver archivo" href="/SGH/app/hsiDocs/' . $rowInfo["dni"] . '-' . $documento_row . '"><i class="fa-solid fa-file-lines"></i></a>';
-                                $verificarBtn = '<button class="btn-green" onclick="verificDoc(\'' . $rowInfo['dni'] . '\', \'' . $documento . '\', \'verificar\')" title="Marcar como verificado"><i class="fa-solid fa-check"></i> Marcar como verificado</button>';
+                                $verificarBtn = '<button class="btn-green" onclick="verificDoc(\'' . $rowInfo['dni'] . '\', \'' . $documento . '\', \'verificar\', \'' . $rowInfo['servicio'] . '\')" title="Marcar como verificado"><i class="fa-solid fa-check"></i> Marcar como verificado</button>';
                                 break;
                             case 'verificado':
                                 $simbolo = '<div style="display: flex; flex-direction: column;">Verificado';
                                 $abrirBtn = '<a style="text-decoration: none; margin: .3vw .5vw;" target="_blank" class="btn-green" title="Ver archivo" href="/SGH/app/hsiDocs/' . $rowInfo["dni"] . '-' . $documento_row . '"><i class="fa-solid fa-file-lines"></i> Visualizar documento subido</a>';
-                                $verificarBtn = '<div><button class="btn-yellow" onclick="verificDoc(\'' . $rowInfo['dni'] . '\', \'' . $documento . '\', \'desverificar\')"" title="Marcar como pendiente">Pasar a pendiente</button>
-                                <button class="btn-red" onclick="verificDoc(\'' . $rowInfo['dni'] . '\', \'' . $documento . '\', \'anular\')"" title="Marcar como no subido">Pasar a faltante</button></div></div>';
+                                $verificarBtn = '<div><button class="btn-yellow" onclick="verificDoc(\'' . $rowInfo['dni'] . '\', \'' . $documento . '\', \'desverificar\', \'' . $rowInfo['servicio'] . '\')"" title="Marcar como pendiente">Pasar a pendiente</button>
+                                <button class="btn-red" onclick="verificDoc(\'' . $rowInfo['dni'] . '\', \'' . $documento . '\', \'anular\', \'' . $rowInfo['servicio'] . '\')"" title="Marcar como no subido">Pasar a faltante</button></div></div>';
                                 break;
                             default:
                                 $simbolo = 'Error';

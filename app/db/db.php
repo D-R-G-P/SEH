@@ -15,14 +15,6 @@ class DB
         $this->user     = 'root';
         $this->password = 'root';
         $this->charset  = 'utf8mb4';
-
-
-        // https://cp.freehostia.com/#
-        // $this->host     = 'mysql.freehostia.com';
-        // $this->db       = 'crilam1_ei';
-        // $this->user     = 'crilam1_ei';
-        // $this->password = 'Sebastian1!';
-        // $this->charset  = 'utf8mb4';
     }
 
     function connect()

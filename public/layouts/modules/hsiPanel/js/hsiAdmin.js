@@ -55,8 +55,8 @@ function buttonNoti(dni, action) {
     window.location.href = "/SGH/public/layouts/modules/hsiPanel/controllers/buttonNoti.php?dni=" + dni + "&action=" + action;
 }
 
-function verificDoc(dni, documento, action) {
-    window.location.href = "/SGH/public/layouts/modules/hsiPanel/controllers/buttonsDoc.php?dni=" + dni + "&documento=" + documento + "&action=" + action;
+function verificDoc(dni, documento, action, servicio) {
+    window.location.href = "/SGH/public/layouts/modules/hsiPanel/controllers/buttonsDoc.php?dni=" + dni + "&documento=" + documento + "&action=" + action + "&servicio=" + servicio;
 }
 
 function modifyPermiso(dni, permiso, servicio, estado) {
