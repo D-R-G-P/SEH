@@ -154,7 +154,7 @@ $servicioUser = $user->getServicio();
 							$('#modifyBoss').val(jefe).trigger('change');
 						}
 					</script>
-					<?phpa
+					<?php
 
 					// Realiza la consulta a la tabla servicios
 					$getTable = "SELECT * FROM servicios WHERE estado != 'Eliminado'";
