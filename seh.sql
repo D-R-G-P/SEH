@@ -54,6 +54,7 @@ CREATE TABLE `especialidades` (
   `id` int(11) NOT NULL,
   `especialidad` longtext NOT NULL,
   `servicio_id` int(11) NOT NULL
+  `estado` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
