@@ -161,49 +161,52 @@ $servicioUser = $user->getServicio();
 					$stmt = $pdo->query($getTable);
 
 					// Itera sobre los resultados y muestra las filas en la tabla
-					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-						echo '<tr>';
-						echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
-						echo '<td class="table-middle">' . $row['servicio'] . '</td>';
+					if ($stmt->rowCount() == 0) {
+						echo '<td colspan=5 class="table-middle table-center">No hay servicios registradas</td>';
+					} else {
+						while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+							echo '<tr>';
+							echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
+							echo '<td class="table-middle">' . $row['servicio'] . '</td>';
 
-						if ($row['jefe'] != "") {
-							// Realiza una consulta para obtener el nombre y apellido del jefe de servicio
-							$getJefeQuery = "SELECT nombre, apellido FROM personal WHERE dni = ?";
-							$getJefeStmt = $pdo->prepare($getJefeQuery);
-							$getJefeStmt->execute([$row['jefe']]);
-							$jefeInfo = $getJefeStmt->fetch(PDO::FETCH_ASSOC);
-							// Muestra el nombre y apellido del jefe de servicio
-							if ($jefeInfo) {
-								echo '<td class="table-middle">' . $jefeInfo['apellido'] . ' ' . $jefeInfo['nombre'] . '</td>';
+							if ($row['jefe'] != "") {
+								// Realiza una consulta para obtener el nombre y apellido del jefe de servicio
+								$getJefeQuery = "SELECT nombre, apellido FROM personal WHERE dni = ?";
+								$getJefeStmt = $pdo->prepare($getJefeQuery);
+								$getJefeStmt->execute([$row['jefe']]);
+								$jefeInfo = $getJefeStmt->fetch(PDO::FETCH_ASSOC);
+								// Muestra el nombre y apellido del jefe de servicio
+								if ($jefeInfo) {
+									echo '<td class="table-middle">' . $jefeInfo['apellido'] . ' ' . $jefeInfo['nombre'] . '</td>';
+								} else {
+									echo '<td class="table-middle table-center">No se encontró la información del jefe</td>';
+								}
 							} else {
-								echo '<div>No se encontró la información del jefe</div>';
+								echo '<td class="table-middle table-center">No hay jefe registrado';
 							}
-						} else {
-							echo '<td class="table-middle"> No hay jefe registrado';
-						}
-						echo '</td>';
-						echo '<td class="table-center table-middle">' . $row['estado'] . '</td>';
-						echo '<td>';
+							echo '</td>';
+							echo '<td class="table-center table-middle">' . $row['estado'] . '</td>';
+							echo '<td>';
 
-						if ($row['estado'] == "Activo") {
+							if ($row['estado'] == "Activo") {
 
-							echo '<button class="btn-green" title="Desactivar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=desactivar\'"><i class="fa-solid fa-circle-check"></i></button>
+								echo '<button class="btn-green" title="Desactivar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=desactivar\'"><i class="fa-solid fa-circle-check"></i></button>
 
 							<button class="btn-green" title="Editar servicio" onclick="setDatos(' . $row['id'] . ', \'' . $row['servicio'] . '\', \'' . $row['jefe'] . '\')"><i class="fa-solid fa-pen"></i></button>';
-						} else if ($row['estado'] == "Inactivo") {
+							} else if ($row['estado'] == "Inactivo") {
 
-							echo '<button class="btn-red" title="Activar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>
+								echo '<button class="btn-red" title="Activar servicio" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoServicio.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>
 
 							<button class="btn-yellow" title="Eliminar servicio" onclick="showDeleteConfirmation(\'' . $row['id'] . '\', \'' . $row['servicio'] . '\', \'' . $jefeInfo['apellido'] . ' ' . $jefeInfo['nombre'] . '\')"><i class="fa-solid fa-trash"></i></button>';
-						} else {
+							} else {
 
-							echo 'Error al generar las acciones.';
+								echo 'Error al generar las acciones.';
+							}
+
+							echo '</td>';
+							echo '</tr>';
 						}
-
-						echo '</td>';
-						echo '</tr>';
 					}
-
 
 					?>
 				</tbody>
@@ -305,34 +308,39 @@ $servicioUser = $user->getServicio();
 					$stmt = $pdo->query($getTable);
 
 					// Itera sobre los resultados y muestra las filas en la tabla
-					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-						echo '<tr>';
-						echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
-						echo '<td class="table-middle">' . $row['servicio_nombre'] . '</td>';
+					// Itera sobre los resultados y muestra las filas en la tabla
+					if ($stmt->rowCount() == 0) {
+						echo '<td colspan=5 class="table-middle table-center">No hay especialidades registradas</td>';
+					} else {
+						while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+							echo '<tr>';
+							echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
+							echo '<td class="table-middle">' . $row['servicio_nombre'] . '</td>';
 
 
-						echo '<td class="table-middle">' . $row['especialidad'] . '</td>';
-						echo '</td>';
-						echo '<td class="table-center table-middle">' . $row['estado'] . '</td>';
-						echo '<td>';
+							echo '<td class="table-middle">' . $row['especialidad'] . '</td>';
+							echo '</td>';
+							echo '<td class="table-center table-middle">' . $row['estado'] . '</td>';
+							echo '<td>';
 
-						if ($row['estado'] == "Activo") {
+							if ($row['estado'] == "Activo") {
 
-							echo '<button class="btn-green" title="Desactivar especialidad" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoEspecialidad.php?id=' . $row["id"] . '&action=desactivar\'"><i class="fa-solid fa-circle-check"></i></button>
+								echo '<button class="btn-green" title="Desactivar especialidad" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoEspecialidad.php?id=' . $row["id"] . '&action=desactivar\'"><i class="fa-solid fa-circle-check"></i></button>
 
 							<button class="btn-green" title="Editar especialidad" onclick="setDatosEspecialidad(' . $row['id'] . ', \'' . $row['especialidad'] . '\')"><i class="fa-solid fa-pen"></i></button>';
-						} else if ($row['estado'] == "Inactivo") {
+							} else if ($row['estado'] == "Inactivo") {
 
-							echo '<button class="btn-red" title="Activar especialidad" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoEspecialidad.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>
+								echo '<button class="btn-red" title="Activar especialidad" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoEspecialidad.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>
 
 							<button class="btn-yellow" title="Eliminar especialidad" onclick="showDeleteConfirmationEsp(\'' . $row['id'] . '\', \'' . $row['especialidad'] . '\', \'' . $row['servicio_nombre'] . '\')"><i class="fa-solid fa-trash"></i></button>';
-						} else {
+							} else {
 
-							echo 'Error al generar las acciones.';
+								echo 'Error al generar las acciones.';
+							}
+
+							echo '</td>';
+							echo '</tr>';
 						}
-
-						echo '</td>';
-						echo '</tr>';
 					}
 
 
