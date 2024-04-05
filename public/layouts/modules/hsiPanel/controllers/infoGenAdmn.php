@@ -45,12 +45,12 @@
 
                 echo '<tr>';
                 echo '<td class="table-middle">Mail</td>';
-                echo '<td class="table-middle"><input type="email" onchange="cambios(\'cambiado\')" style="width: 100%;" name="mail" id="mail" value="' . $rowInfo['mail'] . '"></input></td>';
+                echo '<td class="table-middle"><input type="email" onchange="marcarCambio()" style="width: 100%;" name="mail" id="mail" value="' . $rowInfo['mail'] . '"></input></td>';
                 echo '</tr>';
 
                 echo '<tr>';
                 echo '<td class="table-middle">Telefono</td>';
-                echo '<td class="table-middle"><input type="tel" style="width: 100%;" name="phone" id="phone" value="' . $rowInfo['telefono'] . '"></input></td>';
+                echo '<td class="table-middle"><input onchange="marcarCambio()" type="tel" style="width: 100%;" name="phone" id="phone" value="' . $rowInfo['telefono'] . '"></input></td>';
                 echo '</tr>';
 
                 echo '<tr>';
@@ -85,17 +85,17 @@
 
                 echo '<tr>';
                 echo '<td class="table-middle">ID de persona</td>';
-                echo '<td class="table-middle"><input type="number" style="width: 100%;" name="idPersona" id="idPersona" value="' . $rowInfo['id_persona'] . '"></input></td>';
+                echo '<td class="table-middle"><input onchange="marcarCambio()" type="number" style="width: 100%;" name="idPersona" id="idPersona" value="' . $rowInfo['id_persona'] . '"></input></td>';
                 echo '</tr>';
 
                 echo '<tr>';
                 echo '<td class="table-middle">Nombre de usuario</td>';
-                echo '<td class="table-middle"><input type="text" style="width: 100%;" name="nombreUsuario" id="nombreUsuario" value="' . $rowInfo['nombre_usuario'] . '"></input></td>';
+                echo '<td class="table-middle"><input onchange="marcarCambio()" type="text" style="width: 100%;" name="nombreUsuario" id="nombreUsuario" value="' . $rowInfo['nombre_usuario'] . '"></input></td>';
                 echo '</tr>';
 
                 echo '<tr>';
                 echo '<td class="table-middle">ID del usuario</td>';
-                echo '<td class="table-middle"><input type="number" style="width: 100%;" name="idUsuario" id="idUsuario" value="' . $rowInfo['id_usuario'] . '"></input></td>';
+                echo '<td class="table-middle"><input onchange="marcarCambio()" type="number" style="width: 100%;" name="idUsuario" id="idUsuario" value="' . $rowInfo['id_usuario'] . '"></input></td>';
                 echo '</tr>';
 
                 echo '</tbody>';
@@ -236,7 +236,7 @@
                 echo '<input type="hidden" name="dniInfo" value="' . $rowInfo['dni'] . '">';
                 echo '<div style="display: flex; flex-direction: row; justify-content: center;"><input type="checkbox" name="notiCheck" style="margin-right: .2vw;"></input> Realizar notificación</div>';
                 echo '<div style="display: flex; flex-direction: row; justify-content: center;"><input type="checkbox" name="habiCheck" style="margin-right: .2vw;"></input> Habilitar usuario</div>';
-                echo '<textarea name="observacionInfo" id="observacionInfo" style="width: 90%; height: 13vw; resize: none;">' . $rowInfo['observaciones'] . '</textarea>';
+                echo '<textarea onchange="marcarCambio()" name="observacionInfo" id="observacionInfo" style="width: 90%; height: 13vw; resize: none;">' . $rowInfo['observaciones'] . '</textarea>';
                 echo '<button class="btn-green">Agregar/Modificar observación</button>';
                 echo '</form>';
                 echo '</td>';

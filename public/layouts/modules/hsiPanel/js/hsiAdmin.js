@@ -48,7 +48,14 @@ function select(servicio) {
     $(document).ready(function () {
         $('#servicioSelect').select2();
     });
+
+    // Asignar el valor al select
     $("#servicioSelect").val(servicio).trigger("change");
+
+    // Agregar el evento onchange
+    $('#servicioSelect').on('change', function() {
+        marcarCambio();
+    });
 }
 
 function buttonNoti(dni, action) {
