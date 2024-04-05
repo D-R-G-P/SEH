@@ -18,7 +18,7 @@
             $stmtInfo->execute();
 
             while ($rowInfo = $stmtInfo->fetch(PDO::FETCH_ASSOC)) {
-                echo '<form style="overflow-y: hidden; max-height: max-content;" action="/SGH/public/layouts/modules/hsiPanel/controllers/agentForm.php" method="post">';
+                echo '<form id="infoForm" style="overflow-y: hidden; max-height: max-content;" action="/SGH/public/layouts/modules/hsiPanel/controllers/agentForm.php" method="post">';
                 echo '<table style="max-width: max-content;">';
                 echo '<thead>';
                 echo '<tr>';
@@ -38,9 +38,14 @@
                 echo '<input type="hidden" name="dni" value="' . $rowInfo['dni'] . '"></input>';
                 echo '</tr>';
 
+                echo '<script>
+                    
+            </script>
+            ';
+
                 echo '<tr>';
                 echo '<td class="table-middle">Mail</td>';
-                echo '<td class="table-middle"><input type="email" style="width: 100%;" name="mail" id="mail" value="' . $rowInfo['mail'] . '"></input></td>';
+                echo '<td class="table-middle"><input type="email" onchange="cambios(\'cambiado\')" style="width: 100%;" name="mail" id="mail" value="' . $rowInfo['mail'] . '"></input></td>';
                 echo '</tr>';
 
                 echo '<tr>';
@@ -226,7 +231,7 @@
                 echo '<tr>';
 
                 echo '<td style="height: 100%;">';
-                echo '<form action="/SGH/public/layouts/modules/hsiPanel/controllers/observacionForm.php" id="infoForm" style="display: flex; justify-content: center; align-items: center; flex-direction: column;" method="post">';
+                echo '<form id="obserForm" action="/SGH/public/layouts/modules/hsiPanel/controllers/observacionForm.php" style="display: flex; justify-content: center; align-items: center; flex-direction: column;" method="post">';
                 echo '<h4 style="margin-bottom: .3vw;">Agregar observación</h4>';
                 echo '<input type="hidden" name="dniInfo" value="' . $rowInfo['dni'] . '">';
                 echo '<div style="display: flex; flex-direction: row; justify-content: center;"><input type="checkbox" name="notiCheck" style="margin-right: .2vw;"></input> Realizar notificación</div>';

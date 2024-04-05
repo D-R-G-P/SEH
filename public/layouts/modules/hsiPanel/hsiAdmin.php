@@ -31,16 +31,67 @@ $pdo = $db->connect();
     </div>
 
     <div class="back" id="back">
-        <div class="divBackForm infoModule" id="infoModule" style="display: none;">
-            <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
-                <button class="btn-red" onclick="back.style.display = 'none'; infoModule.style.display = 'none'; infoForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
-            </div>
-            <h3>Información de usuario</h3>
-
-            <div class="cuerpoInfo" id="infoUsuario">
-            </div>
+    <div class="divBackForm infoModule" id="infoModule" style="display: none;">
+        <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
+            <button class="btn-red close-btn" onclick="cerrarVista();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+        </div>
+        <h3>Información de usuario</h3>
+        <div class="cuerpoInfo" id="infoUsuario">
+            <!-- Contenido generado dinámicamente -->
         </div>
     </div>
+</div>
+
+<script>
+    function cambios(variable) {
+                        // ESTO FUNCIONA, ADAPTAR A ESTO
+                        var cambio = variable;
+                        if (cambio == "cambiado") {
+                            console.log("gol");
+                        }
+                };
+    // Variable para controlar si se realizaron cambios en el formulario
+    var cambiosRealizados = false;
+
+    // Función para marcar que se realizaron cambios en el formulario
+    function marcarCambios() {
+        cambiosRealizados = true;
+    }
+
+    // Función para verificar cambios sin guardar en los formularios antes de cerrar la vista
+    function verificarCambios() {
+        // Verificar si se realizaron cambios en el formulario
+        if (cambiosRealizados) {
+            // Mostrar confirmación solo si se detectaron cambios
+            if (!confirm('¿Estás seguro de que quieres salir? Hay cambios sin guardar en el formulario.')) {
+                return false; // Cancelar el cierre de la vista si el usuario elige quedarse
+            }
+        }
+        return true; // Permitir el cierre de la vista si no hay cambios sin guardar
+    }
+
+    // Función para cerrar la vista y resetear el formulario
+    function cerrarVista() {
+        // Verificar cambios antes de cerrar la vista
+        if (verificarCambios()) {
+            document.getElementById('back').style.display = 'none';
+            document.getElementById('infoModule').style.display = 'none';
+            document.getElementById('infoForm').reset();
+            // Restablecer la variable de cambios realizados
+            cambiosRealizados = false;
+        }
+    }
+
+    // Asignar el evento input a todos los campos del formulario para detectar cambios
+    var camposFormulario = document.querySelectorAll('#infoForm input, #infoForm select, #infoForm textarea');
+    camposFormulario.forEach(function(campo) {
+        campo.addEventListener('input', marcarCambios);
+    });
+</script>
+
+
+
+
 
     <div class="modulo" style="text-align: center;">
         <h4>Pendientes</h4>
