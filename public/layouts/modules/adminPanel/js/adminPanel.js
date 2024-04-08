@@ -26,3 +26,12 @@ function showDeleteConfirmationEsp(id, especialidad, servicio) {
         window.location.href = '/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoEspecialidad.php?id='+id+'&action=eliminar';
     }
 }
+
+function showDeleteConfirmationCargo(id, cargo) {
+    document.getElementById('backCargo').style.display = "flex";
+    document.getElementById('advertenciaDeleteCargo').style.display = "flex";
+    document.getElementById('cargoName').innerHTML = cargo;
+    btnDeleteCargo.onclick = function() {
+        window.location.href = '/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoCargo.php?id='+id+'&action=eliminar';
+    }
+}

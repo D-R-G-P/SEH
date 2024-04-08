@@ -38,6 +38,7 @@ $servicioUser = $user->getServicio();
 
 
 		<div class="modulo">
+			<h3 style="width: 100%; text-align: center;">Gestión de servicios</h3>
 			<div>
 				<button onclick="back.style.display = 'flex'; addServicio.style.display = 'flex'" class="btn-green"><b><i class="fa-solid fa-plus"></i> Agregar servicio</b></button>
 
@@ -82,7 +83,7 @@ $servicioUser = $user->getServicio();
 						</div>
 						<h3>Modificar servicio</h3>
 						<form action="controllers/modifyService.php" method="post" class="backForm">
-							<input type="hidden" name="idMod" id="idMod" value="5">
+							<input type="hidden" name="idMod" id="idMod">
 							<div>
 								<label for="servicioMod">Nombre del servicio:</label>
 								<input type="text" name="servicioMod" id="servicioMod">
@@ -214,6 +215,125 @@ $servicioUser = $user->getServicio();
 
 		</div>
 
+		<div class="modulo">
+
+			<div class="back" id="backCargo">
+				<div class="divBackForm" id="addCargo" style="display: none;">
+					<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+						<button class="btn-red" onclick="backCargo.style.display = 'none'; addCargo.style.display = 'none'; cargoForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+					</div>
+					<h3>Nuevo cargo</h3>
+					<form action="controllers/addCargoForm.php" method="post" class="backForm" id="cargoForm">
+						<div>
+							<label for="cargo">Nombre del cargo</label>
+							<input type="text" name="cargo" id="cargo" required>
+						</div>
+
+						<button class="btn-green"><b><i class="fa-solid fa-plus"></i> Añadir cargo</b></button>
+					</form>
+				</div>
+
+				<div class="divBackForm" id="advertenciaDeleteCargo" style="padding: 1vw; display: none;">
+					<h3 style="margin-bottom: 1vw;">¡Atención!</h3>
+					<p>Está por eliminar un cargo, no podrá revertir esta acción. De ser un error deberá comunicarse con el administrador general.</p>
+					<div class="datosCargo" style="margin-top: 2.5vw; display: flex; flex-direction: column; text-align: start; width: 100%;">
+						<b style="margin-bottom: 1vw;">Cargo a eliminar:</b>
+						<div class="modulo">
+							<b>Nombre del cargo:</b>
+							<div class="cargoName" id="cargoName"></div>
+						</div>
+						<div class="botones" style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center;">
+							<button class="btn-red" id="btnDeleteCargo"><i class="fa-solid fa-trash"></i> Eliminar cargo</button>
+							<button class="btn-green" onclick="backCargo.style.display = 'none'; advertenciaDeleteCargo.style.display='none';"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="divBackForm" id="modCargo" style="display: none;">
+					<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+						<button class="btn-red" onclick="backCargo.style.display = 'none'; modCargo.style.display = 'none'; formModCargo.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+					</div>
+					<h3>Modificar cargo</h3>
+					<form action="controllers/modifyCargo.php" method="post" id="formModCargo" class="backForm">
+						<input type="hidden" name="idModCargo" id="idModCargo">
+						<div>
+							<label for="cargoMod">Nombre del cargo:</label>
+							<input type="text" name="cargoMod" id="cargoMod">
+						</div>
+
+						<button class="btn-green"><b><i class="fa-solid fa-plus"></i> Modificar cargo</b></button>
+					</form>
+				</div>
+			</div>
+
+			<h3 style="width: 100%; text-align: center;">Gestión de cargos</h3>
+
+			<div>
+				<button class="btn-green" onclick="backCargo.style.display = 'flex'; addCargo.style.display = 'flex';"><b><i class="fa-solid fa-plus"></i> Agregar cargo</b></button>
+			</div>
+
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Cargo</th>
+						<th>Estado</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<script>
+					function setDatosCargo(id, cargo) {
+						$('#backCargo').css('display', 'flex');
+						$('#modCargo').css('display', 'flex');
+
+						$('#idModCargo').val(id);
+						$('#cargoMod').val(cargo);
+					}
+				</script>
+				<tbody>
+					<?php
+
+					// Realiza la consulta a la tabla servicios
+					$getTable = "SELECT * FROM cargos WHERE estado != 'Eliminado'";
+					$stmt = $pdo->query($getTable);
+
+					// Itera sobre los resultados y muestra las filas en la tabla
+					if ($stmt->rowCount() == 0) {
+						echo '<td colspan=5 class="table-middle table-center">No hay especialidades registradas</td>';
+					} else {
+						while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+							echo '<tr>';
+							echo '<td class="table-center table-middle">' . $row['id'] . '</td>';
+							echo '<td class="table-middle">' . $row['cargo'] . '</td>';
+							echo '<td class="table-middle">' . $row['estado'] . '</td>';
+
+							// No hay necesidad de abrir y cerrar una etiqueta </td> aquí, así que he eliminado el </td> extra.
+
+							if ($row['estado'] == "Activo") {
+								echo '<td>';
+								echo '<button class="btn-green" title="Desactivar cargo" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoCargo.php?id=' . $row["id"] . '&action=desactivar\'"><i class="fa-solid fa-circle-check"></i></button>';
+								echo '<button class="btn-green" title="Editar cargo" onclick="setDatosCargo(\'' . $row['id'] . '\', \'' . $row['cargo'] . '\')"><i class="fa-solid fa-pen"></i></button>';
+								echo '</td>';
+							} elseif ($row['estado'] == "Inactivo") {
+								echo '<td>';
+								echo '<button class="btn-red" title="Activar cargo" onclick="window.location.href = \'/SGH/public/layouts/modules/adminPanel/controllers/turnEstadoCargo.php?id=' . $row["id"] . '&action=activar\'"><i class="fa-solid fa-circle-xmark"></i></button>';
+								echo '<button class="btn-yellow" title="Eliminar cargo" onclick="showDeleteConfirmationCargo(\'' . $row['id'] . '\', \'' . $row['cargo'] . '\')"><i class="fa-solid fa-trash"></i></button>';
+								echo '</td>';
+							} else {
+								echo '<td>Error al generar las acciones.</td>';
+							}
+
+							echo '</tr>';
+						}
+					}
+
+					?>
+
+				</tbody>
+			</table>
+
+		</div>
+
 
 	<?php
 
@@ -247,7 +367,7 @@ $servicioUser = $user->getServicio();
 					</div>
 					<h3>Modificar especialidad</h3>
 					<form action="controllers/modifyEspecialidad.php" method="post" class="backForm">
-						<input type="hidden" name="idModEsp" id="idModEsp" value="5">
+						<input type="hidden" name="idModEsp" id="idModEsp">
 						<div>
 							<label for="especialidadMod">Nombre de la especialidad:</label>
 							<input type="text" name="especialidadMod" id="especialidadMod">
@@ -276,6 +396,8 @@ $servicioUser = $user->getServicio();
 					</div>
 				</div>
 			</div>
+
+			<h3 style="width: 100%; text-align: center;">Gestión de especialidades</h3>
 
 			<div>
 				<button class="btn-green" onclick="backEsp.style.display = 'flex'; addEspecialidad.style.display = 'flex';"><b><i class="fa-solid fa-plus"></i> Agregar especialidad</b></button>
