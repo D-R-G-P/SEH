@@ -62,7 +62,7 @@ input[type=number] {
 
 .btn-green {
   color: #fff;
-  background-color: #198754;
+  background-color: rgb(25, 134, 83);
   border: #198754;
   padding: 0.5vw;
   border-radius: 0.5vw;
@@ -235,15 +235,12 @@ tbody:last-child tr:last-child td:last-child {
   border: 0.2vw #000 solid;
   border-radius: .9vw;
   padding: 0 0 1vw 0;
-
-
 }
 
 form {
   overflow-x: hidden;
   overflow-y: scroll;
   max-height: 90%;
-  
 }
 
 form div {
@@ -481,4 +478,14 @@ h3 {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.formTitle {
+  position: relative;
+  top: -3vw;
+}
+
+.select2-container--default .select2-selection--single, .select2-container--default .select2-selection--multiple .select2-selection__arrow {
+  transform: translateY(0vw);
+  color: #000;
 }

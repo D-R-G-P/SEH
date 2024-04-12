@@ -1,0 +1,57 @@
+.equipModule {
+    display: flex;
+    flex-direction: column;
+    margin: 0 .8vw;
+    height: auto;
+    width: auto;
+}
+
+.first {
+    text-align: center;
+}
+
+.seccond {
+    margin: 1vw .8vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.seccond div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1vw;
+    margin-top: .8vw;
+    margin: .8vw 0 .8vw 1vw;
+}
+
+.third {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: .8vw;
+}
+
+.operativo {
+    background-color: #198754;
+    padding: .4vw;
+    border-radius: .8vw;
+    color: #fff;
+    width: max-content;
+}
+
+.problema {
+    background-color: #e6b00f;
+    padding: .4vw;
+    border-radius: .8vw;
+    color: #fff;
+    width: max-content;
+}
+
+.desoperativo {
+    background-color: #dc3545;
+    padding: .4vw;
+    border-radius: .8vw;
+    color: #fff;
+    width: max-content;
+}

@@ -60,7 +60,7 @@ $pdo = $db->connect();
             </div>
 
             <div style="width: 95%; text-align: center;">
-            <button class="btn-green"><i class="fa-solid fa-pencil"></i> Editar perfil</button>
+            <button class="btn-green"><i class="fa-solid fa-pencil"></i> Guardar cambios</button>
             </div>
         </form>
     </div>

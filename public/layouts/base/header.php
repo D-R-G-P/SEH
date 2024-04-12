@@ -108,7 +108,7 @@ if (!$userSession->getCurrentUser()) {
                 <a href="" class="header" title="Depóstio" style="display: none;"><i class="fa-solid fa-box"></i>
                     <p class="headerLeftP open">Deposito</p>
                 </a>
-                <a href="" class="header" title="Informes de equipos" style="display: none;"><i class="fa-solid fa-hard-drive"></i>
+                <a href="/SGH/public/layouts/modules/equipos/equipos.php" class="header" title="Informes de equipos"><i class="fa-solid fa-x-ray"></i>
                     <p class="headerLeftP open">Informes de equipos</p>
                 </a>
                 <a href="" class="header" title="Mantenimiento" style="display: none;"><i class="fa-solid fa-screwdriver-wrench"></i>
