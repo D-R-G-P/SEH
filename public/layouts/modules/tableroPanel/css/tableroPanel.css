@@ -1,0 +1,61 @@
+.tarjetaEquipo {
+    display: flex;
+    flex-direction: row;
+    margin: .8vw .8vw;
+}
+
+.firsti {
+    display: flex;
+    flex-direction: column;
+}
+
+.seccond {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.operativo {
+    background-color: #198754;
+    padding: .4vw;
+    border-radius: .8vw;
+    color: #fff;
+    width: max-content;
+}
+
+.problema {
+    background-color: #e6b00f;
+    padding: .4vw;
+    border-radius: .8vw;
+    color: #fff;
+    width: max-content;
+}
+
+.desoperativo {
+    background-color: #dc3545;
+    padding: .4vw;
+    border-radius: .8vw;
+    color: #fff;
+    width: max-content;
+}
+
+.alertSign {
+    display: none;
+    position: fixed;
+    width: 35vw;
+    background-color: #fff;
+    border-radius: .8vw;
+    border: .2vw #000 solid;
+    padding: .5vw;
+    translate: -53% 4.2vw;
+}
+
+.alertSign::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 93.5%;
+    border: .8vw solid transparent;
+    border-top-color: #000;
+    transform: rotate(180deg);
+}

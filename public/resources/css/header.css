@@ -272,3 +272,9 @@ article {
     background-size: 1vw 1vw;
     background-position: -19vw -19vw;
 }
+
+@media print {
+    .headerLeft, .bars {
+      display: none;
+    }
+  }

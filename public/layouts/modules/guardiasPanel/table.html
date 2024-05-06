@@ -1,0 +1,72 @@
+<table>
+    <thead>
+        <tr>
+            <th class="table-middle table-center">Especialidad</th>
+            <th class="table-middle table-center">Lunes</th>
+            <th class="table-middle table-center">Reg. hs.</th>
+            <th class="table-middle table-center">Martes</th>
+            <th class="table-middle table-center">Reg. hs.</th>
+            <th class="table-middle table-center">Miércoles</th>
+            <th class="table-middle table-center">Reg. hs.</th>
+            <th class="table-middle table-center">Jueves</th>
+            <th class="table-middle table-center">Reg. hs.</th>
+            <th class="table-middle table-center">Viernes</th>
+            <th class="table-middle table-center">Reg. hs.</th>
+            <th class="table-middle table-center">Sábado</th>
+            <th class="table-middle table-center">Reg. hs.</th>
+            <th class="table-middle table-center">Domingo</th>
+            <th class="table-middle table-center">Reg. hs.</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        // Array con las especialidades predefinidas
+        $especialidades = array(
+            "Jefe de guardia",
+            "Emergentologos",
+            "Cirugía General",
+            "Traumatologos",
+            "Neurocirujanos",
+            "Clínica de admisión",
+            "Clinica Salas Pab Rossi (incluye UTMO)",
+            "Gastroenterología CETUS",
+            "Ginecología",
+            "Neonatología",
+            "Nefrología",
+            "Obstetricia",
+            "Cardiología y UCO",
+            "Cirugía Vascular",
+            "UTI"
+        );
+
+        // Iterar sobre las especialidades y generar una fila para cada una
+        foreach ($especialidades as $especialidad) {
+            echo '<tr>';
+            // Columna de Especialidad
+            echo '<td rowspan="2" class="table-middle table-center">' . $especialidad . '</td>';
+
+            // Columnas de días y botones de agregar
+            $dias = array('Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo');
+            foreach ($dias as $dia) {
+
+                // Columna de botón de agregar
+                echo '<td><div style="display: grid; grid-template-columns: repeat(2, 1fr); align-items: center;">
+                    <div style="width: max-content;">Lamas Cristian Jonathan</div>
+                    <div><button class="btn-red" style="width: 2vw; height: 2vw;"><b style="display: flex; justify-content: center; align-items: center;">-</b></button></div>
+                </div></td>';
+                
+                // Columna de horas de registro
+                echo '<td class="table-middle table-center">12</td>';
+            }
+            echo '</tr>';
+            // Segunda fila para botones de agregar
+            echo '<tr>';
+            foreach ($dias as $dia) {
+                // Columna de botón de agregar
+                echo '<td colspan="2"><button class="btn-green" style="width: -webkit-fill-available;"><i class="fa-solid fa-plus"></i> Agregar</button></td>';
+            }
+            echo '</tr>';
+        }
+        ?>
+    </tbody>
+</table>

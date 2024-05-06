@@ -90,7 +90,7 @@ if (!$userSession->getCurrentUser()) {
                 <a href="/SGH/index.php" class="header" title="Inicio"><i class="fa-solid fa-house"></i>
                     <p class="headerLeftP open">Inicio</p>
                 </a>
-                <a href="" class="header" title="Tablero de mando" style="display: none;"><i class="fa-solid fa-house-medical-flag"></i>
+                <a href="/SGH/public/layouts/modules/tableroPanel/tableroPanel.php" class="header" title="Tablero de mando"><i class="fa-solid fa-house-medical-flag"></i>
                     <p class="headerLeftP open">Tablero de mando</p>
                 </a>
                 <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/personalPanel/personal.php" class="header" title="Gestión de personal"><i class="fa-solid fa-hospital-user"></i>
@@ -104,6 +104,9 @@ if (!$userSession->getCurrentUser()) {
                 </a>
                 <a href="" class="header" title="Informes de camas" style="display: none;"><i class="fa-solid fa-bed"></i>
                     <p class="headerLeftP open">Informes de camas</p>
+                </a>
+                <a href="/SGH/public/layouts/modules/guardiasPanel/guardias.php" class="header" title="Esquema de guardias"><i class="fa-solid fa-calendar-week"></i>
+                    <p class="headerLeftP open">Esquema de guardias</p>
                 </a>
                 <a href="" class="header" title="Depóstio" style="display: none;"><i class="fa-solid fa-box"></i>
                     <p class="headerLeftP open">Deposito</p>
