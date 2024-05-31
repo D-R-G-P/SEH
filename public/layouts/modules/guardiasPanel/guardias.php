@@ -53,6 +53,27 @@ $fecha_formateada = $nombre_mes . ' de ' . $anio;
     $(document).ready(function() {
         $('#dniSelect').select2();
     });
+
+    function addEspecialista(fecha, asignante, especialidad, dia) {
+
+        back.style.display = 'flex';
+        addEspDiv.style.display = 'flex';
+        fechaHidden.value = fecha;
+        asignanteHidden.value = asignante;
+        diaText.value = dia;
+        diaHidden.value = dia;
+        especialidadText.value = especialidad;
+        especialidadHidden.value = especialidad;
+    }
+
+    function desafectEspecialistaWarning(apellido, nombre, especialista, dia) {
+        document.getElementById('especialistaWarn').innerHTML = apellido + ' ' + nombre;
+        document.getElementById('documentoWarn').innerHTML = especialista;
+        document.getElementById('diaWarn').innerHTML = dia;
+        document.getElementById('desafecButton').setAttribute('href', 'a');
+        document.getElementById('back').style.display = "flex";
+        document.getElementById('alert').style.display = 'block';
+    }
 </script>
 
 <div class="content">
@@ -62,31 +83,33 @@ $fecha_formateada = $nombre_mes . ' de ' . $anio;
         <p>Este sistema está oreintado a la gestion e informe de los <br> esquemas de guardia de cada servicio</p>
     </div>
 
-    <div class="back" style="display: flex;" id="back">
+    <div class="back" id="back">
 
-        <div class="divBackForm" id="addEspDiv">
+        <div class="divBackForm" id="addEspDiv" style="display: none;">
             <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
                 <button class="btn-red" onclick="back.style.display = 'none'; addEspDiv.style.display = 'none'; addEspForm.reset(); $('#dniSelect').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
             </div>
             <h3 class="formTitle">Agregar especialista</h3>
 
-            <form action="" class="backForm" id="addEspForm" method="post">
+            <form action="/SGH/public/layouts/modules/guardiasPanel/controllers/new_especialista.php" class="backForm" id="addEspForm" method="post">
 
+                <input type="hidden" id="fechaHidden" name="fecha" required>
+                <input type="hidden" id="asignanteHidden" name="asignante" required>
                 <div>
-                    <label for=""></label>
-                    <input type="text" value="" id="dia" disabled>
-                    <input type="hidden" name="" value="">
+                    <label for="diaText">Día</label>
+                    <input type="text" id="diaText" disabled>
+                    <input type="hidden" id="diaHidden" name="dia" required>
                 </div>
 
                 <div>
-                    <label for=""></label>
-                    <input type="text" value="" id="" disabled>
-                    <input type="hidden" name="" value="">
+                    <label for="especialidadText">Especialidad</label>
+                    <input type="text" id="especialidadText" disabled>
+                    <input type="hidden" id="especialidadHidden" name="especialidad" required>
                 </div>
 
                 <div>
                     <label for="dniSelect">Seleccionar agente</label>
-                    <select name="dniSelect" class="select2" id="dniSelect">
+                    <select name="dniSelect" class="select2" id="dniSelect" style="width: 95%;" required>
                         <option value="" selected disabled>Seleccionar agente...</option>
                         <?php
 
@@ -114,10 +137,56 @@ $fecha_formateada = $nombre_mes . ' de ' . $anio;
                     </select>
                 </div>
 
+                <div>
+                    <div>Regimen</div>
+                    <div id="regimen" style="display: flex; flex-direction: row;">
+                        <div style="display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;">
+                            <input type="radio" id="doce" name="regimen" style="width: 2vw; margin-right: 1vw;" value=""></input>
+                            <label for="doce">12 horas</label>
+                        </div>
+
+                        <div style="display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;">
+                            <input type="radio" id="veinticuatro" name="regimen" style="width: 2vw; margin-right: 1vw;"></input>
+                            <label for="veinticuatro">24 horas</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-green"><i class="fa-solid fa-plus"></i> Agregar especialista</button>
+
             </form>
 
         </div>
 
+
+
+        <div class="alert modulo" id="alert" style="width: 40%; text-align: center; display: none; background-color: #ededed;">
+            <h2>¡Atención!</h2>
+            <p>Esta por desafectar a un especialista del listado, esta acción es irreversible</p>
+
+            <div class="modulo" style="margin-top: .8vw; width: 100%; background-color: #e7e4e4;">
+                <div style="display: flex; flex-direction: row;"><b style="margin-right: .3vw;">Especialista: </b>
+                    <p id="especialistaWarn"></p>
+                </div>
+                <div style="display: flex; flex-direction: row;"><b style="margin-right: .3vw;">D.N.I: </b>
+                    <p id="documentoWarn"></p>
+                </div>
+                <div style="display: flex; flex-direction: row;"><b style="margin-right: .3vw;">Día desafectado: </b>
+                    <p id="diaWarn"></p>
+                </div>
+            </div>
+
+            <div>
+                <button class="btn-green" onclick="back.style.display = 'none'; document.getElementById('alert').style.display = 'none';"><i class="fa-solid fa-x"></i> Cancelar</button>
+                <a class="btn-red" id="desafecButton" href="" style="text-decoration: none;"><i class="fa-solid fa-user-minus"></i> Desafectar</a>
+            </div>
+        </div>
     </div>
 
     <div class="modulo">
@@ -167,7 +236,7 @@ $fecha_formateada = $nombre_mes . ' de ' . $anio;
 
         <?php
         echo '<hr>';
-        $diaSelected = "lunes";
+        $diaSelected = "Lunes";
 
         echo '<h3 style="width: 100%; text-align: center; text-transform: capitalize; font-size: 2vw; margin-bottom: 2vw;">' . $diaSelected . '</h3>';
 
@@ -265,7 +334,8 @@ ORDER BY
                 // Imprimir el título de la especialidad si ha cambiado
                 echo '<div class="modulo" style="width: 70%; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">';
                 echo '<h3>' . $row['especialidad'] . '</h3>';
-                echo '<button class="btn-green" onclick="addEspecialista(' . $fechaMes . ', ' . $user->getDni() . ', ' . $row['especialidad'] . ', ' . $diaSelected . ')"><i class="fa-solid fa-plus"></i> Agregar especialista</button>';
+                echo '<button class="btn-green" onclick="addEspecialista(' . $fechaMes . ', \'' . $user->getDni() . '\', \'' . $row['especialidad'] . '\', \'' . $diaSelected . '\')"
+                ><i class="fa-solid fa-plus"></i> Agregar especialista</button>';
                 echo '</div>';
                 // Actualizar la especialidad actual
                 $currentSpecialty = $row['especialidad'];
@@ -279,7 +349,8 @@ ORDER BY
                 echo '<div><b style="margin-bottom: -1.5vw;">';
                 echo $row['apellido'] . ' ' . $row['nombre'] . '</b></br>';
                 echo $row['especialista'] . ' - Regimen de ' . $row['regimen'] . ' hs.</div>';
-                echo '<button class="btn-red" onclick="desafectEspecialistaWarning(' . $row['especialista'] . ')"><i class="fa-solid fa-minus"></i></button>';
+                echo '<button class="btn-red" onclick="desafectEspecialistaWarning(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['especialista'] . '\', \'' . $row['dia'] . '\')"
+                ><i class="fa-solid fa-minus"></i></button>';
                 echo '</div>';
                 // Si hay al menos un especialista asignado, actualiza la bandera
                 $especialista_asignado = true;

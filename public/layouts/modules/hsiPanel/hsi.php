@@ -30,17 +30,36 @@ $servicioFilter = $user->getServicio();
 
   <?php
   // Función para obtener los permisos por DNI
+  $dni = $user->getDni();
   function getPermisosPorDni($dni)
   {
-    // Aquí simulamos la obtención de los permisos desde el JSON proporcionado
-    $json_permisos = '[{"permiso":"Especialista M\u00e9dix","activo":"no"},{"permiso":"Profesional de la Salud","activo":"no"},{"permiso":"Administrativx","activo":"si"},{"permiso":"Enfermero","activo":"no"},{"permiso":"Enfermerx Adultx Mayor","activo":"no"},{"permiso":"Administrador de Agenda","activo":"si"},{"permiso":"Especialista odontol\u00f3gico","activo":"no"},{"permiso":"Administrador de Camas","activo":"si"},{"permiso":"Personal de Im\u00e1genes","activo":"no"},{"permiso":"Personal de Laboratorio","activo":"no"},{"permiso":"Personal de Farmacia","activo":"no"},{"permiso":"Personal de Estad\u00edstica","activo":"no"},{"permiso":"Administrador institucional","activo":"si"}]';
+    $db = new DB();
+    $pdo = $db->connect();
 
-    // Decodificar el JSON y devolverlo como un array
-    return json_decode($json_permisos, true);
-  }
+    $queryInst = "SELECT permisos FROM hsi WHERE dni = :dni";
+    $stmtInst = $pdo->prepare($queryInst);
+    $stmtInst->bindParam(':dni', $dni, PDO::PARAM_INT);
+    $stmtInst->execute();
+
+    // Obtener el resultado de la consulta
+    $result = $stmtInst->fetch(PDO::FETCH_ASSOC);
+
+    // Verificar si se ha obtenido algún resultado
+    if ($result !== false) {
+        // Aquí simulamos la obtención de los permisos desde el JSON proporcionado
+        $json_permisos = $result['permisos'];
+
+        // Decodificar el JSON y devolverlo como un array
+        return json_decode($json_permisos, true);
+    } else {
+        // Manejo del caso en que no se encuentre el DNI
+        return null;
+    }
+}
+
 
   // Verificar si el usuario tiene el permiso de "Administrador institucional"
-  $userDni = ""; // Aquí debes obtener el DNI del usuario, por ejemplo: $user->getDni();
+  $userDni = $user->getDni(); // Aquí debes obtener el DNI del usuario, por ejemplo: $user->getDni();
   $permisos = getPermisosPorDni($userDni);
 
   $tienePermisoAdmin = false;
