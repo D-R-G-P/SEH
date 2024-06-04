@@ -66,11 +66,11 @@ $fecha_formateada = $nombre_mes . ' de ' . $anio;
         especialidadHidden.value = especialidad;
     }
 
-    function desafectEspecialistaWarning(apellido, nombre, especialista, dia) {
+    function desafectEspecialistaWarning(apellido, nombre, especialista, dia, id) {
         document.getElementById('especialistaWarn').innerHTML = apellido + ' ' + nombre;
         document.getElementById('documentoWarn').innerHTML = especialista;
         document.getElementById('diaWarn').innerHTML = dia;
-        document.getElementById('desafecButton').setAttribute('href', 'a');
+        document.getElementById('desafecButton').setAttribute('href', '/SGH/public/layouts/modules/guardiasPanel/controllers/desafectar.php?id=' + id);
         document.getElementById('back').style.display = "flex";
         document.getElementById('alert').style.display = 'block';
     }
@@ -144,7 +144,7 @@ $fecha_formateada = $nombre_mes . ' de ' . $anio;
     flex-direction: row;
     justify-content: center;
     align-items: center;">
-                            <input type="radio" id="doce" name="regimen" style="width: 2vw; margin-right: 1vw;" value=""></input>
+                                <input type="radio" id="doce" name="regimen" style="width: 2vw; margin-right: 1vw;" value="12" required></input>
                             <label for="doce">12 horas</label>
                         </div>
 
@@ -152,7 +152,7 @@ $fecha_formateada = $nombre_mes . ' de ' . $anio;
     flex-direction: row;
     justify-content: center;
     align-items: center;">
-                            <input type="radio" id="veinticuatro" name="regimen" style="width: 2vw; margin-right: 1vw;"></input>
+                            <input type="radio" id="veinticuatro" name="regimen" style="width: 2vw; margin-right: 1vw;" value="24" required></input>
                             <label for="veinticuatro">24 horas</label>
                         </div>
                     </div>
@@ -349,7 +349,7 @@ ORDER BY
                 echo '<div><b style="margin-bottom: -1.5vw;">';
                 echo $row['apellido'] . ' ' . $row['nombre'] . '</b></br>';
                 echo $row['especialista'] . ' - Regimen de ' . $row['regimen'] . ' hs.</div>';
-                echo '<button class="btn-red" onclick="desafectEspecialistaWarning(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['especialista'] . '\', \'' . $row['dia'] . '\')"
+                echo '<button class="btn-red" onclick="desafectEspecialistaWarning(\'' . $row['apellido'] . '\', \'' . $row['nombre'] . '\', \'' . $row['especialista'] . '\', \'' . $row['dia'] . '\', \'' . $row['id'] . '\')"
                 ><i class="fa-solid fa-minus"></i></button>';
                 echo '</div>';
                 // Si hay al menos un especialista asignado, actualiza la bandera

@@ -26,12 +26,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Parámetros de la consulta preparada
         $params = [
-            ':mes' => $servicioSelect,
-            ':usuario_registro' => $mail,
-            ':especialidad' => $phone,
-            ':dia' => $idPersona,
-            ':regimen' => $nombreUsuario,
-            ':especialista' => $idUsuario,
+            ':mes' => $fecha,
+            ':usuario_registro' => $asignante,
+            ':especialidad' => $especialidad,
+            ':dia' => $dia,
+            ':regimen' => $regimen,
+            ':especialista' => $dniSelect,
             ':estado' => 'afectado'
         ];
 
