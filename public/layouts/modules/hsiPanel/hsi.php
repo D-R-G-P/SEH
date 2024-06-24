@@ -46,16 +46,16 @@ $servicioFilter = $user->getServicio();
 
     // Verificar si se ha obtenido algún resultado
     if ($result !== false) {
-        // Aquí simulamos la obtención de los permisos desde el JSON proporcionado
-        $json_permisos = $result['permisos'];
+      // Aquí simulamos la obtención de los permisos desde el JSON proporcionado
+      $json_permisos = $result['permisos'];
 
-        // Decodificar el JSON y devolverlo como un array
-        return json_decode($json_permisos, true);
+      // Decodificar el JSON y devolverlo como un array
+      return json_decode($json_permisos, true);
     } else {
-        // Manejo del caso en que no se encuentre el DNI
-        return null;
+      // Manejo del caso en que no se encuentre el DNI
+      return null;
     }
-}
+  }
 
 
   // Verificar si el usuario tiene el permiso de "Administrador institucional"

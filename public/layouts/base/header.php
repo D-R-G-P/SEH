@@ -114,7 +114,7 @@ if (!$userSession->getCurrentUser()) {
                 <a href="/SGH/public/layouts/modules/equipos/equipos.php" class="header" title="Informes de equipos"><i class="fa-solid fa-x-ray"></i>
                     <p class="headerLeftP open">Informes de equipos</p>
                 </a>
-                <a href="" class="header" title="Mantenimiento" style="display: none;"><i class="fa-solid fa-screwdriver-wrench"></i>
+                <a href="/SGH/public/layouts/modules/mantenimiento/mantenimiento.php" class="header" title="Mantenimiento"><i class="fa-solid fa-screwdriver-wrench"></i>
                     <p class="headerLeftP open">Mantenimiento</p>
                 </a>
                 <a href="" class="header" title="Arquitectura" style="display: none;"><i class="fa-solid fa-pen-ruler"></i>
