@@ -76,7 +76,7 @@ $servicioFilter = $user->getServicio();
     ?>
 
 
-    <div id="back" class="back" style="display: none;">
+    <div id="back" class="back" style="display: flex;">
 
         <div id="newSolicitud" class="divBackForm" style="display: none;">
             <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
@@ -130,6 +130,104 @@ $servicioFilter = $user->getServicio();
                     <button type="submit" class="btn-green"><b><i class="fa-solid fa-plus"></i> Realizar solicitud</b></button>
                 </div>
             </form>
+        </div>
+
+        <div id="newSolicitud" class="divBackForm" style="display: flex;">
+            <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+                <button class="btn-red" onclick="back.style.display = 'none'; newSolicitud.style.display = 'none'; newSolicitudForm.reset(); $('#solicitudServicio').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+            </div>
+
+            <h3 class="formTitle">Solicitud ID: 1</h3>
+
+            <div class="caso">
+                <div class="left" style="margin-right: 1vw;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2">Descripción del caso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2"><b>Servicio</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">DRGP</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><b>Localización</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Locate</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><b>Problema</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Problem</td>
+                            </tr>
+                            <tr>
+                                <td><b>Estado</b></td>
+                                <td>
+                                    <select name="" id="">
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Cumplido">Cumplido</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center;"><b>Reclamante</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center;">Lamas Cristian Jonathan</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="right">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="width: auto;">Intervención de mantenimiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2"><b>Observación</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" rowspan="4" style="height: 100%;"></td>
+                            </tr>
+                            <tr>
+                                
+                            </tr>
+                            <tr>
+                                
+                            </tr>
+                            <tr>
+                                
+                            </tr>
+                            <tr>
+                                <td><b>Estado</b></td>
+                                <td>
+                                    <select name="" id="">
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Cumplido">Cumplido</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Visualizador</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Saraza</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -198,7 +296,7 @@ $servicioFilter = $user->getServicio();
 
     <div class="modulo">
         <div>
-            <button class="btn-green" onclick="back.style.display = 'flex'; newSolicitud.style.display = 'flex';"><i class="fa-solid fa-plus"></i> Nueva solicitud</button>
+            <button class="btn-green" onclick="back.style.display = 'flex'; newSolicitud.style.display = 'flex'; $('#solicitudServicio').val('<?php echo $user->getServicio() ?>').trigger('change');"><i class="fa-solid fa-plus"></i> Nueva solicitud</button>
             <select name="servicioSelect" id="servicioSelect" class="select2">
                 <?php
                 if ($user->getRol() == 'Administrador' || $user->getRol() == 'Dirección') {
@@ -240,49 +338,7 @@ $servicioFilter = $user->getServicio();
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php
-                    $queryP = "SELECT * FROM mantenimiento WHERE servicio = :servicioFilter AND estado_reclamante = 'Pendiente'";
-                    $stmtP = $pdo->prepare($queryP);
-                    $stmtP->bindParam(':servicioFilter', $servicioFilter, PDO::PARAM_INT);
-                    $stmtP->execute();
-
-                    if ($stmtP->rowCount() == 0) {
-                        // Si no hay resultados con estado 'news'
-                        echo '<tr><td colspan="6" style="text-align: center;">No hay notificaciones pendientes</td></tr>';
-                    } else {
-                        while ($rowP = $stmtP->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<tr>';
-
-                            echo '<td class="table-center table-middle">' . $rowP['id'] . '</td>';
-
-                            $stmtServicioP = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
-                            $stmtServicioP->execute([$rowP['servicio']]);
-                            $rowServicioP = $stmtServicioP->fetch(PDO::FETCH_ASSOC);
-
-                            if ($rowServicioP) {
-                                echo '<td class="table-center table-middle">' . $rowServicioP['servicio'] . '</td>';
-                            } else {
-                                echo '<td>Error al obtener los datos</td>';
-                            }
-
-                            $date = new DateTime($rowP['fecha']);
-                            $formattedDate = $date->format('d/m/Y H:i');
-
-                            echo '<td class="table-center table-middle">' . $formattedDate . '</td>';
-
-                            echo '<td class="table-center table-middle">' . $rowP['estado_reclamante'] . '</td>';
-
-                            echo '<td class="table-center table-middle">' . $rowP['problema'] . '</td>';
-
-                            echo '<td class="table-center table-middle">
-                <button onclick="checkNews(' . $rowP['id'] . ')" class="btn-green" title="Marcar como visto"><i class="fa-solid fa-hand-pointer"></i></button>
-            </td>';
-
-                            echo '</tr>';
-                        }
-                    }
-                    ?>
+                <tbody id="tablePen">
                 </tbody>
             </table>
         </div>

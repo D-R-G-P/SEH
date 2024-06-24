@@ -1,0 +1,18 @@
+.caso {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-content: stretch;
+    padding: 1.5vw;
+    margin-top: -3vw;
+}
+
+.caso .left, .caso .right {
+    border: .2vw #000 solid;
+    border-radius: .8vw;
+    padding: .5vw;
+}
+
+select {
+    border-radius: .5vw;
+    width: 100%;
+}

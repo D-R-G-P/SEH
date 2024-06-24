@@ -23,3 +23,34 @@ function checkNews(id) {
         }
     });
 }
+
+function loadTable(servicioFilter) {
+    $.ajax({
+        url: 'controllers/listado_servicio_pendiente.php',
+        type: 'GET',
+        data: { servicioFilter: servicioFilter },
+        success: function(response) {
+            $('#tablePen').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar los datos:', error);
+            console.error('Detalles:', xhr.responseText);
+            $('#tablePen').html('<tr><td colspan="6" style="text-align: center;">Error al cargar los datos</td></tr>');
+        }
+    });
+}
+
+$(document).ready(function() {
+    var initialServicio = $('#servicioSelect').val();
+    loadTable(initialServicio);
+
+    $('#servicioSelect').change(function() {
+        var selectedServicio = $(this).val();
+        loadTable(selectedServicio);
+    });
+});
+
+function checkNews(id) {
+    // Implementa la lógica para manejar la acción del botón
+    alert('Check news for ID: ' + id);
+}

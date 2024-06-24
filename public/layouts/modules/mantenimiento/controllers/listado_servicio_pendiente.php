@@ -1,27 +1,58 @@
 <?php
-// Incluir la conexión a la base de datos
-require_once '../../../../../app/db/db.php';
+require_once '../../../../../app/db/db.php'; // Asegúrate de que la ruta sea correcta
 
-// Crear una instancia de la clase DB
+// Conexión a la base de datos
 $db = new DB();
 $pdo = $db->connect();
 
-$selectServicioFilter = isset($_GET['selectServicioFilter']) ? $_GET['selectServicioFilter'] : '';
+if (isset($_GET['servicioFilter'])) {
+    $servicioFilter = $_GET['servicioFilter'];
+    
+    $queryP = "SELECT * FROM mantenimiento WHERE servicio = :servicioFilter AND estado_reclamante = 'Pendiente'";
+    $stmtP = $pdo->prepare($queryP);
+    $stmtP->bindParam(':servicioFilter', $servicioFilter, PDO::PARAM_INT);
 
-// Consulta para obtener los resultados paginados con término de búsqueda y filtro de servicio
-$query = "SELECT * FROM mantenimiento WHERE estado_reclamante = 'Pendiente'";
+    try {
+        $stmtP->execute();
 
-// Si se proporciona un valor para el servicio, buscar por servicio_id
-if (!empty($selectServicioFilter)) {
-    $query .= " AND servicio = :selectServicioFilter";
+        if ($stmtP->rowCount() == 0) {
+            echo '<tr><td colspan="6" style="text-align: center;">No hay notificaciones pendientes</td></tr>';
+        } else {
+            while ($rowP = $stmtP->fetch(PDO::FETCH_ASSOC)) {
+                echo '<tr>';
+
+                echo '<td class="table-center table-middle">' . $rowP['id'] . '</td>';
+
+                $stmtServicioP = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
+                $stmtServicioP->execute([$rowP['servicio']]);
+                $rowServicioP = $stmtServicioP->fetch(PDO::FETCH_ASSOC);
+
+                if ($rowServicioP) {
+                    echo '<td class="table-center table-middle">' . $rowServicioP['servicio'] . '</td>';
+                } else {
+                    echo '<td>Error al obtener los datos</td>';
+                }
+
+                $date = new DateTime($rowP['fecha']);
+                $formattedDate = $date->format('d/m/Y H:i');
+
+                echo '<td class="table-center table-middle">' . $formattedDate . '</td>';
+
+                echo '<td class="table-center table-middle">' . $rowP['estado_reclamante'] . '</td>';
+
+                echo '<td class="table-center table-middle">' . $rowP['problema'] . '</td>';
+
+                echo '<td class="table-center table-middle">
+                        <button onclick="checkNews(' . $rowP['id'] . ')" class="btn-green" title="Marcar como visto"><i class="fa-solid fa-hand-pointer"></i></button>
+                    </td>';
+
+                echo '</tr>';
+            }
+        }
+    } catch (PDOException $e) {
+        echo '<tr><td colspan="6" style="text-align: center;">Error en la base de datos: ' . htmlspecialchars($e->getMessage()) . '</td></tr>';
+    }
+} else {
+    echo '<tr><td colspan="6" style="text-align: center;">Parámetro de servicio no proporcionado</td></tr>';
 }
-
-$stmtTotal = $pdo->prepare($queryTotal);
-
-if (!empty($selectServicioFilter)) {
-    $stmtTotal->bindValue(':selectServicioFilter', $selectServicioFilter, PDO::PARAM_STR);
-}
-
-// Ejecutar la consulta para obtener el número total de resultados
-$stmtTotal->execute();
-$total_resultados = $stmtTotal->fetchColumn();
+?>
