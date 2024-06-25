@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = htmlspecialchars(trim($_POST["nombre"]));
     $dni = htmlspecialchars(trim($_POST["dni"]));
     $servicio = htmlspecialchars(trim($_POST["servicio"]));
-    $especialidad = htmlspecialchars(trim($_POST["especialidad"])) ?: "0"; // Si está vacío, asigna "0"
+    $especialidad = htmlspecialchars(trim($_POST["especialidad"])) ?: ""; // Si está vacío, asigna "0"
     $mn = htmlspecialchars(trim($_POST["mn"]));
     $mp = htmlspecialchars(trim($_POST["mp"]));
     $sistemas = json_encode([
