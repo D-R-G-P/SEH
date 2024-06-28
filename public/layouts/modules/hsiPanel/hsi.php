@@ -94,27 +94,30 @@ $servicioFilter = $user->getServicio();
             <option value="" selected disabled>Seleccionar agente...</option>
             <?php
 
-            if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
-              // Realiza la consulta a la tabla servicios
-              $getPersonal = "SELECT apellido, nombre, dni FROM personal";
-              $stmt = $pdo->query($getPersonal);
+if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
+  // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi
+  $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
+  $stmt = $pdo->query($getPersonal);
 
-              // Itera sobre los resultados y muestra las filas en la tabla
-              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
-              }
-            } else {
-              // Realiza la consulta a la tabla servicios
-              $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE servicio_id = $servicioFilter";
-              $stmt = $pdo->query($getPersonal);
+  // Itera sobre los resultados y muestra las filas en la tabla
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
+  }
+} else {
+  // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi y filtrando por servicio
+  $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE servicio_id = :servicioFilter AND CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
+  $stmt = $pdo->prepare($getPersonal);
+  $stmt->execute(['servicioFilter' => $servicioFilter]);
 
-              // Itera sobre los resultados y muestra las filas en la tabla
-              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
-              }
-            }
+  // Itera sobre los resultados y muestra las filas en la tabla
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
+  }
+}
 
-            ?>
+?>
+
+
           </select>
         </div>
 

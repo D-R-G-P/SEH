@@ -4,6 +4,10 @@ $(document).ready(function () {
     $('#servicioSelect').select2();
 });
 
+$(".js-example-language").select2({
+    language: "es"
+});
+
 function formatNumber(input) {
     // Eliminar caracteres que no son números
     const inputValue = input.value.replace(/\D/g, '');

@@ -259,6 +259,6 @@ echo '</tbody></table>';
 echo '<div class="pagination">';
 for ($i = 1; $i <= $total_paginas; $i++) {
     $claseBoton = ($pagina == $i) ? 'active' : '';
-    echo '<button class="' . $claseBoton . ' btn-green buttonPagination" onclick="cambiarPagina(' . $i . ')">Página ' . $i . '</button>';
+    echo '<button class="' . $claseBoton . ' btn-green buttonPagination" onclick="cambiarPaginar(' . $i . ')">Página ' . $i . '</button>';
 }
 echo '</div>';
