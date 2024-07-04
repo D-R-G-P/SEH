@@ -94,28 +94,28 @@ $servicioFilter = $user->getServicio();
             <option value="" selected disabled>Seleccionar agente...</option>
             <?php
 
-if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
-  // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi
-  $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
-  $stmt = $pdo->query($getPersonal);
+            if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
+              // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi
+              $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
+              $stmt = $pdo->query($getPersonal);
 
-  // Itera sobre los resultados y muestra las filas en la tabla
-  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
-  }
-} else {
-  // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi y filtrando por servicio
-  $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE servicio_id = :servicioFilter AND CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
-  $stmt = $pdo->prepare($getPersonal);
-  $stmt->execute(['servicioFilter' => $servicioFilter]);
+              // Itera sobre los resultados y muestra las filas en la tabla
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
+              }
+            } else {
+              // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi y filtrando por servicio
+              $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE servicio_id = :servicioFilter AND CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
+              $stmt = $pdo->prepare($getPersonal);
+              $stmt->execute(['servicioFilter' => $servicioFilter]);
 
-  // Itera sobre los resultados y muestra las filas en la tabla
-  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
-  }
-}
+              // Itera sobre los resultados y muestra las filas en la tabla
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
+              }
+            }
 
-?>
+            ?>
 
 
           </select>
@@ -163,6 +163,7 @@ if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
           <select name="permisos[]" id="permisosSelect" style="width: 95%;" multiple="multiple" placeholder="Seleccionar permiso(s)" required>
             <option value="Especialista Médix">Especialista Médix</option>
             <option value="Profesional de la Salud">Profesional de la Salud</option>
+            <option value="Prescriptor">Prescriptor</option>
             <option value="Administrativx">Administrativx</option>
             <option value="Enfermero">Enfermero</option>
             <option value="Enfermerx Adultx Mayor">Enfermerx Adultx Mayor</option>
@@ -223,6 +224,10 @@ if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
         <div>
           <label for="docsAnexoII">Declaración Jurada - Convenio de confidencialidad usuarios HSI <br> (ANEXO II) <b style="color: red;">*</b></label>
           <input type="file" name="docsAnexoII" id="docsAnexoII" accept="application/pdf">
+        </div>
+        <div>
+          <label for="docsPrescriptor">Declaración Jurada - Usuario prescriptor</label>
+          <input type="file" name="docsPrescriptor" id="docsPrescriptor" accept="application/pdf">
         </div>
 
         <button class="btn-green" type="submit"><i class="fa-solid fa-file-arrow-up"></i> Subir archivos</button>
@@ -444,6 +449,9 @@ if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
                       case 'Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)':
                         $documento_nombre = 'ANEXO II';
                         break;
+                      case 'Declaración Jurada - Usuario prescriptor':
+                        $documento_nombre = 'Prescriptor';
+                        break;
                       default:
                         $documento_nombre = $documento; // Si no hay una coincidencia, mantener el nombre original
                         break;
@@ -614,6 +622,10 @@ if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
     },
     {
       "permiso": "Profesional de la Salud",
+      "activo": "no"
+    },
+    {
+      "permiso": "Prescriptor",
       "activo": "no"
     },
     {

@@ -43,38 +43,41 @@ if (isset($_POST['docsDniHidden'])) {
     $documentos_array = json_decode($row['documentos'], true);
 
     // Actualizar el estado de los archivos subidos a "pendiente"
-foreach ($archivos_subidos as $key => $archivo_subido) {
-    // Obtener el tamaño del archivo en KB
-    $tamano_archivo_kb = $_FILES[$key]['size'] / 2;
+    foreach ($archivos_subidos as $key => $archivo_subido) {
+        // Obtener el tamaño del archivo en KB
+        $tamano_archivo_kb = $_FILES[$key]['size'] / 2;
 
-    // Verificar si el tamaño del archivo es mayor a 100KB
-    if ($tamano_archivo_kb > 100) {
-        // Buscar y actualizar el documento correspondiente en el JSON
-        foreach ($documentos_array as &$documento) {
-            switch ($key) {
-                case 'docsDni':
-                    $documento_nombre = "Copia de DNI";
-                    break;
-                case 'docsMatricula':
-                    $documento_nombre = "Copia de matrícula profesional";
-                    break;
-                case 'docsAnexoI':
-                    $documento_nombre = "Solicitud de alta de usuario para HSI (ANEXO I)";
-                    break;
-                case 'docsAnexoII':
-                    $documento_nombre = "Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)";
-                    break;
-                default:
-                    $documento_nombre = "";
-            }
-            // Verificar si el documento coincide con el nombre del archivo subido
-            if ($documento['documento'] === $documento_nombre) {
-                $documento['activo'] = 'pendiente';
-                break; // Salir del bucle interno si se actualiza el documento
+        // Verificar si el tamaño del archivo es mayor a 100KB
+        if ($tamano_archivo_kb > 100) {
+            // Buscar y actualizar el documento correspondiente en el JSON
+            foreach ($documentos_array as &$documento) {
+                switch ($key) {
+                    case 'docsDni':
+                        $documento_nombre = "Copia de DNI";
+                        break;
+                    case 'docsMatricula':
+                        $documento_nombre = "Copia de matrícula profesional";
+                        break;
+                    case 'docsAnexoI':
+                        $documento_nombre = "Solicitud de alta de usuario para HSI (ANEXO I)";
+                        break;
+                    case 'docsAnexoII':
+                        $documento_nombre = "Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)";
+                        break;
+                    case 'docsPrescriptor':
+                        $documento_nombre = "Declaración Jurada - Usuario prescriptor";
+                        break;
+                    default:
+                        $documento_nombre = "";
+                }
+                // Verificar si el documento coincide con el nombre del archivo subido
+                if ($documento['documento'] === $documento_nombre) {
+                    $documento['activo'] = 'pendiente';
+                    break; // Salir del bucle interno si se actualiza el documento
+                }
             }
         }
     }
-}
 
 
 

@@ -40,6 +40,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 "activo": "no"
             },
             {
+                "permiso": "Prescriptor",
+                "activo": "no"
+            },
+            {
                 "permiso": "Administrativx",
                 "activo": "no"
             },
@@ -109,7 +113,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ["documento" => "Copia de DNI", "activo" => "no"],
             ["documento" => "Copia de matrícula profesional", "activo" => "no"],
             ["documento" => "Solicitud de alta de usuario para HSI (ANEXO I)", "activo" => "no"],
-            ["documento" => "Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)", "activo" => "no"]
+            ["documento" => "Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)", "activo" => "no"],
+            ["documento" => "Declaración Jurada - Usuario prescriptor", "activo" => "no"]
         ]);
 
         // Parámetros de la consulta preparada

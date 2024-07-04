@@ -101,6 +101,9 @@
                             case 'Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)':
                                 $documento_nombre = 'ANEXO II';
                                 break;
+                            case 'Declaración Jurada - Usuario prescriptor':
+                                $documento_nombre = 'Prescriptor';
+                                break;
                             default:
                                 $documento_nombre = $documento; // Si no hay una coincidencia, mantener el nombre original
                                 break;
