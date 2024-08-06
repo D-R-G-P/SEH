@@ -22,7 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dni'])) {
         echo '<table style="max-width: max-content;">';
         echo '<thead>';
         echo '<tr>';
-        echo '<th colspan="2">Datos del agente <button style="position: relative; right: -26%;" class="btn-green"><i class="fa-solid fa-floppy-disk"></i></button></th>';
+        echo '<th colspan="2">Datos del agente 
+        <a style="position: relative; right: -23%;" class="btn-green" href="https://wa.me/549' . $rowInfo['telefono'] . '" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+        <button style="position: relative; right: -20%;" class="btn-green"><i class="fa-solid fa-floppy-disk"></i></button></th>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
