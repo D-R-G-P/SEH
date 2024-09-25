@@ -16,13 +16,21 @@ if(isset($_GET['dni']) && isset($_GET['action'])) {
             $observaciones = "Usuario deshabilitado.";
             $estado = "disabled";
             break;
+            $residente = "";
         case 'password':
             $observaciones = "Contraseña reiniciada, credenciales enviadas al mail del agente. Cuenta con 48 horas para acceder. (".$fecha.")";
             $estado = "habilitado";
             break;
+            $residente = "";
         case 'habilita':
-            $observaciones = "Usuario creado correctamente, las credenciales fueron enviadas al mail del agente. Cuenta con 48 horas para acceder. (".$fecha.")";
+            $observaciones = "Usuario creado correctamente, las credenciales fueron enviadas al whatsapp/mail del agente. Cuenta con 48 horas para acceder. (".$fecha.")";
             $estado = "habilitado";
+            break;
+            $residente = "";
+        case 'habilitar':
+            $observaciones = "Usuario creado correctamente, las credenciales fueron enviadas al whatsapp/mail del agente. Cuenta con 48 horas para acceder. (".$fecha.") </br> Usuario habilitado como residente, vencerá al final del año.";
+            $estado = "habilitado";
+            $residente = "si";
             break;
     }
 
@@ -34,9 +42,9 @@ if(isset($_GET['dni']) && isset($_GET['action'])) {
     if($pdo) {
         try {
             // Actualizar la contraseña en la base de datos
-            $sql_update = "UPDATE hsi SET observaciones = ?, new = ?, estado = ? WHERE dni = ?";
+            $sql_update = "UPDATE hsi SET observaciones = ?, new = ?, estado = ?, residente = ? WHERE dni = ?";
             $stmt_update = $pdo->prepare($sql_update);
-            $stmt_update->execute([$observaciones, $new, $estado, $dni]);
+            $stmt_update->execute([$observaciones, $new, $estado, $residente, $dni]);
 
             $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Notificación enviada correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);}</script>';
         } catch (PDOException $e) {

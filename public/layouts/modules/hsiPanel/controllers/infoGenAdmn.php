@@ -18,13 +18,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dni'])) {
     $stmtInfo->execute();
 
     while ($rowInfo = $stmtInfo->fetch(PDO::FETCH_ASSOC)) {
+        if ($rowInfo['residente'] == "si") { echo '<div style="position: absolute; top: 2vw;
+    left: 5.6vw;" class="btn-tematico"><i class="fa-solid fa-user-graduate"></i> Residente</div>'; }
+
         echo '<form id="infoForm" style="overflow-y: hidden; max-height: max-content;" action="/SGH/public/layouts/modules/hsiPanel/controllers/agentForm.php" method="post">';
         echo '<table style="max-width: max-content;">';
         echo '<thead>';
         echo '<tr>';
-        echo '<th colspan="2">Datos del agente 
-        <a style="position: relative; right: -23%;" class="btn-green" href="https://wa.me/549' . $rowInfo['telefono'] . '" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-        <button style="position: relative; right: -20%;" class="btn-green"><i class="fa-solid fa-floppy-disk"></i></button></th>';
+
+        echo '<th colspan="2"><div style="display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;"><p style="color: #6ebcc5;">' . $rowInfo['id'] . '</p> <p>Datos del agente</p> 
+        <div style="display: flex; flex-wrap: nowrap; flex-direction: row; justify-content: flex-end; align-items: center; width: fit-content;">
+    <a class="btn-tematico" style="border: .2vw #fff solid;
+    border-radius: .8vw; justify-content: center;
+    display: flex;
+    align-items: center;" href="https://shc.ms.gba.gov.ar/institucion/484/pacientes/profile/' . $rowInfo['id_persona'] . '" target="_blank"><img src="/SGH/public/resources/image/hsiLogo.svg" style="width: 1.5vw;
+    height: auto;"></img></a>
+    <a class="btn-green" href="https://wa.me/549' . $rowInfo['telefono'] . '" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+    <button class="btn-green"><i class="fa-solid fa-floppy-disk"></i></button></div></div></th>';
+        
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
@@ -107,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dni'])) {
         echo '<table>';
         echo '<thead>';
         echo '<tr>';
-        echo '<th colspan=2>Documentos y permisos</th>';
+        echo '<th colspan=2>Documentos y permisos <button onclick="addDocs(\'' . $rowInfo['dni'] . '\')" class="btn-green" style="position: relative; right: -18%;"><i class="fa-solid fa-file-arrow-up"></i></button></th>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
@@ -231,6 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dni'])) {
         echo '<button class="btn-red" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'baja\')"><i class="fa-solid fa-user-xmark"></i> Notificar baja de usuario</button>';
         echo '<button class="btn-yellow" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'password\')"><i class="fa-solid fa-user-lock"></i> Notificar reinicio de contraseña</button>';
         echo '<button class="btn-green" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'habilita\')"><i class="fa-solid fa-user-check"></i> Notificar habilitación de usuario</button>';
+        echo '<button class="btn-tematico" onclick="buttonNoti(\'' . $rowInfo['dni'] . '\', \'habilitar\')"><i class="fa-solid fa-user-graduate"></i> Notificar habilitación como residente</button>';
 
         echo '</br><div class="modulo" style="width: 100%;"><h4><u>Pedido</u></h4></br> ' . $rowInfo["pedido"] . '</div>';
 

@@ -19,6 +19,26 @@ $pdo = $db->connect();
 <?php require_once '../../base/header.php'; ?>
 <link rel="stylesheet" href="/SGH/public/layouts/modules/hsiPanel/css/hsi.css">
 
+<script>
+    $(document).ready(function () {
+    $('#servicioSelectNew').select2();
+    $('#permisosSelect').select2();
+    $('#dniSelect').select2();
+});
+
+function newUser() {
+    back.style.display = "flex";
+    neUser.style.display = "flex";
+}
+
+function addDocs(dni) {
+    back.style.display = "flex";
+    addDocsDiv.style.display = "flex";
+    docsDniHidden.value = dni;
+    infoModule.style.display = "none";
+}
+</script>
+
 <div class="content">
 
     <div class="modulo" style="text-align: center;">
@@ -31,6 +51,138 @@ $pdo = $db->connect();
     </div>
 
     <div class="back" id="back">
+
+        <div class="divBackForm" id="neUser" style="display: none;">
+            <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+                <button class="btn-red" onclick="back.style.display = 'none'; neUser.style.display = 'none'; newUserForm.reset(); $('#dniSelect').val(null).trigger('change'); $('#servicioSelectNew').val(null).trigger('change'); $('#permisosSelect').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+            </div>
+            <h3>Agregar nuevo usuario</h3>
+
+            <form action="/SGH/public/layouts/modules/hsiPanel/controllers/newUserAdm.php" method="post" class="backForm" id="newUserForm">
+
+                <div>
+                    <label for="dniSelect">DNI</label>
+                    <select name="dni" id="dniSelect" required style="width: 95%;">
+                        <option value="" selected disabled>Seleccionar agente...</option>
+                        <?php
+
+                            // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi
+                            $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
+                            $stmt = $pdo->query($getPersonal);
+
+                            // Itera sobre los resultados y muestra las filas en la tabla
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
+                            }
+
+                        ?>
+
+
+                    </select>
+                </div>
+
+                <div>
+                    <label for="servicioSelectNew">Servicio</label>
+                    <select name="servicio" id="servicioSelectNew" style="width: 95%;">
+                        <option value="" selected disabled>Seleccionar un servicio...</option>
+                        <?php
+
+                            // Realiza la consulta a la tabla servicios
+                            $getServicio = "SELECT id, servicio FROM servicios";
+                            $stmt = $pdo->query($getServicio);
+
+                            // Itera sobre los resultados y muestra las filas en la tabla
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+                            }
+
+                        ?>
+                    </select>
+                </div>
+                <div>
+                    <label for="email">E-mail</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+                <div>
+                    <label for="phone">Telefono (WhatsApp)</label>
+                    <input type="tel" name="phone" id="phone" required>
+                </div>
+                <div>
+                    <label for="permisosSelect">Permisos</label>
+                    <select name="permisos[]" id="permisosSelect" style="width: 95%;" multiple="multiple" placeholder="Seleccionar permiso(s)" required>
+                        <option value="Especialista Médix">Especialista Médix</option>
+                        <option value="Profesional de la Salud">Profesional de la Salud</option>
+                        <option value="Prescriptor">Prescriptor</option>
+                        <option value="Administrativx">Administrativx</option>
+                        <option value="Enfermero">Enfermero</option>
+                        <option value="Enfermerx Adultx Mayor">Enfermerx Adultx Mayor</option>
+                        <option value="Administrador de Agenda">Administrador de Agenda</option>
+                        <option value="Especialista odontológico">Especialista odontológico</option>
+                        <option value="Administrador de Camas">Administrador de Camas</option>
+                        <option value="Personal de Imágenes">Personal de Imágenes</option>
+                        <option value="Personal de Laboratorio">Personal de Laboratorio</option>
+                        <option value="Personal de Farmacia">Personal de Farmacia</option>
+                        <option value="Personal de Estadística">Personal de Estadística</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; flex-direction: row; justify-content: center;">
+                    <button type="submit" class="btn-green"><b><i class="fa-solid fa-plus"></i> Agregar nuevo usuario</b></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="divBackForm" id="addDocsDiv" style="display: none;">
+            <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+                <button class="btn-red" onclick="back.style.display = 'none'; addDocsDiv.style.display = 'none'; addDocsForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+            </div>
+            <h3>Agregar documentación</h3>
+            <p style="color: red;">* documentos obligatorios en formato pdf</p>
+
+            <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUploadAdm.php" class="backForm" method="post" id="addDocsForm" enctype="multipart/form-data">
+                <input type="hidden" name="docsDniHidden" id="docsDniHidden">
+                <div style="margin-top: 6vw;">
+                    <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b style="color: red;">*</b></label>
+                    <input type="file" name="docsDni" id="docsDni" accept="application/pdf">
+                </div>
+                <div>
+                    <label for="docsMatricula">Matricula Profesional <br> (frente y dorso en un archivo) si corresponde</label>
+                    <input type="file" name="docsMatricula" id="docsMatricula" accept="application/pdf">
+                </div>
+                <div>
+                    <label for="docsAnexoI">Solicitud de alta de usuario para HSI <br> (ANEXO I) <b style="color: red;">*</b></label>
+                    <input type="file" name="docsAnexoI" id="docsAnexoI" accept="application/pdf">
+                </div>
+                <div>
+                    <label for="docsAnexoII">Declaración Jurada - Convenio de confidencialidad usuarios HSI <br> (ANEXO II) <b style="color: red;">*</b></label>
+                    <input type="file" name="docsAnexoII" id="docsAnexoII" accept="application/pdf">
+                </div>
+                <div>
+                    <label for="docsPrescriptor">Declaración Jurada - Usuario prescriptor</label>
+                    <input type="file" name="docsPrescriptor" id="docsPrescriptor" accept="application/pdf">
+                </div>
+
+                <button class="btn-green" type="submit"><i class="fa-solid fa-file-arrow-up"></i> Subir archivos</button>
+            </form>
+        </div>
+
+        <div id="warnBajaRes" class="divBackForm" style="display: none; padding: 3vw;">
+            <h3>¡¡ATENCIÓN!!</h3>
+            <p style="margin-top: 2vw;">Está por solicitar la baja de todos los usuarios habilitados como residentes, esto causará que:</p>
+            <ul style="margin-top: 2vw;">
+                <li>Todos los usuarios se marquen para deshabilitar.</li>
+                <li>Todos los usuarios pasaran a pendiente.</li>
+                <li>Se enviará una notificación a los usuarios solicitantes sobre como rehabilitarlos.</li>
+            </ul>
+
+            <h4 style="margin-top: 2vw;">¿Desea continuar?</h4>
+            <div>
+                <button class="btn-red" onclick="back.style.display = 'none'; warnBajaRes.style.display = 'none';"><i class="fa-solid fa-xmark"></i> <b>Cancelar acción</b></button>
+
+                <a class="btn-yellow" href="controllers/bajaRes.php"><i class="fa-solid fa-triangle-exclamation"></i> <b>Establecer baja de residentes</b></a>
+            </div>
+        </div>
+
         <div class="divBackForm infoModule" id="infoModule" style="display: none;">
             <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
                 <button class="btn-red close-btn" onclick="cerrarVista();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
@@ -84,6 +236,12 @@ $pdo = $db->connect();
 
 
     <div class="modulo" style="text-align: center;">
+
+    <div class="inlineDiv">
+      <button class="btn-green" onclick="newUser()"><b><i class="fa-solid fa-plus"></i> Agregar nuevo usuario</b></button>
+      <button class="btn-tematico" onclick="back.style.display = 'flex'; warnBajaRes.style.display = 'flex';"><b><i class="fa-solid fa-user-graduate"></i></i> Establecer baja para usuarios residentes</b></button>
+    </div>
+
         <h4>Pendientes</h4>
 
         <table>
@@ -104,7 +262,12 @@ $pdo = $db->connect();
 
                 $estado = "working";
 
-                $queryPendientes = "SELECT hsi.*, p.nombre AS nombre_persona, p.apellido AS apellido_persona, s.servicio AS nombre_servicio FROM hsi LEFT JOIN personal AS p ON hsi.dni COLLATE utf8mb4_spanish2_ci = p.dni COLLATE utf8mb4_spanish2_ci LEFT JOIN servicios AS s ON hsi.servicio = s.id WHERE hsi.estado = :estado";
+                $queryPendientes = "SELECT hsi.*, p.nombre AS nombre_persona, p.apellido AS apellido_persona, s.servicio AS nombre_servicio 
+                    FROM hsi 
+                    LEFT JOIN personal AS p ON hsi.dni COLLATE utf8mb4_spanish2_ci = p.dni COLLATE utf8mb4_spanish2_ci 
+                    LEFT JOIN servicios AS s ON hsi.servicio = s.id 
+                    WHERE hsi.estado = :estado 
+                    ORDER BY id ASC";
 
                 $stmtPendientes = $pdo->prepare($queryPendientes);
                 $stmtPendientes->bindParam(':estado', $estado, PDO::PARAM_INT);

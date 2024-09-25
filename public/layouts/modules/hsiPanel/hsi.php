@@ -207,9 +207,9 @@ $servicioFilter = $user->getServicio();
       <h3>Agregar documentación</h3>
       <p style="color: red;">* documentos obligatorios en formato pdf</p>
 
-      <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUpload.php" class="backForm" method="post" id="addDocsForm" enctype="multipart/form-data">
+      <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUpload.php" class="backForm" method="post" id="addDocsForm" enctype="multipart/form-data" >
         <input type="hidden" name="docsDniHidden" id="docsDniHidden">
-        <div>
+        <div style="margin-top: 6vw;">
           <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b style="color: red;">*</b></label>
           <input type="file" name="docsDni" id="docsDni" accept="application/pdf">
         </div>
