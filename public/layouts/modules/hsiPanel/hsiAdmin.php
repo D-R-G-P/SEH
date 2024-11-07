@@ -20,23 +20,23 @@ $pdo = $db->connect();
 <link rel="stylesheet" href="/SGH/public/layouts/modules/hsiPanel/css/hsi.css">
 
 <script>
-    $(document).ready(function () {
-    $('#servicioSelectNew').select2();
-    $('#permisosSelect').select2();
-    $('#dniSelect').select2();
-});
+    $(document).ready(function() {
+        $('#servicioSelectNew').select2();
+        $('#permisosSelect').select2();
+        $('#dniSelect').select2();
+    });
 
-function newUser() {
-    back.style.display = "flex";
-    neUser.style.display = "flex";
-}
+    function newUser() {
+        back.style.display = "flex";
+        neUser.style.display = "flex";
+    }
 
-function addDocs(dni) {
-    back.style.display = "flex";
-    addDocsDiv.style.display = "flex";
-    docsDniHidden.value = dni;
-    infoModule.style.display = "none";
-}
+    function addDocs(dni) {
+        back.style.display = "flex";
+        addDocsDiv.style.display = "flex";
+        docsDniHidden.value = dni;
+        infoModule.style.display = "none";
+    }
 </script>
 
 <div class="content">
@@ -66,14 +66,14 @@ function addDocs(dni) {
                         <option value="" selected disabled>Seleccionar agente...</option>
                         <?php
 
-                            // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi
-                            $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
-                            $stmt = $pdo->query($getPersonal);
+                        // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi
+                        $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
+                        $stmt = $pdo->query($getPersonal);
 
-                            // Itera sobre los resultados y muestra las filas en la tabla
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
-                            }
+                        // Itera sobre los resultados y muestra las filas en la tabla
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value=' . $row['dni'] . '>' . $row['apellido'] . ' ' . $row['nombre'] . ' - ' . $row['dni'] . '</option>';
+                        }
 
                         ?>
 
@@ -87,14 +87,14 @@ function addDocs(dni) {
                         <option value="" selected disabled>Seleccionar un servicio...</option>
                         <?php
 
-                            // Realiza la consulta a la tabla servicios
-                            $getServicio = "SELECT id, servicio FROM servicios";
-                            $stmt = $pdo->query($getServicio);
+                        // Realiza la consulta a la tabla servicios
+                        $getServicio = "SELECT id, servicio FROM servicios";
+                        $stmt = $pdo->query($getServicio);
 
-                            // Itera sobre los resultados y muestra las filas en la tabla
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
-                            }
+                        // Itera sobre los resultados y muestra las filas en la tabla
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+                        }
 
                         ?>
                     </select>
@@ -192,9 +192,72 @@ function addDocs(dni) {
                 <!-- Contenido generado dinámicamente -->
             </div>
         </div>
+
+        <div class="divBackForm" id="rolesModule" style="display: none;">
+            <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
+                <button class="btn-red close-btn" onclick="back.style.display = 'none'; rolesModule.style.display = 'none';" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+            </div>
+
+            <h3>Roles de HSI</h3>
+
+            <div class="nuevo" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                <form action="controllers/nuevo_rol.php" class="backForm" method="post">
+                    <div>
+                        <label for="rol_new">Nuevo rol</label>
+                        <div style="display: flex; flex-direction: row;">
+                            <input type="text" id="rol_new" name="rol_new" style="width: 95%;">
+                            <button type="submit" class="btn-green"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <hr style="color: #000; width: 90%; margin: 1vw">
+            <div class="lista" style="overflow: auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $queryRoles = "SELECT * FROM roles_hsi";
+
+                        $stmtRoles = $pdo->prepare($queryRoles);
+                        $stmtRoles->execute();
+
+                        // Handling de error
+                        if ($stmtRoles->errorCode() !== '00000') {
+                            $errorInfo = $stmtRoles->errorInfo();
+                            echo "Error: " . $errorInfo[2];
+                        } else if ($stmtRoles->rowCount() == 0) {
+                            echo '<tr><td colspan="3" class="table-middle table-center">No hay roles creados</td></tr>';
+                        } else {
+                            while ($rowRoles = $stmtRoles->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<tr>';
+                                echo '<td class="table-middle table-center">' . $rowRoles['id'] . '</td>';
+                                echo '<td class="table-middle">' . $rowRoles['rol'] . '</td>';
+                                echo '<td class="table-middle table-center" style="padding: .8vw;">';
+                                if ($rowRoles['estado'] == "activo") {
+                                    echo '<a class="btn-green" title="Click para desactivar" href="controllers/toggleRol.php?rol='. $rowRoles['id'] .'&toggle=desactivar"><i class="fa-solid fa-power-off"></i></a>';
+                                } else {
+                                    echo '<a class="btn-red" title="Click para activar" href="controllers/toggleRol.php?rol='. $rowRoles['id'] .'&toggle=activar"><i class="fa-solid fa-power-off"></i></a>';
+                                }
+                                echo '</tr>';
+                            }
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
+
         // Variable para rastrear si ha habido cambios
         var cambiosRealizados = false;
 
@@ -237,10 +300,11 @@ function addDocs(dni) {
 
     <div class="modulo" style="text-align: center;">
 
-    <div class="inlineDiv">
-      <button class="btn-green" onclick="newUser()"><b><i class="fa-solid fa-plus"></i> Agregar nuevo usuario</b></button>
-      <button class="btn-tematico" onclick="back.style.display = 'flex'; warnBajaRes.style.display = 'flex';"><b><i class="fa-solid fa-user-graduate"></i></i> Establecer baja para usuarios residentes</b></button>
-    </div>
+        <div class="inlineDiv">
+            <button class="btn-green" onclick="newUser()"><b><i class="fa-solid fa-plus"></i> Agregar nuevo usuario</b></button>
+            <button class="btn-tematico" onclick="back.style.display = 'flex'; warnBajaRes.style.display = 'flex';"><b><i class="fa-solid fa-user-graduate"></i></i> Establecer baja para usuarios residentes</b></button>
+            <button class="btn-tematico" onclick="back.style.display = 'flex'; rolesModule.style.display = 'flex';"><i class="fa-solid fa-check-to-slot"></i> <b>Gestionar roles</b></button>
+        </div>
 
         <h4>Pendientes</h4>
 

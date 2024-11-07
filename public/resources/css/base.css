@@ -249,28 +249,28 @@ form div {
 
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
-form {
+* {
   scrollbar-width: auto;
   scrollbar-color: var(--color2) var(--color1) var(--color1);
 }
 
-form::-webkit-scrollbar {
+*::-webkit-scrollbar {
   padding: 1vw;
 }
 
 /* Chrome, Edge, and Safari */
-form::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: .9vw;
 }
 
-form::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background-color: var(--color2);
   border-radius: .8vw;
   border: .2vw solid #dddddd;
   transition: background-color 1s ease-in-out;
 }
 
-form::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
   background-color: var(--color3);
   transition: background-color 1s ease-in-out;
 }
