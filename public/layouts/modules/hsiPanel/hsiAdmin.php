@@ -110,19 +110,16 @@ $pdo = $db->connect();
                 <div>
                     <label for="permisosSelect">Permisos</label>
                     <select name="permisos[]" id="permisosSelect" style="width: 95%;" multiple="multiple" placeholder="Seleccionar permiso(s)" required>
-                        <option value="Especialista Médix">Especialista Médix</option>
-                        <option value="Profesional de la Salud">Profesional de la Salud</option>
-                        <option value="Prescriptor">Prescriptor</option>
-                        <option value="Administrativx">Administrativx</option>
-                        <option value="Enfermero">Enfermero</option>
-                        <option value="Enfermerx Adultx Mayor">Enfermerx Adultx Mayor</option>
-                        <option value="Administrador de Agenda">Administrador de Agenda</option>
-                        <option value="Especialista odontológico">Especialista odontológico</option>
-                        <option value="Administrador de Camas">Administrador de Camas</option>
-                        <option value="Personal de Imágenes">Personal de Imágenes</option>
-                        <option value="Personal de Laboratorio">Personal de Laboratorio</option>
-                        <option value="Personal de Farmacia">Personal de Farmacia</option>
-                        <option value="Personal de Estadística">Personal de Estadística</option>
+                        <?php
+
+                        $getRoles = "SELECT * FROM roles_hsi WHERE estado = 'activo'";
+                        $stmt = $pdo->query($getRoles);
+
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value=' . $row['id'] . '>' . $row['rol'] . '</option>';
+                        }
+
+                        ?>
                     </select>
                 </div>
 
@@ -242,9 +239,9 @@ $pdo = $db->connect();
                                 echo '<td class="table-middle">' . $rowRoles['rol'] . '</td>';
                                 echo '<td class="table-middle table-center" style="padding: .8vw;">';
                                 if ($rowRoles['estado'] == "activo") {
-                                    echo '<a class="btn-green" title="Click para desactivar" href="controllers/toggleRol.php?rol='. $rowRoles['id'] .'&toggle=desactivar"><i class="fa-solid fa-power-off"></i></a>';
+                                    echo '<a class="btn-green" title="Click para desactivar" href="controllers/toggleRol.php?rol=' . $rowRoles['id'] . '&toggle=desactivar"><i class="fa-solid fa-power-off"></i></a>';
                                 } else {
-                                    echo '<a class="btn-red" title="Click para activar" href="controllers/toggleRol.php?rol='. $rowRoles['id'] .'&toggle=activar"><i class="fa-solid fa-power-off"></i></a>';
+                                    echo '<a class="btn-red" title="Click para activar" href="controllers/toggleRol.php?rol=' . $rowRoles['id'] . '&toggle=activar"><i class="fa-solid fa-power-off"></i></a>';
                                 }
                                 echo '</tr>';
                             }
@@ -257,7 +254,6 @@ $pdo = $db->connect();
     </div>
 
     <script>
-
         // Variable para rastrear si ha habido cambios
         var cambiosRealizados = false;
 
@@ -349,20 +345,16 @@ $pdo = $db->connect();
                         echo '<td class="table-middle">' . $rowPendientes['dni'] . '</td>';
                         echo '<td class="table-middle">' . $rowPendientes['nombre_servicio'] . '</td>';
                         echo '<td class="table-middle table-left" style="width: max-content;">';
-                        $permisosPendientes_array = json_decode($rowPendientes['permisos'], true);
 
-                        if ($permisosPendientes_array !== null) {
-                            $permisos_activos = [];
-                            foreach ($permisosPendientes_array as $permisoPendientes) {
-                                $nombre_permiso = $permisoPendientes['permiso'];
-                                $activo = $permisoPendientes['activo'];
+                        $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
 
-                                if ($activo == "si") {
-                                    $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
-                                }
-                            }
-                            echo implode('</div>', $permisos_activos);
+                        $stmtRolesAct = $pdo->prepare($getRolesAct);
+                        $stmtRolesAct->execute([':dni' => $rowPendientes['dni']]); // Pasar el parámetro :dni
+
+                        while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
                         }
+
                         echo '</td>';
                         echo '<td class="table-middle table-left" style="width: max-content;"><div style="display: grid; grid-template-columns: auto min-content; align-items: center;">';
                         $documentos_array = json_decode($rowPendientes['documentos'], true);

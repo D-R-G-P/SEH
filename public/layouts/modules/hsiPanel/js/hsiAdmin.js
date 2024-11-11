@@ -66,8 +66,8 @@ function verificDoc(dni, documento, action, servicio) {
     window.location.href = "/SGH/public/layouts/modules/hsiPanel/controllers/buttonsDoc.php?dni=" + dni + "&documento=" + documento + "&action=" + action + "&servicio=" + servicio;
 }
 
-function modifyPermiso(dni, permiso, servicio, estado) {
-    window.location.href = "/SGH/public/layouts/modules/hsiPanel/controllers/buttonPermisos.php?dni=" + dni + "&permiso=" + permiso + "&servicio=" + servicio + "&estado=" + estado;
+function modifyPermiso(dni, permiso, servicio) {
+    window.location.href = "/SGH/public/layouts/modules/hsiPanel/controllers/buttonPermisos.php?dni=" + dni + "&permiso=" + permiso + "&servicio=" + servicio;
 }
 
 // Función para realizar la búsqueda en tiempo real

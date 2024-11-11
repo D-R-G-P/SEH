@@ -4,14 +4,11 @@ require_once '../../../../../app/db/db.php';
 session_start(); // Iniciar sesión para usar variables de sesión
 
 // Verificar si se recibieron los parámetros GET esperados
-if (isset($_GET['dni']) && isset($_GET['permiso']) && isset($_GET['estado']) && isset($_GET['servicio'])) {
+if (isset($_GET['permiso']) && isset($_GET['dni']) && isset($_GET['servicio'])) {
     // Obtener los valores de los parámetros GET
     $dni = $_GET['dni'];
-    $permiso = $_GET['permiso'];
-    $estado = $_GET['estado'];
+    $permiso = $_GET['permiso']; // El id del rol (que en este caso es el permiso)
     $servicio = $_GET['servicio'];
-
-    $estadomod = ($estado == "si") ? "no" : "si";
 
     // Crear una instancia de la clase DB para conectarse a la base de datos
     $db = new DB();
@@ -20,38 +17,38 @@ if (isset($_GET['dni']) && isset($_GET['permiso']) && isset($_GET['estado']) && 
     // Verificar si la conexión fue exitosa
     if ($pdo) {
         try {
-            // Modificar el JSON en la base de datos
-            $sql = "SELECT permisos FROM hsi WHERE dni = ?";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$dni]);
+            // Verificar si el usuario ya tiene el permiso (en este caso, el rol con id_rol)
+            $sql_check = "SELECT * FROM usuarios_roles_hsi WHERE dni = :dni AND id_rol = :id_rol";
+            $stmt_check = $pdo->prepare($sql_check);
+            $stmt_check->bindParam(':dni', $dni);
+            $stmt_check->bindParam(':id_rol', $permiso); // Usamos id_rol como permiso
+            $stmt_check->execute();
 
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($row) {
-                // Decodificar el JSON
-                $permisos_array = json_decode($row["permisos"], true);
+            // Si el permiso ya existe, se elimina
+            if ($stmt_check->rowCount() > 0) {
+                // Eliminar el permiso
+                $sql_delete = "DELETE FROM usuarios_roles_hsi WHERE dni = :dni AND id_rol = :id_rol";
+                $stmt_delete = $pdo->prepare($sql_delete);
+                $stmt_delete->bindParam(':dni', $dni);
+                $stmt_delete->bindParam(':id_rol', $permiso); // Usamos id_rol como permiso
+                $stmt_delete->execute();
 
-                // Iterar sobre el array de permisos y actualizar el estado del permiso correspondiente
-                foreach ($permisos_array as &$permiso_item) {
-                    if ($permiso_item['permiso'] === $permiso) {
-                        $permiso_item['activo'] = $estadomod;
-                        break; // Terminar el bucle una vez que se ha encontrado y actualizado el permiso
-                    }
-                }
-
-                // Codificar el array de nuevo a JSON
-                $permisos_json_updated = json_encode($permisos_array);
-
-                // Actualizar el JSON en la base de datos
-                $sql_update = "UPDATE hsi SET permisos = ? WHERE dni = ?";
-                $stmt_update = $pdo->prepare($sql_update);
-                $stmt_update->execute([$permisos_json_updated, $dni]);
-
-                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Permiso "' . $permiso . '" actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '", "' . $servicio . '"); });</script>';
+                // Mensaje de éxito si el permiso se eliminó
+                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Permiso eliminado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '", "' . $servicio . '"); });</script>';
             } else {
-                $_SESSION['warning_message'] = "No se encontraron resultados para el DNI proporcionado: $dni"; // Mensaje de advertencia
+                // Si no tiene el permiso, lo agrega
+                $sql_insert = "INSERT INTO usuarios_roles_hsi (dni, id_rol) VALUES (:dni, :id_rol)";
+                $stmt_insert = $pdo->prepare($sql_insert);
+                $stmt_insert->bindParam(':dni', $dni);
+                $stmt_insert->bindParam(':id_rol', $permiso); // Usamos id_rol como permiso
+                $stmt_insert->execute();
+
+                // Mensaje de éxito si el permiso se agregó
+                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Permiso agregado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '", "' . $servicio . '"); });</script>';
             }
+
         } catch (PDOException $e) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al actualizar el JSON: ' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al modificar el permiso: ' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
         }
     } else {
         $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error en la conexión a la base de datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
@@ -62,3 +59,4 @@ if (isset($_GET['dni']) && isset($_GET['permiso']) && isset($_GET['estado']) && 
 
 // Redireccionar de nuevo a la página anterior
 header("Location: " . $_SERVER['HTTP_REFERER']);
+?>

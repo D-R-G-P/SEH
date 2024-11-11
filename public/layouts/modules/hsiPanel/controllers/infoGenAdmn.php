@@ -18,8 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dni'])) {
     $stmtInfo->execute();
 
     while ($rowInfo = $stmtInfo->fetch(PDO::FETCH_ASSOC)) {
-        if ($rowInfo['residente'] == "si") { echo '<div style="position: absolute; top: 2vw;
-    left: 5.6vw;" class="btn-tematico"><i class="fa-solid fa-user-graduate"></i> Residente</div>'; }
+        if ($rowInfo['residente'] == "si") {
+            echo '<div style="position: absolute; top: 2vw;
+    left: 5.6vw;" class="btn-tematico"><i class="fa-solid fa-user-graduate"></i> Residente</div>';
+        }
 
         echo '<form id="infoForm" style="overflow-y: hidden; max-height: max-content;" action="/SGH/public/layouts/modules/hsiPanel/controllers/agentForm.php" method="post">';
         echo '<table style="max-width: max-content;">';
@@ -39,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dni'])) {
     height: auto;"></img></a>
     <a class="btn-green" href="https://wa.me/549' . $rowInfo['telefono'] . '" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
     <button class="btn-green"><i class="fa-solid fa-floppy-disk"></i></button></div></div></th>';
-        
+
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
@@ -208,27 +210,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dni'])) {
 
         echo '<td colspan=2 class="table-middle table-left" style="width: max-content;"><div style="display: grid; grid-template-columns: auto min-content;
                 align-items: center; justify-content: start;">';
-        $permisosInfo_array = json_decode($rowInfo['permisos'], true);
 
-        if ($permisosInfo_array !== null) {
-            foreach ($permisosInfo_array as $permisoInfo) {
-                $permiso = $permisoInfo['permiso'];
-                $activo = $permisoInfo['activo'];
+        // Consulta para obtener todos los roles activos o los roles inactivos que el usuario ya tiene asignados
+        $getRolesAct = "
+    SELECT r.*, urh.id_rol AS usuario_tiene_rol 
+    FROM roles_hsi r
+    LEFT JOIN usuarios_roles_hsi urh ON r.id = urh.id_rol AND urh.dni = :dni
+    WHERE r.estado = 'activo' OR urh.id_rol IS NOT NULL
+";
 
-                switch ($activo) {
-                    case 'si':
-                        $permisoBtn = '<button class="btn-green" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $permiso . '\', \'' . $rowInfo['servicio'] . '\', \'si\')""><i class="fa-solid fa-check"></i></button>';
-                        break;
-                    case 'no':
-                        $permisoBtn = '<button class="btn-red" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $permiso . '\', \'' . $rowInfo['servicio'] . '\', \'no\')""><i class="fa-solid fa-xmark"></i></button>';
-                        break;
-                }
+        // Preparar la consulta para obtener los roles
+        $stmtRolesAct = $pdo->prepare($getRolesAct);
+        $stmtRolesAct->bindParam(':dni', $rowInfo['dni']);
 
-                $icono = '<i class="fa-solid fa-chevron-right"></i>';
+        // Ejecutar la consulta
+        $stmtRolesAct->execute();
 
-                echo $permiso . ' ' . $permisoBtn;
+        // Recorrer todos los roles que cumplen la condición
+        while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
+            // Si el usuario tiene este rol (usuario_tiene_rol no es null), mostrar el botón verde o gris
+            if ($row['usuario_tiene_rol']) {
+                $buttonClass = ($row['estado'] === 'activo') ? 'btn-green' : 'btn-green';
+                echo $row['rol'] . ' <button class="' . $buttonClass . '" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $row['id'] . '\', \'' . $rowInfo['servicio'] . '\', \'si\')"><i class="fa-solid fa-check"></i></button><br>';
+            } else {
+                // Si el usuario no tiene el rol y este es activo, mostrar el botón rojo
+                echo $row['rol'] . ' <button class="btn-red" onclick="modifyPermiso(\'' . $rowInfo['dni'] . '\', \'' . $row['id'] . '\', \'' . $rowInfo['servicio'] . '\')"><i class="fa-solid fa-xmark"></i></button><br>';
             }
         }
+
+
+
+
         echo '</div></td>';
 
         echo '</tbody>';
@@ -269,4 +281,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dni'])) {
         echo '</table>';
     }
 }
-?>

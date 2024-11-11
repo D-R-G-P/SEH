@@ -133,25 +133,18 @@
                 }
 
                 echo '<td colspan=2 class="table-middle table-left" style="width: max-content;">';
-                $permisosInfo_array = json_decode($rowInfo['permisos'], true);
 
-                if ($permisosInfo_array !== null) {
-                    $permisos_activos = [];
-                    foreach ($permisosInfo_array as $permisoInfo) {
-                        $nombre_permiso = $permisoInfo['permiso'];
-                        $activo = $permisoInfo['activo'];
 
-                        if ($activo == "si") {
-                            // Determinar el símbolo a mostrar según el estado activo
-                            $icono = '<i class="fa-solid fa-chevron-right"></i>';
+                $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
 
-                            // Imprimir el nombre del permiso y el icono en las dos columnas del grid
-                            $permisos_activos[] =
-                                '<div>' . $icono . ' ' . $nombre_permiso . '</div>';
-                        }
-                    }
-                    echo implode('', $permisos_activos);
+                $stmtRolesAct = $pdo->prepare($getRolesAct);
+                $stmtRolesAct->execute([':dni' => $dni]); // Pasar el parámetro :dni
+
+                while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
                 }
+
+
                 echo '</td>';
 
                 echo '</tbody>';

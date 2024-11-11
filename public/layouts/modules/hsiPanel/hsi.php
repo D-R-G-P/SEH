@@ -161,19 +161,22 @@ $servicioFilter = $user->getServicio();
         <div>
           <label for="permisosSelect">Permisos</label>
           <select name="permisos[]" id="permisosSelect" style="width: 95%;" multiple="multiple" placeholder="Seleccionar permiso(s)" required>
-            <option value="Especialista Médix">Especialista Médix</option>
-            <option value="Profesional de la Salud">Profesional de la Salud</option>
-            <option value="Prescriptor">Prescriptor</option>
-            <option value="Administrativx">Administrativx</option>
-            <option value="Enfermero">Enfermero</option>
-            <option value="Enfermerx Adultx Mayor">Enfermerx Adultx Mayor</option>
-            <option value="Administrador de Agenda">Administrador de Agenda</option>
-            <option value="Especialista odontológico">Especialista odontológico</option>
-            <option value="Administrador de Camas">Administrador de Camas</option>
-            <option value="Personal de Imágenes">Personal de Imágenes</option>
-            <option value="Personal de Laboratorio">Personal de Laboratorio</option>
-            <option value="Personal de Farmacia">Personal de Farmacia</option>
-            <option value="Personal de Estadística">Personal de Estadística</option>
+
+            <?php
+
+            if ($tienePermisoAdmin === true) {
+              $getRoles = "SELECT * FROM roles_hsi WHERE estado = 'activo'";
+            } else {
+              $getRoles = "SELECT * FROM roles_hsi WHERE estado = 'activo' AND id != 1";
+            }
+            $stmt = $pdo->query($getRoles);
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+              echo '<option value=' . $row['id'] . '>' . $row['rol'] . '</option>';
+            }
+
+            ?>
+
           </select>
         </div>
 
@@ -207,7 +210,7 @@ $servicioFilter = $user->getServicio();
       <h3>Agregar documentación</h3>
       <p style="color: red;">* documentos obligatorios en formato pdf</p>
 
-      <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUpload.php" class="backForm" method="post" id="addDocsForm" enctype="multipart/form-data" >
+      <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUpload.php" class="backForm" method="post" id="addDocsForm" enctype="multipart/form-data">
         <input type="hidden" name="docsDniHidden" id="docsDniHidden">
         <div style="margin-top: 6vw;">
           <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b style="color: red;">*</b></label>
@@ -315,20 +318,14 @@ $servicioFilter = $user->getServicio();
                 }
 
                 echo '<td class="table-left table-middle">';
-                $permisosNew_array = json_decode($rowNews['permisos'], true);
+                $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
 
-                if ($permisosNew_array !== null) {
-                  $permisos_activos = [];
-                  foreach ($permisosNew_array as $permisoNew) {
-                    $nombre_permiso = $permisoNew['permiso'];
-                    $activo = $permisoNew['activo'];
+              $stmtRolesAct = $pdo->prepare($getRolesAct);
+              $stmtRolesAct->execute([':dni' => $rowNews['dni']]); // Pasar el parámetro :dni
 
-                    if ($activo == "si") {
-                      $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
-                    }
-                  }
-                  echo implode('</div>', $permisos_activos);
-                }
+              while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
+                echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
+              }
                 echo '</td>';
 
                 echo '<td class="table-middle">' .  $rowNews['observaciones'] . '</td>';
@@ -409,19 +406,13 @@ $servicioFilter = $user->getServicio();
                 }
 
                 echo '<td class="table-middle table-left" style="width: max-content;">';
-                $permisosWorking_array = json_decode($rowWorking['permisos'], true);
+                $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
 
-                if ($permisosWorking_array !== null) {
-                  $permisos_activos = [];
-                  foreach ($permisosWorking_array as $permisoWorking) {
-                    $nombre_permiso = $permisoWorking['permiso'];
-                    $activo = $permisoWorking['activo'];
+                $stmtRolesAct = $pdo->prepare($getRolesAct);
+                $stmtRolesAct->execute([':dni' => $rowNews['dni']]); // Pasar el parámetro :dni
 
-                    if ($activo == "si") {
-                      $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
-                    }
-                  }
-                  echo implode('</div>', $permisos_activos);
+                while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
+                  echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
                 }
                 echo '</td>';
 
@@ -573,20 +564,15 @@ $servicioFilter = $user->getServicio();
               }
 
               echo '<td class="table-left table-middle">';
-              $permisoAproved_array = json_decode($rowAproved['permisos'], true);
+              $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
 
-              if ($permisoAproved_array !== null) {
-                $permisos_activos = [];
-                foreach ($permisoAproved_array as $permisAproved) {
-                  $nombre_permiso = $permisAproved['permiso'];
-                  $activo = $permisAproved['activo'];
+              $stmtRolesAct = $pdo->prepare($getRolesAct);
+              $stmtRolesAct->execute([':dni' => $rowAproved['dni']]); // Pasar el parámetro :dni
 
-                  if ($activo == "si") {
-                    $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
-                  }
-                }
-                echo implode('</div>', $permisos_activos);
+              while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
+                echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
               }
+
               echo '</td>';
 
               echo '<td class="table-center table-middle">
@@ -616,64 +602,6 @@ $servicioFilter = $user->getServicio();
 
 
 <script id="JSON">
-  [{
-      "permiso": "Especialista Médix",
-      "activo": "no"
-    },
-    {
-      "permiso": "Profesional de la Salud",
-      "activo": "no"
-    },
-    {
-      "permiso": "Prescriptor",
-      "activo": "no"
-    },
-    {
-      "permiso": "Administrativx",
-      "activo": "no"
-    },
-    {
-      "permiso": "Enfermero",
-      "activo": "no"
-    },
-    {
-      "permiso": "Enfermerx Adultx Mayor",
-      "activo": "no"
-    },
-    {
-      "permiso": "Administrador de Agenda",
-      "activo": "no"
-    },
-    {
-      "permiso": "Especialista odontológico",
-      "activo": "no"
-    },
-    {
-      "permiso": "Administrador de Camas",
-      "activo": "no"
-    },
-    {
-      "permiso": "Personal de Imágenes",
-      "activo": "no"
-    },
-    {
-      "permiso": "Personal de Laboratorio",
-      "activo": "no"
-    },
-    {
-      "permiso": "Personal de Farmacia",
-      "activo": "no"
-    },
-    {
-      "permiso": "Personal de Estadística",
-      "activo": "no"
-    },
-    {
-      "permiso": "Administrador institucional",
-      "activo": "no"
-    }
-  ]
-
   [{
       "documento": "Copia de DNI",
       "activo": "no"

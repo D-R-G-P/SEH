@@ -125,19 +125,13 @@ if ($stmt->rowCount() == 0) {
         echo '<td class="table-center table-middle">' . $row['nombre_servicio'] . '</td>';
 
         echo '<td class="table-left table-middle">';
-        $permisoAproved_array = json_decode($row['permisos'], true);
+        $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
 
-        if ($permisoAproved_array !== null) {
-            $permisos_activos = [];
-            foreach ($permisoAproved_array as $permisAproved) {
-                $nombre_permiso = $permisAproved['permiso'];
-                $activo = $permisAproved['activo'];
+        $stmtRolesAct = $pdo->prepare($getRolesAct);
+        $stmtRolesAct->execute([':dni' => $row['dni']]); // Pasar el parámetro :dni
 
-                if ($activo == "si") {
-                    $permisos_activos[] = '<div style="width: max-content;"><i class="fa-solid fa-chevron-right"></i> ' . $nombre_permiso;
-                }
-            }
-            echo implode('</div>', $permisos_activos);
+        while ($rowRol = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
+            echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($rowRol['nombre_rol']) . '</div>';
         }
         echo '</td>';
 
