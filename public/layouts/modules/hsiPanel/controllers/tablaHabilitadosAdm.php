@@ -131,7 +131,7 @@ if ($stmt->rowCount() == 0) {
         $stmtRolesAct->execute([':dni' => $row['dni']]); // Pasar el parámetro :dni
 
         while ($rowRol = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
-            echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($rowRol['nombre_rol']) . '</div>';
+            echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($rowRol['nombre_rol']) . '</div>';
         }
         echo '</td>';
 

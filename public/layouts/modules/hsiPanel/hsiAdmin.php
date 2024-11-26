@@ -31,10 +31,11 @@ $pdo = $db->connect();
         neUser.style.display = "flex";
     }
 
-    function addDocs(dni) {
+    function addDocs(dni, servicio) {
         back.style.display = "flex";
         addDocsDiv.style.display = "flex";
         docsDniHidden.value = dni;
+        docsServicio.value = servicio;
         infoModule.style.display = "none";
     }
 </script>
@@ -138,6 +139,7 @@ $pdo = $db->connect();
 
             <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUploadAdm.php" class="backForm" method="post" id="addDocsForm" enctype="multipart/form-data">
                 <input type="hidden" name="docsDniHidden" id="docsDniHidden">
+                <input type="hidden" name="docsServicio" id="docsServicio">
                 <div style="margin-top: 6vw;">
                     <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b style="color: red;">*</b></label>
                     <input type="file" name="docsDni" id="docsDni" accept="application/pdf">
@@ -352,7 +354,7 @@ $pdo = $db->connect();
                         $stmtRolesAct->execute([':dni' => $rowPendientes['dni']]); // Pasar el parámetro :dni
 
                         while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
+                            echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
                         }
 
                         echo '</td>';

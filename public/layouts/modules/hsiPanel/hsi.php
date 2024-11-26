@@ -31,40 +31,15 @@ $servicioFilter = $user->getServicio();
   <?php
   // Función para obtener los permisos por DNI
   $dni = $user->getDni();
-  function getPermisosPorDni($dni)
-  {
-    $db = new DB();
-    $pdo = $db->connect();
 
-    $queryInst = "SELECT permisos FROM hsi WHERE dni = :dni";
-    $stmtInst = $pdo->prepare($queryInst);
-    $stmtInst->bindParam(':dni', $dni, PDO::PARAM_INT);
-    $stmtInst->execute();
+  $getInstAdm = "SELECT dni, id_rol FROM usuarios_roles_hsi WHERE dni = :dni";
+  $stmtInstAdm = $pdo->prepare($getInstAdm);
+  $stmtInstAdm->bindParam(':dni', $dni, PDO::PARAM_STR);
+  $stmtInstAdm->execute();
 
-    // Obtener el resultado de la consulta
-    $result = $stmtInst->fetch(PDO::FETCH_ASSOC);
-
-    // Verificar si se ha obtenido algún resultado
-    if ($result !== false) {
-      // Aquí simulamos la obtención de los permisos desde el JSON proporcionado
-      $json_permisos = $result['permisos'];
-
-      // Decodificar el JSON y devolverlo como un array
-      return json_decode($json_permisos, true);
-    } else {
-      // Manejo del caso en que no se encuentre el DNI
-      return null;
-    }
-  }
-
-
-  // Verificar si el usuario tiene el permiso de "Administrador institucional"
-  $userDni = $user->getDni(); // Aquí debes obtener el DNI del usuario, por ejemplo: $user->getDni();
-  $permisos = getPermisosPorDni($userDni);
-
-  $tienePermisoAdmin = false;
-  foreach ($permisos as $permiso) {
-    if ($permiso['permiso'] === 'Administrador institucional' && $permiso['activo'] === 'si') {
+  $tienePermisoAdmin = false; // Variable para saber si el usuario tiene el permiso de "Administrador institucional"
+  while ($rowInstAdm = $stmtInstAdm->fetch(PDO::FETCH_ASSOC)) {
+    if ($rowInstAdm['id_rol'] === 1) {
       $tienePermisoAdmin = true;
       break;
     }
@@ -320,12 +295,13 @@ $servicioFilter = $user->getServicio();
                 echo '<td class="table-left table-middle">';
                 $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
 
-              $stmtRolesAct = $pdo->prepare($getRolesAct);
-              $stmtRolesAct->execute([':dni' => $rowNews['dni']]); // Pasar el parámetro :dni
+                $stmtRolesAct = $pdo->prepare($getRolesAct);
+                $stmtRolesAct->execute([':dni' => $rowNews['dni']]);
 
-              while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
-                echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
-              }
+                while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
+                  echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
+                }
+
                 echo '</td>';
 
                 echo '<td class="table-middle">' .  $rowNews['observaciones'] . '</td>';
@@ -405,15 +381,16 @@ $servicioFilter = $user->getServicio();
                   echo '<td>Error al obtener los datos</td>';
                 }
 
-                echo '<td class="table-middle table-left" style="width: max-content;">';
+                echo '<td class="table-left table-middle">';
                 $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
 
                 $stmtRolesAct = $pdo->prepare($getRolesAct);
-                $stmtRolesAct->execute([':dni' => $rowNews['dni']]); // Pasar el parámetro :dni
+                $stmtRolesAct->execute([':dni' => $rowWorking['dni']]); // Pasar el parámetro :dni
 
                 while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
-                  echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
+                  echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
                 }
+
                 echo '</td>';
 
 
@@ -570,7 +547,7 @@ $servicioFilter = $user->getServicio();
               $stmtRolesAct->execute([':dni' => $rowAproved['dni']]); // Pasar el parámetro :dni
 
               while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
-                echo '<div><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
+                echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
               }
 
               echo '</td>';

@@ -20,6 +20,10 @@ $pdo = $db->connect();
 <?php require_once '../../base/header.php'; ?>
 <link rel="stylesheet" href="/SGH/public/layouts/modules/personalPanel/css/personal.css">
 
+<script>
+  var serviceId = "<?php echo $user->getServicio(); ?>";
+</script>
+
 
 <div class="content">
   <div class="modulo" style="text-align: center;">
@@ -97,7 +101,7 @@ $pdo = $db->connect();
 
               // Itera sobre los resultados y muestra las filas en la tabla
               while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
-                echo '<option value=' . $row['cargo'] . '>' . $row['cargo'] . '</option>';
+                echo '<option value="' . $row['cargo'] . '">' . $row['cargo'] . '</option>';
               }
 
               ?>
@@ -156,24 +160,24 @@ $pdo = $db->connect();
         </div>
 
         <script>
-          function setDatos(id, apellido, nombre, dni, servicio, cargo, especialidad, mn, mp, rol) {
-            $('#back').css('display', 'flex');
-            $('#editPersonal').css('display', 'flex');
+          // function setDatos(id, apellido, nombre, dni, servicio, cargo, especialidad, mn, mp, rol) {
+          //   $('#back').css('display', 'flex');
+          //   $('#editPersonal').css('display', 'flex');
 
-            $('#editid').val(id);
-            $('#editapellido').val(apellido);
-            $('#editnombre').val(nombre);
-            $('#editdni').val(dni);
-            $('#editselectServicio').val(servicio).trigger('change');
-            $('#editmn').val(mn);
-            $('#editmp').val(mp);
-            $('#editselectcargo').val(cargo).trigger('change');
-            $('#editselectrol').val(rol).trigger('change');
+          //   $('#editid').val(id);
+          //   $('#editapellido').val(apellido);
+          //   $('#editnombre').val(nombre);
+          //   $('#editdni').val(dni);
+          //   $('#editselectServicio').val(servicio).trigger('change');
+          //   $('#editmn').val(mn);
+          //   $('#editmp').val(mp);
+          //   $('#editselectcargo').val(cargo).trigger('change');
+          //   $('#editselectrol').val(rol).trigger('change');
 
-            // Llama a la función editselectChange para actualizar el select de especialidades
-            editselectChange(especialidad);
-            jefeCheck(dni);
-          }
+          //   // Llama a la función editselectChange para actualizar el select de especialidades
+          //   editselectChange(especialidad);
+          //   jefeCheck(dni);
+          // }
         </script>
 
         <h3>Editar personal</h3>
@@ -239,7 +243,7 @@ $pdo = $db->connect();
 
               // Itera sobre los resultados y muestra las filas en la tabla
               while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
-                echo '<option value=' . $row['cargo'] . '>' . $row['cargo'] . '</option>';
+                echo '<option value="' . $row['cargo'] . '">' . $row['cargo'] . '</option>';
               }
               ?>
             </select>
@@ -296,15 +300,15 @@ $pdo = $db->connect();
         </div>
 
         <script>
-          function setDatosPase(id, apellido, nombre, dni) {
-            $('#back').css('display', 'flex');
-            $('#newPase').css('display', 'flex');
+          // function setDatosPase(id, apellido, nombre, dni) {
+          //   $('#back').css('display', 'flex');
+          //   $('#newPase').css('display', 'flex');
 
-            $('#paseId').val(id);
-            $('#paseApellido').val(apellido);
-            $('#paseNombre').val(nombre);
-            $('#paseDni').val(dni);
-          }
+          //   $('#paseId').val(id);
+          //   $('#paseApellido').val(apellido);
+          //   $('#paseNombre').val(nombre);
+          //   $('#paseDni').val(dni);
+          // }
         </script>
 
         <h3>Realizar pase de servicio</h3>
@@ -352,16 +356,16 @@ $pdo = $db->connect();
         </div>
 
         <script>
-          function setLicencia(apellido, nombre, dni) {
+          // function setLicencia(apellido, nombre, dni) {
 
-            $('#back').css('display', 'flex');
-            $('#newLicencia').css('display', 'flex');
+          //   $('#back').css('display', 'flex');
+          //   $('#newLicencia').css('display', 'flex');
 
-            $('#licenciaApellido').val(apellido);
-            $('#licenciaNombre').val(nombre);
-            $('#licenciaDni').val(dni);
-            $('#licenciaDniHidden').val(dni);
-          }
+          //   $('#licenciaApellido').val(apellido);
+          //   $('#licenciaNombre').val(nombre);
+          //   $('#licenciaDni').val(dni);
+          //   $('#licenciaDniHidden').val(dni);
+          // }
         </script>
 
         <h3>Establecer nueva licencia</h3>
@@ -448,15 +452,15 @@ $pdo = $db->connect();
         </div>
 
         <script>
-          function setDatosFinContrato(apellido, nombre, dni) {
-            $('#back').css('display', 'flex');
-            $('#newFinContrato').css('display', 'flex');
+          // function setDatosFinContrato(apellido, nombre, dni) {
+          //   $('#back').css('display', 'flex');
+          //   $('#newFinContrato').css('display', 'flex');
 
-            $('#finContratoApellido').val(apellido);
-            $('#finContratoNombre').val(nombre);
-            $('#finContratoDni').val(dni);
-            $('#finContratoDniHidden').val(dni);
-          }
+          //   $('#finContratoApellido').val(apellido);
+          //   $('#finContratoNombre').val(nombre);
+          //   $('#finContratoDni').val(dni);
+          //   $('#finContratoDniHidden').val(dni);
+          // }
         </script>
 
         <h3>Informar baja de agente</h3>
@@ -511,15 +515,15 @@ $pdo = $db->connect();
         </div>
 
         <script>
-          function setDatosJubilar(apellido, nombre, dni) {
-            $('#back').css('display', 'flex');
-            $('#newJubilacion').css('display', 'flex');
+          // function setDatosJubilar(apellido, nombre, dni) {
+          //   $('#back').css('display', 'flex');
+          //   $('#newJubilacion').css('display', 'flex');
 
-            $('#jubilarApellido').val(apellido);
-            $('#jubilarNombre').val(nombre);
-            $('#jubilarDni').val(dni);
-            $('#jubilarDniHidden').val(dni);
-          }
+          //   $('#jubilarApellido').val(apellido);
+          //   $('#jubilarNombre').val(nombre);
+          //   $('#jubilarDni').val(dni);
+          //   $('#jubilarDniHidden').val(dni);
+          // }
         </script>
 
         <h3>Realizar jubilación</h3>
@@ -593,109 +597,109 @@ $pdo = $db->connect();
         <input type="text" name="searchInput" id="searchInput" style="width: 45%; height: 3vw;" placeholder="Buscar por DNI o nombre...">
 
         <script>
-          $(document).ready(function() {
-            $("#selectServicioFilter").select2();
-            $('#selectServicioFilter').val(<?php echo $user->getServicio(); ?>).trigger('change');
+          // $(document).ready(function() {
+          //   $("#selectServicioFilter").select2();
+          //   $('#selectServicioFilter').val(<?php //echo $user->getServicio(); ?>).trigger('change');
 
-            // Función para generar los botones de paginación
-            function generarBotonesPaginacion(total_paginas) {
-              var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+          //   // Función para generar los botones de paginación
+          //   function generarBotonesPaginacion(total_paginas) {
+          //     var contenedorPaginacion = document.getElementById("contenedorPaginacion");
 
-              contenedorPaginacion.innerHTML = "";
+          //     contenedorPaginacion.innerHTML = "";
 
-              // Generar botones de paginación
-              for (var i = 1; i <= total_paginas; i++) {
-                var botonPagina = document.createElement("button");
-                botonPagina.textContent = i;
-                botonPagina.setAttribute("class", "btn-green paginationBtn");
-                botonPagina.setAttribute("data-pagina", i);
-                botonPagina.addEventListener("click", function() {
-                  var pagina = this.getAttribute("data-pagina");
-                  actualizarTabla(pagina);
-                });
-                contenedorPaginacion.appendChild(botonPagina);
-              }
-            }
+          //     // Generar botones de paginación
+          //     for (var i = 1; i <= total_paginas; i++) {
+          //       var botonPagina = document.createElement("button");
+          //       botonPagina.textContent = i;
+          //       botonPagina.setAttribute("class", "btn-green paginationBtn");
+          //       botonPagina.setAttribute("data-pagina", i);
+          //       botonPagina.addEventListener("click", function() {
+          //         var pagina = this.getAttribute("data-pagina");
+          //         actualizarTabla(pagina);
+          //       });
+          //       contenedorPaginacion.appendChild(botonPagina);
+          //     }
+          //   }
 
-            // Función para actualizar la tabla con los resultados filtrados
-            function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
-              // Ocultar la tabla mientras se cargan los nuevos resultados
-              $("#tablaPersonal").hide();
-              $(".lds-dual-ring").show(); // Mostrar el elemento de carga
+          //   // Función para actualizar la tabla con los resultados filtrados
+          //   // function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
+          //   //   // Ocultar la tabla mientras se cargan los nuevos resultados
+          //   //   $("#tablaPersonal").hide();
+          //   //   $(".lds-dual-ring").show(); // Mostrar el elemento de carga
 
-              // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
-              $.ajax({
-                url: "controllers/buscar_personal.php",
-                type: "GET",
-                dataType: "html",
-                data: {
-                  pagina: pagina,
-                  searchTerm: searchTerm,
-                  selectServicioFilter: selectServicioFilter
-                },
-                success: function(response) {
-                  // Actualizar la tabla con los nuevos resultados
-                  $("#tablaPersonal").html(response);
-                  // Mostrar la tabla después de cargar los nuevos resultados
-                  $("#tablaPersonal").show();
-                  $(".lds-dual-ring").hide(); // Ocultar el elemento de carga
+          //   //   // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
+          //   //   $.ajax({
+          //   //     url: "controllers/buscar_personal.php",
+          //   //     type: "GET",
+          //   //     dataType: "html",
+          //   //     data: {
+          //   //       pagina: pagina,
+          //   //       searchTerm: searchTerm,
+          //   //       selectServicioFilter: selectServicioFilter
+          //   //     },
+          //   //     success: function(response) {
+          //   //       // Actualizar la tabla con los nuevos resultados
+          //   //       $("#tablaPersonal").html(response);
+          //   //       // Mostrar la tabla después de cargar los nuevos resultados
+          //   //       $("#tablaPersonal").show();
+          //   //       $(".lds-dual-ring").hide(); // Ocultar el elemento de carga
 
 
-                  // Generar botones de paginación
-                  generarBotonesPaginacion(response.total_paginas);
-                },
-                error: function(xhr, status, error) {
-                  console.log("Error al realizar la solicitud: " + error);
-                }
-              });
-            }
+          //   //       // Generar botones de paginación
+          //   //       generarBotonesPaginacion(response.total_paginas);
+          //   //     },
+          //   //     error: function(xhr, status, error) {
+          //   //       console.log("Error al realizar la solicitud: " + error);
+          //   //     }
+          //   //   });
+          //   // }
 
-            // Evento change del select para actualizar la tabla al cambiar el servicio
-            $("#selectServicioFilter").on("change", function() {
-              var selectServicioFilterValue = $(this).val(); // Obtener el valor seleccionado del select2
-              actualizarTabla(1, $("#searchInput").val(), selectServicioFilterValue); // Llamar a actualizarTabla con el nuevo valor
-            });
+          //   // Evento change del select para actualizar la tabla al cambiar el servicio
+          //   $("#selectServicioFilter").on("change", function() {
+          //     var selectServicioFilterValue = $(this).val(); // Obtener el valor seleccionado del select2
+          //     actualizarTabla(1, $("#searchInput").val(), selectServicioFilterValue); // Llamar a actualizarTabla con el nuevo valor
+          //   });
 
-            // Cargar la tabla con los resultados iniciales
-            actualizarTabla(1, $("#searchInput").val(), $("#selectServicioFilter").val());
+          //   // Cargar la tabla con los resultados iniciales
+          //   actualizarTabla(1, $("#searchInput").val(), $("#selectServicioFilter").val());
 
-            // Función para realizar la búsqueda en tiempo real con retardo
-            var timeout = null;
-            $("#searchInput").on("input", function() {
-              clearTimeout(timeout); // Limpiar el temporizador existente si hay alguno
-              // Configurar un nuevo temporizador para retrasar la búsqueda
-              timeout = setTimeout(function() {
-                // Obtener el valor del campo de búsqueda
-                var searchTerm = $("#searchInput").val();
+          //   // Función para realizar la búsqueda en tiempo real con retardo
+          //   var timeout = null;
+          //   $("#searchInput").on("input", function() {
+          //     clearTimeout(timeout); // Limpiar el temporizador existente si hay alguno
+          //     // Configurar un nuevo temporizador para retrasar la búsqueda
+          //     timeout = setTimeout(function() {
+          //       // Obtener el valor del campo de búsqueda
+          //       var searchTerm = $("#searchInput").val();
 
-                // Obtener el valor seleccionado del select2
-                var selectServicioFilterValue = $("#selectServicioFilter").val();
+          //       // Obtener el valor seleccionado del select2
+          //       var selectServicioFilterValue = $("#selectServicioFilter").val();
 
-                // Llamar a la función actualizarTabla para enviar la solicitud al servidor
-                actualizarTabla(1, searchTerm, selectServicioFilterValue);
-              }, 500); // Retardo de 500 milisegundos (0.5 segundos)
-            });
+          //       // Llamar a la función actualizarTabla para enviar la solicitud al servidor
+          //       actualizarTabla(1, searchTerm, selectServicioFilterValue);
+          //     }, 500); // Retardo de 500 milisegundos (0.5 segundos)
+          //   });
 
-            // Función para cambiar de página al hacer clic en los botones de paginación
-            function cambiarPagina(pagina) {
-              // Obtener el valor del campo de búsqueda
-              var searchTerm = $("#searchInput").val();
+          //   // Función para cambiar de página al hacer clic en los botones de paginación
+          //   function cambiarPagina(pagina) {
+          //     // Obtener el valor del campo de búsqueda
+          //     var searchTerm = $("#searchInput").val();
 
-              // Obtener el valor seleccionado del select2
-              var selectServicioFilter = $("#selectServicioFilter").val();
+          //     // Obtener el valor seleccionado del select2
+          //     var selectServicioFilter = $("#selectServicioFilter").val();
 
-              // Llamar a la función actualizarTabla para enviar la solicitud al servidor con la nueva página
-              actualizarTabla(pagina, searchTerm, selectServicioFilter);
-            }
+          //     // Llamar a la función actualizarTabla para enviar la solicitud al servidor con la nueva página
+          //     actualizarTabla(pagina, searchTerm, selectServicioFilter);
+          //   }
 
-            // Código JavaScript para la paginación
-            $("#contenedorPaginacion").on("click", ".paginationBtn", function() {
-              var pagina = $(this).data("pagina");
-              var searchTerm = $("#searchInput").val();
-              var selectServicioFilter = $("#selectServicioFilter").val();
-              actualizarTabla(pagina, searchTerm, selectServicioFilter);
-            });
-          });
+          //   // Código JavaScript para la paginación
+          //   $("#contenedorPaginacion").on("click", ".paginationBtn", function() {
+          //     var pagina = $(this).data("pagina");
+          //     var searchTerm = $("#searchInput").val();
+          //     var selectServicioFilter = $("#selectServicioFilter").val();
+          //     actualizarTabla(pagina, searchTerm, selectServicioFilter);
+          //   });
+          // });
         </script>
       </div>
     </div>
@@ -705,74 +709,69 @@ $pdo = $db->connect();
     <div id="contenedorPaginacion"></div>
 
     <script>
-      function cambiarPaginar(pagina) {
-        cambiarPagina(pagina);
-      }
+      // function cambiarPaginar(pagina) {
+      //   cambiarPagina(pagina);
+      // }
 
-      // Función para cambiar de página al hacer clic en los botones de paginación
-      function cambiarPagina(pagina) {
-        // Obtener el valor del campo de búsqueda
-        var searchTerm = $("#searchInput").val();
+      // // Función para cambiar de página al hacer clic en los botones de paginación
+      // function cambiarPagina(pagina) {
+      //   // Obtener el valor del campo de búsqueda
+      //   var searchTerm = $("#searchInput").val();
 
-        // Obtener el valor seleccionado del select2
-        var selectServicioFilter = $("#selectServicioFilter").val();
+      //   // Obtener el valor seleccionado del select2
+      //   var selectServicioFilter = $("#selectServicioFilter").val();
 
-        // Llamar a la función actualizarTabla para enviar la solicitud al servidor con la nueva página
-        actualizarTabla(pagina, searchTerm, selectServicioFilter);
-      }
+      //   // Llamar a la función actualizarTabla para enviar la solicitud al servidor con la nueva página
+      //   actualizarTabla(pagina, searchTerm, selectServicioFilter);
+      // }
 
-      // Función para actualizar la tabla con los resultados filtrados
-      function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
-        // Ocultar la tabla mientras se cargan los nuevos resultados
-        $("#tablaPersonal").hide();
-        $(".lds-dual-ring").show(); // Mostrar el elemento de carga
+      // function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
+      //   const scrollPos = $(window).scrollTop();
 
-        // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
-        $.ajax({
-          url: "controllers/buscar_personal.php",
-          type: "GET",
-          dataType: "html",
-          data: {
-            pagina: pagina,
-            searchTerm: searchTerm,
-            selectServicioFilter: selectServicioFilter
-          },
-          success: function(response) {
-            // Actualizar la tabla con los nuevos resultados
-            $("#tablaPersonal").html(response);
-            // Mostrar la tabla después de cargar los nuevos resultados
-            $("#tablaPersonal").show();
-            $(".lds-dual-ring").hide(); // Ocultar el elemento de carga
+      //   $("#tablaPersonal").hide();
+      //   $(".lds-dual-ring").show();
+
+      //   $.ajax({
+      //     url: "controllers/buscar_personal.php",
+      //     type: "GET",
+      //     dataType: "html",
+      //     data: {
+      //       pagina,
+      //       searchTerm,
+      //       selectServicioFilter
+      //     },
+      //     success: function(response) {
+      //       $("#tablaPersonal").html(response).show();
+      //       $(".lds-dual-ring").hide();
+      //       $(window).scrollTop(scrollPos); // Fuerza la restauración de la posición del scroll
+      //     },
+      //     error: function(xhr, status, error) {
+      //       console.log("Error al realizar la solicitud: " + error);
+      //     }
+      //   });
+      // }
 
 
-            // Generar botones de paginación
-            generarBotonesPaginacion(response.total_paginas);
-          },
-          error: function(xhr, status, error) {
-            console.log("Error al realizar la solicitud: " + error);
-          }
-        });
-      }
 
-      // Función para generar los botones de paginación
-      function generarBotonesPaginacion(total_paginas) {
-              var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+      // // Función para generar los botones de paginación
+      // function generarBotonesPaginacion(total_paginas) {
+      //   var contenedorPaginacion = document.getElementById("contenedorPaginacion");
 
-              contenedorPaginacion.innerHTML = "";
+      //   contenedorPaginacion.innerHTML = "";
 
-              // Generar botones de paginación
-              for (var i = 1; i <= total_paginas; i++) {
-                var botonPagina = document.createElement("button");
-                botonPagina.textContent = i;
-                botonPagina.setAttribute("class", "btn-green paginationBtn");
-                botonPagina.setAttribute("data-pagina", i);
-                botonPagina.addEventListener("click", function() {
-                  var pagina = this.getAttribute("data-pagina");
-                  actualizarTabla(pagina);
-                });
-                contenedorPaginacion.appendChild(botonPagina);
-              }
-            }
+      //   // Generar botones de paginación
+      //   for (var i = 1; i <= total_paginas; i++) {
+      //     var botonPagina = document.createElement("button");
+      //     botonPagina.textContent = i;
+      //     botonPagina.setAttribute("class", "btn-green paginationBtn");
+      //     botonPagina.setAttribute("data-pagina", i);
+      //     botonPagina.addEventListener("click", function() {
+      //       var pagina = this.getAttribute("data-pagina");
+      //       actualizarTabla(pagina);
+      //     });
+      //     contenedorPaginacion.appendChild(botonPagina);
+      //   }
+      // }
     </script>
 
 

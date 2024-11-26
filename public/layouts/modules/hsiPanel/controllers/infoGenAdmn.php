@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['dni'])) {
         echo '<table>';
         echo '<thead>';
         echo '<tr>';
-        echo '<th colspan=2>Documentos y permisos <button onclick="addDocs(\'' . $rowInfo['dni'] . '\')" class="btn-green" style="position: relative; right: -18%;"><i class="fa-solid fa-file-arrow-up"></i></button></th>';
+        echo '<th colspan=2>Documentos y permisos <button onclick="addDocs(\'' . $rowInfo['dni'] . '\', \'' . $rowInfo['servicio'] . '\')" class="btn-green" style="position: relative; right: -18%;"><i class="fa-solid fa-file-arrow-up"></i></button></th>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';

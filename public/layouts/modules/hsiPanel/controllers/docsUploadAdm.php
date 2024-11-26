@@ -4,6 +4,7 @@ session_start(); // Iniciar la sesión
 if (isset($_POST['docsDniHidden'])) {
     // Obtener el DNI del input hidden
     $dni = $_POST['docsDniHidden'];
+    $servicio = $_POST['docsServicio'];
 
     // Directorio de destino para los documentos
     $directorio_destino = '../../../../../app/hsiDocs/';
@@ -90,12 +91,12 @@ if (isset($_POST['docsDniHidden'])) {
     $update_stmt->execute([':documentos' => $documentos_json, ':dni' => $dni]);
 
     // Registro exitoso, mostrar un mensaje de éxito
-    $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Archivos subidos exitosamente, aguarde a su verificación.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 5000);}</script>';
+    $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Archivos subidos exitosamente, aguarde a su verificación.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 5000);} document.addEventListener("DOMContentLoaded", function() { loadInfo(\''.$dni.'\', \''.$servicio.'\'); });</script>';
     header("Location: ../hsiAdmin.php");
     exit(); // Finalizar el script después de la redirección
 } else {
     // Error al registrar el usuario, mostrar un mensaje de error
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor, suba todos los archivos obligatorios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor, suba todos los archivos obligatorios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} document.addEventListener("DOMContentLoaded", function() { loadInfo(\''.$dni.'\', \''.$servicio.'\'); });</script>';
     header("Location: ../hsiAdmin.php");
     exit(); // Finalizar el script después de la redirección
 }
