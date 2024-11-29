@@ -3,6 +3,7 @@
 require_once '../../../../app/db/db.php';
 require_once '../../../../app/db/user_session.php';
 require_once '../../../../app/db/user.php';
+require_once 'controllers/search_personal.php';
 
 $user = new User();
 $userSession = new UserSession();
@@ -13,6 +14,23 @@ $title = "Gestión de personal";
 
 $db = new DB();
 $pdo = $db->connect();
+
+$sel = isset($_GET['selectServicioFilter']) ? $_GET['selectServicioFilter'] : null;
+
+if (($sel != $user->getServicio()) && ($user->getRol() != "Administrador" && $user->getRol() != "Dirección")) {
+    $selectServicioFilter = $user->getServicio();
+
+    // Verifica si el parámetro de servicio ya existe en la URL
+    $url = "personal.php?pagina=$pagina";
+    if ($selectServicioFilter) {
+        $url .= "&selectServicioFilter=" . urlencode($selectServicioFilter);
+    }
+
+    // Redirige a la misma página con el nuevo parámetro en la URL
+    header("Location: $url");
+    exit();
+}
+
 
 
 ?>
@@ -159,27 +177,6 @@ $pdo = $db->connect();
           <button class="btn-red" onclick="back.style.display = 'none'; editPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#selectRol').val(null).trigger('change'); $('#jefeCheckeado').prop('disabled', true);" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
         </div>
 
-        <script>
-          // function setDatos(id, apellido, nombre, dni, servicio, cargo, especialidad, mn, mp, rol) {
-          //   $('#back').css('display', 'flex');
-          //   $('#editPersonal').css('display', 'flex');
-
-          //   $('#editid').val(id);
-          //   $('#editapellido').val(apellido);
-          //   $('#editnombre').val(nombre);
-          //   $('#editdni').val(dni);
-          //   $('#editselectServicio').val(servicio).trigger('change');
-          //   $('#editmn').val(mn);
-          //   $('#editmp').val(mp);
-          //   $('#editselectcargo').val(cargo).trigger('change');
-          //   $('#editselectrol').val(rol).trigger('change');
-
-          //   // Llama a la función editselectChange para actualizar el select de especialidades
-          //   editselectChange(especialidad);
-          //   jefeCheck(dni);
-          // }
-        </script>
-
         <h3>Editar personal</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/modifyPersonal.php" method="post" class="backForm" id="editPersonalForm">
           <input type="hidden" name="editid" id="editid">
@@ -299,18 +296,6 @@ $pdo = $db->connect();
           <button class="btn-red" onclick="back.style.display = 'none'; newPase.style.display = 'none'; paseForm.reset(); $('#paseSelectServicio').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
         </div>
 
-        <script>
-          // function setDatosPase(id, apellido, nombre, dni) {
-          //   $('#back').css('display', 'flex');
-          //   $('#newPase').css('display', 'flex');
-
-          //   $('#paseId').val(id);
-          //   $('#paseApellido').val(apellido);
-          //   $('#paseNombre').val(nombre);
-          //   $('#paseDni').val(dni);
-          // }
-        </script>
-
         <h3>Realizar pase de servicio</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/paseForm.php" method="POST" class="backForm" id="paseForm">
           <input type="hidden" name="paseId" id="paseId">
@@ -354,19 +339,6 @@ $pdo = $db->connect();
         <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
           <button class="btn-red" onclick="back.style.display = 'none'; newLicencia.style.display = 'none'; newLicenciaForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
         </div>
-
-        <script>
-          // function setLicencia(apellido, nombre, dni) {
-
-          //   $('#back').css('display', 'flex');
-          //   $('#newLicencia').css('display', 'flex');
-
-          //   $('#licenciaApellido').val(apellido);
-          //   $('#licenciaNombre').val(nombre);
-          //   $('#licenciaDni').val(dni);
-          //   $('#licenciaDniHidden').val(dni);
-          // }
-        </script>
 
         <h3>Establecer nueva licencia</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/licenciaForm.php" method="POST" class="backForm" id="newLicenciaForm">
@@ -451,18 +423,6 @@ $pdo = $db->connect();
           <button class="btn-red" onclick="back.style.display = 'none'; newFinContrato.style.display = 'none'; finContratoForm.reset(); $('#paseSelectServicio').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
         </div>
 
-        <script>
-          // function setDatosFinContrato(apellido, nombre, dni) {
-          //   $('#back').css('display', 'flex');
-          //   $('#newFinContrato').css('display', 'flex');
-
-          //   $('#finContratoApellido').val(apellido);
-          //   $('#finContratoNombre').val(nombre);
-          //   $('#finContratoDni').val(dni);
-          //   $('#finContratoDniHidden').val(dni);
-          // }
-        </script>
-
         <h3>Informar baja de agente</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/finContratoForm.php" method="POST" class="backForm" id="finContratoForm">
           <input type="hidden" name="finContratoDniHidden" id="finContratoDniHidden">
@@ -514,18 +474,6 @@ $pdo = $db->connect();
           <button class="btn-red" onclick="back.style.display = 'none'; newJubilacion.style.display = 'none'; jubilarForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
         </div>
 
-        <script>
-          // function setDatosJubilar(apellido, nombre, dni) {
-          //   $('#back').css('display', 'flex');
-          //   $('#newJubilacion').css('display', 'flex');
-
-          //   $('#jubilarApellido').val(apellido);
-          //   $('#jubilarNombre').val(nombre);
-          //   $('#jubilarDni').val(dni);
-          //   $('#jubilarDniHidden').val(dni);
-          // }
-        </script>
-
         <h3>Realizar jubilación</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/jubilarForm.php" method="POST" class="backForm" id="jubilarForm">
           <input type="hidden" name="jubilarDniHidden" id="jubilarDniHidden">
@@ -568,215 +516,285 @@ $pdo = $db->connect();
     <div style="display: flex; flex-direction: row; width: 100%;">
       <button class="btn-green" onclick="back.style.display = 'flex'; newPersonal.style.display = 'flex';" style="width: 20.8vw;"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
 
-      <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: calc(100% - 20.8vw)">
-        <select name="selectServicioFilter" id="selectServicioFilter" class="select2" placeholder="Seleccionar un servicio para filtrar" style="width: 45%;">
-          <?php
-          if ($user->getRol() == 'Administrador' || $user->getRol() == 'Dirección') {
-            // Si el usuario tiene el id del servicio igual a 1 o el rol es administrador, generamos todos los servicios
-            echo '<option value="" selected disabled>Seleccionar un servicio...</option>';
+      <div style="width: 100%;">
 
-            $getServicios = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
-            $stmtServicios = $pdo->query($getServicios);
+        <form action="personal.php" method="get" id="formFiltro" style="display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    overflow-y: hidden;">
+          <input type="hidden" name="pagina" value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
 
-            while ($row = $stmtServicios->fetch(PDO::FETCH_ASSOC)) {
-              echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
-            }
-          } else {
-            // Si no, generamos solo el servicio al que corresponde el usuario
-            $servicioUsuario = $user->getServicio();
-            $getServicioUsuario = "SELECT id, servicio FROM servicios WHERE id = ?";
-            $stmtServicioUsuario = $pdo->prepare($getServicioUsuario);
-            $stmtServicioUsuario->execute([$servicioUsuario]);
-            $rowServicioUsuario = $stmtServicioUsuario->fetch(PDO::FETCH_ASSOC);
+          <div style="display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 1vw;
+    grid-row-gap: 0px;
+    overflow-y: hidden;">
+            <select name="selectServicioFilter" id="selectServicioFilter" class="select2" <?php if ($user->getRol() != 'Administrador' && $user->getRol() != 'Dirección') { echo "disabled"; } ?>>
 
-            echo '<option value="' . $rowServicioUsuario['id'] . '" selected>' . $rowServicioUsuario['servicio'] . '</option>';
-          }
-          ?>
-        </select>
+              <?php
+              $selectedServicio = isset($_GET['selectServicioFilter']) ? htmlspecialchars($_GET['selectServicioFilter']) : '';
 
-        <input type="text" name="searchInput" id="searchInput" style="width: 45%; height: 3vw;" placeholder="Buscar por DNI o nombre...">
+              if ($user->getRol() == 'Administrador' || $user->getRol() == 'Dirección') {
+                echo '<option value="" selected disabled>Seleccionar un servicio...</option>';
+                echo '<option value="clr"' . ($selectedServicio === 'clr' ? ' selected' : '') . '>Seleccionar todos los servicios</option>';
 
-        <script>
-          // $(document).ready(function() {
-          //   $("#selectServicioFilter").select2();
-          //   $('#selectServicioFilter').val(<?php //echo $user->getServicio(); ?>).trigger('change');
+                $getServicios = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
+                $stmtServicios = $pdo->query($getServicios);
 
-          //   // Función para generar los botones de paginación
-          //   function generarBotonesPaginacion(total_paginas) {
-          //     var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+                while ($row = $stmtServicios->fetch(PDO::FETCH_ASSOC)) {
+                  $selected = ($selectedServicio == $row['id']) ? ' selected' : '';
+                  echo '<option value="' . $row['id'] . '"' . $selected . '>' . $row['servicio'] . '</option>';
+                }
+              } else {
+                $servicioUsuario = $user->getServicio();
+                $getServicioUsuario = "SELECT id, servicio FROM servicios WHERE id = ?";
+                $stmtServicioUsuario = $pdo->prepare($getServicioUsuario);
+                $stmtServicioUsuario->execute([$servicioUsuario]);
+                $rowServicioUsuario = $stmtServicioUsuario->fetch(PDO::FETCH_ASSOC);
 
-          //     contenedorPaginacion.innerHTML = "";
+                if ($rowServicioUsuario) {
+                  echo '<option value="' . $rowServicioUsuario['id'] . '" selected>' . $rowServicioUsuario['servicio'] . '</option>';
+                }
+              }
+              ?>
+            </select>
 
-          //     // Generar botones de paginación
-          //     for (var i = 1; i <= total_paginas; i++) {
-          //       var botonPagina = document.createElement("button");
-          //       botonPagina.textContent = i;
-          //       botonPagina.setAttribute("class", "btn-green paginationBtn");
-          //       botonPagina.setAttribute("data-pagina", i);
-          //       botonPagina.addEventListener("click", function() {
-          //         var pagina = this.getAttribute("data-pagina");
-          //         actualizarTabla(pagina);
-          //       });
-          //       contenedorPaginacion.appendChild(botonPagina);
-          //     }
-          //   }
+            <input type="text" name="searchInput" id="searchInput" style="width: 100%;" placeholder="Buscar por DNI o nombre..."
+              value="<?php echo isset($_GET['searchInput']) ? htmlspecialchars($_GET['searchInput']) : ''; ?>">
 
-          //   // Función para actualizar la tabla con los resultados filtrados
-          //   // function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
-          //   //   // Ocultar la tabla mientras se cargan los nuevos resultados
-          //   //   $("#tablaPersonal").hide();
-          //   //   $(".lds-dual-ring").show(); // Mostrar el elemento de carga
-
-          //   //   // Realizar la solicitud AJAX al controlador PHP para actualizar la tabla
-          //   //   $.ajax({
-          //   //     url: "controllers/buscar_personal.php",
-          //   //     type: "GET",
-          //   //     dataType: "html",
-          //   //     data: {
-          //   //       pagina: pagina,
-          //   //       searchTerm: searchTerm,
-          //   //       selectServicioFilter: selectServicioFilter
-          //   //     },
-          //   //     success: function(response) {
-          //   //       // Actualizar la tabla con los nuevos resultados
-          //   //       $("#tablaPersonal").html(response);
-          //   //       // Mostrar la tabla después de cargar los nuevos resultados
-          //   //       $("#tablaPersonal").show();
-          //   //       $(".lds-dual-ring").hide(); // Ocultar el elemento de carga
+          </div>
+          <button type="submit" class="btn-green"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
 
 
-          //   //       // Generar botones de paginación
-          //   //       generarBotonesPaginacion(response.total_paginas);
-          //   //     },
-          //   //     error: function(xhr, status, error) {
-          //   //       console.log("Error al realizar la solicitud: " + error);
-          //   //     }
-          //   //   });
-          //   // }
-
-          //   // Evento change del select para actualizar la tabla al cambiar el servicio
-          //   $("#selectServicioFilter").on("change", function() {
-          //     var selectServicioFilterValue = $(this).val(); // Obtener el valor seleccionado del select2
-          //     actualizarTabla(1, $("#searchInput").val(), selectServicioFilterValue); // Llamar a actualizarTabla con el nuevo valor
-          //   });
-
-          //   // Cargar la tabla con los resultados iniciales
-          //   actualizarTabla(1, $("#searchInput").val(), $("#selectServicioFilter").val());
-
-          //   // Función para realizar la búsqueda en tiempo real con retardo
-          //   var timeout = null;
-          //   $("#searchInput").on("input", function() {
-          //     clearTimeout(timeout); // Limpiar el temporizador existente si hay alguno
-          //     // Configurar un nuevo temporizador para retrasar la búsqueda
-          //     timeout = setTimeout(function() {
-          //       // Obtener el valor del campo de búsqueda
-          //       var searchTerm = $("#searchInput").val();
-
-          //       // Obtener el valor seleccionado del select2
-          //       var selectServicioFilterValue = $("#selectServicioFilter").val();
-
-          //       // Llamar a la función actualizarTabla para enviar la solicitud al servidor
-          //       actualizarTabla(1, searchTerm, selectServicioFilterValue);
-          //     }, 500); // Retardo de 500 milisegundos (0.5 segundos)
-          //   });
-
-          //   // Función para cambiar de página al hacer clic en los botones de paginación
-          //   function cambiarPagina(pagina) {
-          //     // Obtener el valor del campo de búsqueda
-          //     var searchTerm = $("#searchInput").val();
-
-          //     // Obtener el valor seleccionado del select2
-          //     var selectServicioFilter = $("#selectServicioFilter").val();
-
-          //     // Llamar a la función actualizarTabla para enviar la solicitud al servidor con la nueva página
-          //     actualizarTabla(pagina, searchTerm, selectServicioFilter);
-          //   }
-
-          //   // Código JavaScript para la paginación
-          //   $("#contenedorPaginacion").on("click", ".paginationBtn", function() {
-          //     var pagina = $(this).data("pagina");
-          //     var searchTerm = $("#searchInput").val();
-          //     var selectServicioFilter = $("#selectServicioFilter").val();
-          //     actualizarTabla(pagina, searchTerm, selectServicioFilter);
-          //   });
-          // });
-        </script>
       </div>
     </div>
 
-    <div id="tablaPersonal"></div>
-    <div class="lds-dual-ring" style="transform: translate(36vw, 0);"></div>
-    <div id="contenedorPaginacion"></div>
+    <div id="tablaPersonal">
 
-    <script>
-      // function cambiarPaginar(pagina) {
-      //   cambiarPagina(pagina);
-      // }
+      <table>
+        <thead>
+          <tr>
+            <th class="table-middle table-center">ID</th>
+            <th class="table-middle">Nombre y apellido</th>
+            <th class="table-middle table-center">DNI</th>
+            <th class="table-middle">Servicio</th>
+            <th class="table-middle">Especialidad</th>
+            <th class="table-middle table-center">Matricula</th>
+            <th class="table-middle table-center">Cargo</th>
+            <th class="table-middle table-center">Sistemas</th>
+            <th class="table-middle table-center">Rol</th>
+            <th class="table-middle table-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          if ($totalregistros >= 1):
 
-      // // Función para cambiar de página al hacer clic en los botones de paginación
-      // function cambiarPagina(pagina) {
-      //   // Obtener el valor del campo de búsqueda
-      //   var searchTerm = $("#searchInput").val();
+            foreach ($registros as $reg):
+          ?>
+              <tr>
+                <td class="table-center table-middle"><?= $reg['id'] ?></td>
 
-      //   // Obtener el valor seleccionado del select2
-      //   var selectServicioFilter = $("#selectServicioFilter").val();
+                <?php
+                $fechaHoy = date("Y-m-d");
 
-      //   // Llamar a la función actualizarTabla para enviar la solicitud al servidor con la nueva página
-      //   actualizarTabla(pagina, searchTerm, selectServicioFilter);
-      // }
+                // Consulta de licencias
+                $stmtLicencias = $pdo->prepare("SELECT tipo_licencia, fecha_desde, fecha_hasta FROM licencias WHERE dni = ? AND fecha_desde <= ? AND fecha_hasta >= ?");
+                $stmtLicencias->execute([$reg['dni'], $fechaHoy, $fechaHoy]);
+                $licencias = $stmtLicencias->fetchAll(PDO::FETCH_ASSOC);
+                ?>
 
-      // function actualizarTabla(pagina, searchTerm, selectServicioFilter) {
-      //   const scrollPos = $(window).scrollTop();
+                <?php if (!empty($licencias)): ?>
+                  <td class="table-middle">
+                    <div style="display: flex; flex-direction: row; align-items: center;">
+                      <div><?= $reg['apellido'] . ' ' . $reg['nombre'] ?></div>
+                      <button class="avisoWarButton" onclick="avisoLicencia(<?= $reg['id'] ?>)">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                      </button>
+                      <?php foreach ($licencias as $licencia): ?>
+                        <?php
+                        $fecha_desde = date("d/m/Y", strtotime($licencia['fecha_desde']));
+                        $fecha_hasta = date("d/m/Y", strtotime($licencia['fecha_hasta']));
+                        ?>
+                        <div id="aviso-<?= $reg['id'] ?>" class="avisoWar" style="position: relative">
+                          <div class="aviso">
+                            <h4>El agente se encuentra de licencia.</h4></br>
+                            <b>Tipo de licencia:</b> <?= $licencia['tipo_licencia'] ?>.</br>
+                            <div style="margin-top: .3vw;">
+                              <b>Desde:</b> <?= $fecha_desde ?></br>
+                              <b>Hasta:</b> <?= $fecha_hasta ?>.
+                            </div>
+                          </div>
+                        </div>
+                      <?php endforeach; ?>
+                    </div>
+                  </td>
+                <?php else: ?>
+                  <td class="table-middle"><?= $reg['apellido'] . ' ' . $reg['nombre'] ?></td>
+                <?php endif; ?>
 
-      //   $("#tablaPersonal").hide();
-      //   $(".lds-dual-ring").show();
+                <td class="table-middle table-center"><?= $reg['dni'] ?></td>
 
-      //   $.ajax({
-      //     url: "controllers/buscar_personal.php",
-      //     type: "GET",
-      //     dataType: "html",
-      //     data: {
-      //       pagina,
-      //       searchTerm,
-      //       selectServicioFilter
-      //     },
-      //     success: function(response) {
-      //       $("#tablaPersonal").html(response).show();
-      //       $(".lds-dual-ring").hide();
-      //       $(window).scrollTop(scrollPos); // Fuerza la restauración de la posición del scroll
-      //     },
-      //     error: function(xhr, status, error) {
-      //       console.log("Error al realizar la solicitud: " + error);
-      //     }
-      //   });
-      // }
+                <?php if ($reg['servicio_id'] != "0"): ?>
+                  <?php
+                  $getservicioStmt = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
+                  $getservicioStmt->execute([$reg['servicio_id']]);
+                  $servicioInfo = $getservicioStmt->fetch(PDO::FETCH_ASSOC);
+                  ?>
+                  <td class="table-middle">
+                    <?= $servicioInfo ? $servicioInfo['servicio'] : 'No se encontró la información del servicio' ?>
+                  </td>
+                <?php else: ?>
+                  <td class="table-middle">No hay servicio asignado</td>
+                <?php endif; ?>
+
+                <td class="table-middle"><?= $reg['especialidad'] ?></td>
+                <td class="table-middle">M.N: <?= $reg['mn'] ?></br>M.P: <?= $reg['mp'] ?></td>
+                <td class="table-middle"><?= $reg['cargo'] ?></td>
+
+                <td class="table-middle">
+                  <div style="display: grid; grid-template-columns: repeat(2, 1fr); align-content: center; justify-content: center; align-items: center; justify-items: center;">
+                    <?php
+                    $sistemas_array = json_decode($reg['sistemas'], true);
+                    ?>
+                    <?php if ($sistemas_array !== null): ?>
+                      <?php foreach ($sistemas_array as $sistema): ?>
+                        <?php
+                        $nombre_sistema = $sistema['sistema'];
+                        $activo = $sistema['activo'];
+                        $claseBoton = ($activo == 'si') ? 'btn-green' : 'btn-red';
+                        $icono = match ($nombre_sistema) {
+                          'Deposito' => 'fa-box',
+                          'Mantenimiento' => 'fa-screwdriver-wrench',
+                          'Informatica' => 'fa-computer',
+                          default => 'fa-question',
+                        };
+                        $variables = "{$reg['id']}, '{$nombre_sistema}', '{$activo}'";
+                        ?>
+                        <button style="text-align: center; width: 2.7vw; height: 2.7vw" title="<?= $nombre_sistema ?>" class="<?= $claseBoton ?>" onclick="updateSistem(<?= $variables ?>)">
+                          <i class="fa-solid <?= $icono ?>"></i>
+                        </button>
+                      <?php endforeach; ?>
+                    <?php else: ?>
+                      Error al decodificar la cadena JSON.
+                    <?php endif; ?>
+                    <button style="width: 2.7vw; height: 2.7vw" class="btn-yellow" title="Generar contraseña" onclick="updatePassword(<?= $reg['id'] ?>, '<?= $reg['dni'] ?>')">
+                      <i class="fa-solid fa-key"></i>
+                    </button>
+                  </div>
+                </td>
+
+                <td class="table-middle"><?= $reg['rol'] ?></td>
+
+                <td class="table-middle table-center">
+                  <div class="contenedor-de-botones">
+                    <button class="btn-green" title="Abrir menú de acciones" onclick="menuPersona(<?= $reg['id'] ?>)">
+                      <i class="fa-solid fa-hand-pointer"></i>
+                    </button>
+                    <div class="buttons-div" id="menu-<?= $reg['id'] ?>">
+                      <button class="btn-green" title="Editar" onclick="setDatos('<?= $reg['id'] ?>', '<?= $reg['apellido'] ?>', '<?= $reg['nombre'] ?>', '<?= $reg['dni'] ?>', '<?= $reg['servicio_id'] ?>', '<?= $reg['cargo'] ?>', '<?= $reg['especialidad'] ?>', '<?= $reg['mn'] ?>', '<?= $reg['mp'] ?>', '<?= $reg['rol'] ?>')">
+                        <i class="fa-solid fa-pen"></i> Editar
+                      </button>
+                      <button class="btn-green" title="Pase" onclick="setDatosPase('<?= $reg['id'] ?>', '<?= $reg['apellido'] ?>', '<?= $reg['nombre'] ?>', '<?= $reg['dni'] ?>')">
+                        <i class="fa-solid fa-right-from-bracket"></i> Pase
+                      </button>
+                      <button class="btn-green" title="Licencias" onclick="setLicencia('<?= $reg['apellido'] ?>', '<?= $reg['nombre'] ?>', '<?= $reg['dni'] ?>')">
+                        <i class="fa-solid fa-person-walking-luggage"></i> Licencias
+                      </button>
+                      <button class="btn-yellow" title="Jubilar" onclick="setDatosJubilar('<?= $reg['apellido'] ?>', '<?= $reg['nombre'] ?>', '<?= $reg['dni'] ?>')">
+                        <i class="fa-solid fa-person-walking-with-cane"></i> Jubilar
+                      </button>
+                      <button class="btn-yellow" title="Fin contrato" onclick="setDatosFinContrato('<?= $reg['apellido'] ?>', '<?= $reg['nombre'] ?>', '<?= $reg['dni'] ?>')">
+                        <i class="fas fa-calendar-times"></i> Fin contrato
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            <?php
+            endforeach;
+          else:
+            ?>
+            <tr>
+              <td class="table-center table-middle" colspan="10">No hay registros para mostrar.</td>
+            </tr>
+          <?php
+          endif;
+          ?>
+        </tbody>
+      </table>
+
+    </div>
+    <!-- <div class="lds-dual-ring" style="transform: translate(36vw, 0);"></div> -->
 
 
+    <?php
+if ($totalregistros >= 1):
+  // Número máximo de páginas que se mostrarán
+  $max_paginacion = 8;
 
-      // // Función para generar los botones de paginación
-      // function generarBotonesPaginacion(total_paginas) {
-      //   var contenedorPaginacion = document.getElementById("contenedorPaginacion");
+  // Cálculos de inicio y fin para las páginas visibles
+  $inicio_pagina = max(1, $pagina - floor($max_paginacion / 2));
+  $fin_pagina = min($numeropaginas, $pagina + floor($max_paginacion / 2));
 
-      //   contenedorPaginacion.innerHTML = "";
+  // Si la cantidad de páginas disponibles es menor que el máximo, ajustamos los límites
+  if ($pagina - floor($max_paginacion / 2) < 1) {
+    $fin_pagina = min($numeropaginas, $fin_pagina + (1 - ($pagina - floor($max_paginacion / 2))));
+  }
+  if ($pagina + floor($max_paginacion / 2) > $numeropaginas) {
+    $inicio_pagina = max(1, $inicio_pagina - ($pagina + floor($max_paginacion / 2) - $numeropaginas));
+  }
+?>
 
-      //   // Generar botones de paginación
-      //   for (var i = 1; i <= total_paginas; i++) {
-      //     var botonPagina = document.createElement("button");
-      //     botonPagina.textContent = i;
-      //     botonPagina.setAttribute("class", "btn-green paginationBtn");
-      //     botonPagina.setAttribute("data-pagina", i);
-      //     botonPagina.addEventListener("click", function() {
-      //       var pagina = this.getAttribute("data-pagina");
-      //       actualizarTabla(pagina);
-      //     });
-      //     contenedorPaginacion.appendChild(botonPagina);
-      //   }
-      // }
-    </script>
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <!-- Botón de "anterior" -->
+      <?php if ($pagina == 1): ?>
+        <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+      <?php else: ?>
+        <li class="page-item"><a class="page-link" href="personal.php?pagina=<?php echo $pagina - 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&laquo;</a></li>
+      <?php endif; ?>
+
+      <!-- Página 1 -->
+      <?php if ($inicio_pagina > 1): ?>
+        <li class="page-item"><a class="page-link" href="personal.php?pagina=1&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">1</a></li>
+        <li class="page-item disabled"><span class="page-link">...</span></li>
+      <?php endif; ?>
+
+      <!-- Páginas intermedias -->
+      <?php for ($i = $inicio_pagina; $i <= $fin_pagina; $i++): ?>
+        <?php if ($pagina == $i): ?>
+          <li class="page-item active"><a class="page-link" href="personal.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a></li>
+        <?php else: ?>
+          <li class="page-item"><a class="page-link" href="personal.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a></li>
+        <?php endif; ?>
+      <?php endfor; ?>
+
+      <!-- Última página -->
+      <?php if ($fin_pagina < $numeropaginas): ?>
+        <li class="page-item disabled"><span class="page-link">...</span></li>
+        <li class="page-item"><a class="page-link" href="personal.php?pagina=<?php echo $numeropaginas; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $numeropaginas; ?></a></li>
+      <?php endif; ?>
+
+      <!-- Botón de "siguiente" -->
+      <?php if ($pagina == $numeropaginas): ?>
+        <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+      <?php else: ?>
+        <li class="page-item"><a class="page-link" href="personal.php?pagina=<?php echo $pagina + 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&raquo;</a></li>
+      <?php endif; ?>
+    </ul>
+  </nav>
+
+<?php endif; ?>
+
+
 
 
   </div>
 </div>
 
-<script src="/SGH/public/layouts/modules/personalPanel/js/personal.js"></script>
+<script src="js/personal.js"></script>
 <?php require_once '../../base/footer.php'; ?>

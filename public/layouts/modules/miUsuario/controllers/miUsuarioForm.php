@@ -35,6 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
 } else {
     $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al registrar el formulario.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-    header("Location: ../personal.php");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit;
 }
