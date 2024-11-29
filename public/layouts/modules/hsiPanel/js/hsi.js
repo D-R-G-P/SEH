@@ -2,6 +2,7 @@ $(document).ready(function () {
     $('#permisosSelect').select2();
     $('#dniSelect').select2();
     $('#servicioSelect').select2();
+    $('#selectServicioFilter').select2();
 });
 
 $(".js-example-language").select2({
