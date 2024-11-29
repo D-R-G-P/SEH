@@ -13,10 +13,11 @@ $search = isset($_GET['searchInput']) ? $_GET['searchInput'] : '';
 $regpagina = 10;
 $inicio = ($pagina > 1) ? (($pagina * $regpagina) - $regpagina) : 0;
 
-// Consulta base
-$consulta = "SELECT SQL_CALC_FOUND_ROWS h.*, p.nombre, p.apellido
+// Consulta base con JOIN a la tabla 'servicios' para traer el nombre del servicio
+$consulta = "SELECT SQL_CALC_FOUND_ROWS h.*, p.nombre, p.apellido, s.servicio AS nombre_servicio
              FROM hsi h
              INNER JOIN personal p ON h.dni = p.dni
+             LEFT JOIN servicios s ON h.servicio = s.id
              WHERE h.estado = 'habilitado'"; // Filtra registros activos en hsi
 
 // Añadir filtros opcionales según los parámetros
@@ -30,7 +31,6 @@ if ($search) {
 
 // Añadir orden y límite
 $consulta .= " ORDER BY p.apellido ASC LIMIT :inicio, :regpagina";
-
 
 // Preparar la consulta
 $registros = $pdo->prepare($consulta);
@@ -59,3 +59,5 @@ $totalregistros = $pdo->query("SELECT FOUND_ROWS() AS total");
 $totalregistros = $totalregistros->fetch()['total'];
 
 $numeropaginas = ceil($totalregistros / $regpagina);
+
+?>

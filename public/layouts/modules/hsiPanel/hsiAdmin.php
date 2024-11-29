@@ -552,7 +552,7 @@ overflow-y: hidden;">
                                 <td class="table-center table-middle"><?= htmlspecialchars($reg['apellido']) ?></td>
                                 <td class="table-center table-middle"><?= htmlspecialchars($reg['nombre']) ?></td>
                                 <td class="table-center table-middle"><?= htmlspecialchars($reg['dni']) ?></td>
-                                <td class="table-center table-middle"><?= htmlspecialchars($reg['servicio']) ?></td>
+                                <td class="table-center table-middle"><?= htmlspecialchars($reg['nombre_servicio']) ?></td>
                                 <td class="table-left table-middle">
                                     <?php
                                     // Obtener los roles asociados a cada usuario
