@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('#servicioFilter').select2();
+    $('#selectServicioFilter').select2();
 });
 
 function loadInfo(dni, servicio) {

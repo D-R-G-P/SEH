@@ -15,18 +15,24 @@ $title = "Gestión de personal";
 $db = new DB();
 $pdo = $db->connect();
 
+// Obtener el parámetro 'selectServicioFilter' de la URL, si no está se establece en null
 $sel = isset($_GET['selectServicioFilter']) ? $_GET['selectServicioFilter'] : null;
 
-if (($sel != $user->getServicio()) && ($user->getRol() != "Administrador" && $user->getRol() != "Dirección")) {
+// Si el parámetro 'selectServicioFilter' no coincide con el servicio del usuario
+// y el usuario no tiene rol de "Administrador" ni "Dirección"
+if (($sel != $user->getServicio()) && ($user->getRol() != "Administrador" && $user->getRol() != "Dirección") || !$sel) {
+    
+    // Asignar el servicio del usuario a 'selectServicioFilter' si no es válido
     $selectServicioFilter = $user->getServicio();
 
-    // Verifica si el parámetro de servicio ya existe en la URL
+    // Redirigir con el nuevo parámetro selectServicioFilter
     $url = "personal.php?pagina=$pagina";
     if ($selectServicioFilter) {
+        // Asegurarse de que el valor del servicio sea correctamente escapado para la URL
         $url .= "&selectServicioFilter=" . urlencode($selectServicioFilter);
     }
 
-    // Redirige a la misma página con el nuevo parámetro en la URL
+    // Redirigir al usuario a la URL con el servicio correcto
     header("Location: $url");
     exit();
 }

@@ -14,18 +14,23 @@ $regpagina = 10;
 $inicio = ($pagina > 1) ? (($pagina * $regpagina) - $regpagina) : 0;
 
 // Consulta base
-$consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM hsi WHERE estado = 'Activo'";
+$consulta = "SELECT SQL_CALC_FOUND_ROWS h.*, p.nombre, p.apellido
+             FROM hsi h
+             INNER JOIN personal p ON h.dni = p.dni
+             WHERE h.estado = 'habilitado'"; // Filtra registros activos en hsi
 
-// Añadir filtros según los parámetros
+// Añadir filtros opcionales según los parámetros
 if ($select && $select !== "clr") {
-    $consulta .= " AND servicio_id = :selectedService";
+    $consulta .= " AND h.servicio = :selectedService"; // Filtro por servicio en hsi
 }
 
 if ($search) {
-    $consulta .= " AND (dni LIKE :searchTerm OR nombre LIKE :searchTerm2 OR apellido LIKE :searchTerm3)";
+    $consulta .= " AND (h.dni LIKE :searchTerm OR p.nombre LIKE :searchTerm2 OR p.apellido LIKE :searchTerm3)";
 }
 
-$consulta .= " ORDER BY apellido ASC LIMIT :inicio, :regpagina";
+// Añadir orden y límite
+$consulta .= " ORDER BY p.apellido ASC LIMIT :inicio, :regpagina";
+
 
 // Preparar la consulta
 $registros = $pdo->prepare($consulta);

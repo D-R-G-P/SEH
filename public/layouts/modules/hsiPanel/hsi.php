@@ -3,6 +3,7 @@
 require_once '../../../../app/db/db.php';
 require_once '../../../../app/db/user_session.php';
 require_once '../../../../app/db/user.php';
+require_once 'controllers/search_user.php';
 
 $user = new User();
 $userSession = new UserSession();
@@ -15,6 +16,28 @@ $db = new DB();
 $pdo = $db->connect();
 
 $servicioFilter = $user->getServicio();
+
+// Obtener el parámetro 'selectServicioFilter' de la URL, si no está se establece en null
+$sel = isset($_GET['selectServicioFilter']) ? $_GET['selectServicioFilter'] : null;
+
+// Si el parámetro 'selectServicioFilter' no coincide con el servicio del usuario
+// y el usuario no tiene rol de "Administrador" ni "Dirección"
+if (($sel != $user->getServicio()) && ($user->getRol() != "Administrador" && $user->getRol() != "Dirección") || !$sel) {
+
+  // Asignar el servicio del usuario a 'selectServicioFilter' si no es válido
+  $selectServicioFilter = $user->getServicio();
+
+  // Redirigir con el nuevo parámetro selectServicioFilter
+  $url = "hsi.php?pagina=$pagina";
+  if ($selectServicioFilter) {
+    // Asegurarse de que el valor del servicio sea correctamente escapado para la URL
+    $url .= "&selectServicioFilter=" . urlencode($selectServicioFilter);
+  }
+
+  // Redirigir al usuario a la URL con el servicio correcto
+  header("Location: $url");
+  exit();
+}
 
 ?>
 
@@ -463,38 +486,66 @@ $servicioFilter = $user->getServicio();
       </div>
 
       <div class="habilitado">
-        <div class="disabledSearch" style="margin-top: 2vw;">
-          <h4>Buscar usuario por D.N.I.</h4>
-          <input type="text" name="disabledInput" id="disabledInput" style="width: 45%; height: 3vw; margin-left: 2vw;" placeholder="Buscar por DNI..." oninput="formatNumber(this)">
+        <h4>Habilitados</h4>
+        <div style="width: 100%;">
 
-          <button class="btn-green" onclick="loadInfo(disabledInput.value); disabledInput.value=''"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <form action="hsi.php#habilitado" method="get" id="formFiltro" style="display: flex;
+flex-direction: row;
+flex-wrap: nowrap;
+align-items: center;
+overflow-y: hidden;">
+            <input type="hidden" name="pagina" value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
+
+            <div style="display: grid;
+grid-template-columns: repeat(2, 1fr);
+grid-template-rows: 1fr;
+grid-column-gap: 1vw;
+grid-row-gap: 0px;
+overflow-y: hidden;">
+              <select name="selectServicioFilter" id="selectServicioFilter" class="select2" <?php if ($user->getRol() != 'Administrador' && $user->getRol() != 'Dirección') {
+                                                                                              echo "disabled";
+                                                                                            } ?>>
+
+                <?php
+                $selectedServicio = isset($_GET['selectServicioFilter']) ? htmlspecialchars($_GET['selectServicioFilter']) : '';
+
+                if ($user->getRol() == 'Administrador' || $user->getRol() == 'Dirección') {
+                  echo '<option value="" selected disabled>Seleccionar un servicio...</option>';
+                  echo '<option value="clr"' . ($selectedServicio === 'clr' ? ' selected' : '') . '>Seleccionar todos los servicios</option>';
+
+                  $getServicios = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
+                  $stmtServicios = $pdo->query($getServicios);
+
+                  while ($row = $stmtServicios->fetch(PDO::FETCH_ASSOC)) {
+                    $selected = ($selectedServicio == $row['id']) ? ' selected' : '';
+                    echo '<option value="' . $row['id'] . '"' . $selected . '>' . $row['servicio'] . '</option>';
+                  }
+                } else {
+                  $servicioUsuario = $user->getServicio();
+                  $getServicioUsuario = "SELECT id, servicio FROM servicios WHERE id = ?";
+                  $stmtServicioUsuario = $pdo->prepare($getServicioUsuario);
+                  $stmtServicioUsuario->execute([$servicioUsuario]);
+                  $rowServicioUsuario = $stmtServicioUsuario->fetch(PDO::FETCH_ASSOC);
+
+                  if ($rowServicioUsuario) {
+                    echo '<option value="' . $rowServicioUsuario['id'] . '" selected>' . $rowServicioUsuario['servicio'] . '</option>';
+                  }
+                }
+                ?>
+              </select>
+
+              <input type="text" name="searchInput" id="searchInput" style="width: 100%;" placeholder="Buscar por DNI o nombre..."
+                value="<?php echo isset($_GET['searchInput']) ? htmlspecialchars($_GET['searchInput']) : ''; ?>">
+
+            </div>
+            <button type="submit" class="btn-green"><i class="fa-solid fa-magnifying-glass"></i></button>
+          </form>
+
+
         </div>
 
-        <h4>Habilitados</h4>
-        <?php
-        // Establecer el número de resultados por página y la página actual
-        $resultados_por_pagina = 10;
-        $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-        $offset = ($pagina_actual - 1) * $resultados_por_pagina;
 
-        // Consulta SQL para obtener los resultados paginados
-        $queryPaginacion = "SELECT * FROM hsi WHERE servicio = :servicioFilter AND estado = 'habilitado' LIMIT :limit OFFSET :offset";
-        $stmtPaginacion = $pdo->prepare($queryPaginacion);
-        $stmtPaginacion->bindParam(':servicioFilter', $servicioFilter, PDO::PARAM_INT);
-        $stmtPaginacion->bindValue(':limit', $resultados_por_pagina, PDO::PARAM_INT);
-        $stmtPaginacion->bindValue(':offset', $offset, PDO::PARAM_INT);
-        $stmtPaginacion->execute();
 
-        // Consulta SQL para contar el número total de registros
-        $queryCount = "SELECT COUNT(*) FROM hsi WHERE servicio = :servicioFilter AND estado = 'habilitado'";
-        $stmtCount = $pdo->prepare($queryCount);
-        $stmtCount->bindParam(':servicioFilter', $servicioFilter, PDO::PARAM_INT);
-        $stmtCount->execute();
-        $total_registros = $stmtCount->fetchColumn();
-
-        // Calcular el número total de páginas
-        $total_paginas = ceil($total_registros / $resultados_por_pagina);
-        ?>
 
         <!-- Agregar la tabla HTML -->
         <table id="habilitado">
@@ -510,63 +561,124 @@ $servicioFilter = $user->getServicio();
             </tr>
           </thead>
           <tbody>
-            <?php
-            // Iterar sobre los resultados paginados
-            while ($rowAproved = $stmtPaginacion->fetch(PDO::FETCH_ASSOC)) {
-              echo '<tr>';
+            <?php if ($totalregistros >= 1): ?>
+              <?php foreach ($registros as $reg): ?>
+                <tr>
+                  <!-- ID -->
+                  <td class="table-center table-middle"><?= htmlspecialchars($reg['id']) ?></td>
 
-              echo '<td class="table-center table-middle">' . $rowAproved['id'] . '</td>';
+                  <!-- Apellido -->
+                  <td class="table-center table-middle"><?= htmlspecialchars($reg['apellido']) ?></td>
 
-              $stmtDniAproved = $pdo->prepare("SELECT nombre, apellido FROM personal WHERE dni = ?");
-              $stmtDniAproved->execute([$rowAproved['dni']]);
-              $rowDatAproved = $stmtDniAproved->fetch(PDO::FETCH_ASSOC);
+                  <!-- Nombre -->
+                  <td class="table-center table-middle"><?= htmlspecialchars($reg['nombre']) ?></td>
 
-              if ($rowDatAproved) {
-                echo '<td class="table-center table-middle">' . $rowDatAproved['apellido'] . '</td>';
-                echo '<td class="table-center table-middle">' . $rowDatAproved['nombre'] . '</td>';
-              } else {
-                echo '<td colspan="2">Error al obtener los datos</td>';
-              }
+                  <!-- DNI -->
+                  <td class="table-center table-middle"><?= htmlspecialchars($reg['dni']) ?></td>
 
-              echo '<td class="table-center table-middle">' . $rowAproved['dni'] . '</td>';
+                  <!-- Servicio -->
+                  <td class="table-center table-middle">
+                    <?php
+                    // Obtener el nombre del servicio con una consulta externa
+                    $stmtServicio = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
+                    $stmtServicio->execute([$reg['servicio']]);
+                    $servicio = $stmtServicio->fetch(PDO::FETCH_ASSOC);
+                    echo $servicio ? htmlspecialchars($servicio['servicio']) : "Error al obtener los datos";
+                    ?>
+                  </td>
 
-              $stmtServicioAproved = $pdo->prepare("SELECT servicio FROM servicios WHERE id = ?");
-              $stmtServicioAproved->execute([$rowAproved['servicio']]);
-              $rowServicioAproved = $stmtServicioAproved->fetch(PDO::FETCH_ASSOC);
+                  <!-- Permisos -->
+                  <td class="table-left table-middle">
+                    <?php
+                    // Obtener los roles asociados al usuario
+                    $stmtRoles = $pdo->prepare("SELECT r.rol AS nombre_rol 
+                                                    FROM usuarios_roles_hsi u 
+                                                    JOIN roles_hsi r ON u.id_rol = r.id 
+                                                    WHERE u.dni = :dni");
+                    $stmtRoles->execute([':dni' => $reg['dni']]);
+                    while ($rol = $stmtRoles->fetch(PDO::FETCH_ASSOC)) {
+                      echo '<div><i class="fa-solid fa-chevron-right"></i> ' . htmlspecialchars($rol['nombre_rol']) . '</div>';
+                    }
+                    ?>
+                  </td>
 
-              if ($rowServicioAproved) {
-                echo '<td class="table-center table-middle">' . $rowServicioAproved['servicio'] . '</td>';
-              } else {
-                echo '<td>Error al obtener los datos</td>';
-              }
-
-              echo '<td class="table-left table-middle">';
-              $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
-
-              $stmtRolesAct = $pdo->prepare($getRolesAct);
-              $stmtRolesAct->execute([':dni' => $rowAproved['dni']]); // Pasar el parámetro :dni
-
-              while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
-                echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
-              }
-
-              echo '</td>';
-
-              echo '<td class="table-center table-middle">
-                <button class="btn-green" onclick="loadInfo(\'' . $rowAproved['dni'] . '\')"><i class="fa-solid fa-hand-pointer"></i></button>
-            </td>';
-
-              echo '</tr>';
-            }
-            ?>
+                  <!-- Acciones -->
+                  <td class="table-center table-middle">
+                    <button class="btn-green" onclick="loadInfo('<?= htmlspecialchars($reg['dni']) ?>')">
+                      <i class="fa-solid fa-hand-pointer"></i>
+                    </button>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td class="table-center table-middle" colspan="7">No hay registros para mostrar.</td>
+              </tr>
+            <?php endif; ?>
           </tbody>
         </table>
 
+
         <!-- Agregar controles de paginación -->
         <div class="pagination">
-          <?php for ($pagina = 1; $pagina <= $total_paginas; $pagina++) : ?>
-            <button class="btn-green buttonPagination" href="?pagina=<?php echo $pagina; ?>">Página <?php echo $pagina; ?></button>
-          <?php endfor; ?>
+          <?php
+          if ($totalregistros >= 1):
+            // Número máximo de páginas que se mostrarán
+            $max_paginacion = 8;
+
+            // Cálculos de inicio y fin para las páginas visibles
+            $inicio_pagina = max(1, $pagina - floor($max_paginacion / 2));
+            $fin_pagina = min($numeropaginas, $pagina + floor($max_paginacion / 2));
+
+            // Si la cantidad de páginas disponibles es menor que el máximo, ajustamos los límites
+            if ($pagina - floor($max_paginacion / 2) < 1) {
+              $fin_pagina = min($numeropaginas, $fin_pagina + (1 - ($pagina - floor($max_paginacion / 2))));
+            }
+            if ($pagina + floor($max_paginacion / 2) > $numeropaginas) {
+              $inicio_pagina = max(1, $inicio_pagina - ($pagina + floor($max_paginacion / 2) - $numeropaginas));
+            }
+          ?>
+
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <!-- Botón de "anterior" -->
+                <?php if ($pagina == 1): ?>
+                  <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                <?php else: ?>
+                  <li class="page-item"><a class="page-link" href="hsi.php?pagina=<?php echo $pagina - 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&laquo;</a></li>
+                <?php endif; ?>
+
+                <!-- Página 1 -->
+                <?php if ($inicio_pagina > 1): ?>
+                  <li class="page-item"><a class="page-link" href="hsi.php?pagina=1&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">1</a></li>
+                  <li class="page-item disabled"><span class="page-link">...</span></li>
+                <?php endif; ?>
+
+                <!-- Páginas intermedias -->
+                <?php for ($i = $inicio_pagina; $i <= $fin_pagina; $i++): ?>
+                  <?php if ($pagina == $i): ?>
+                    <li class="page-item active"><a class="page-link" href="hsi.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a></li>
+                  <?php else: ?>
+                    <li class="page-item"><a class="page-link" href="hsi.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a></li>
+                  <?php endif; ?>
+                <?php endfor; ?>
+
+                <!-- Última página -->
+                <?php if ($fin_pagina < $numeropaginas): ?>
+                  <li class="page-item disabled"><span class="page-link">...</span></li>
+                  <li class="page-item"><a class="page-link" href="hsi.php?pagina=<?php echo $numeropaginas; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $numeropaginas; ?></a></li>
+                <?php endif; ?>
+
+                <!-- Botón de "siguiente" -->
+                <?php if ($pagina == $numeropaginas): ?>
+                  <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+                <?php else: ?>
+                  <li class="page-item"><a class="page-link" href="hsi.php?pagina=<?php echo $pagina + 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&raquo;</a></li>
+                <?php endif; ?>
+              </ul>
+            </nav>
+
+          <?php endif; ?>
         </div>
       </div>
     </div>

@@ -96,7 +96,7 @@ if (!$userSession->getCurrentUser()) {
                 <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/personalPanel/personal.php?selectServicioFilter='. $user->getServicio() .'" class="header" title="Gestión de personal"><i class="fa-solid fa-hospital-user"></i>
                     <p class="headerLeftP open">Gestión de personal</p>
                 </a>';} ?>
-                <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/hsiPanel/hsi.php" class="header" title="Solicitudes HSI"><img src="/SGH/public/resources/image/hsiLogo.svg" alt="HSI logo" style="width: 1.5vw; height: auto">
+                <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/hsiPanel/hsi.php?selectServicioFilter='. $user->getServicio() .'" class="header" title="Solicitudes HSI"><img src="/SGH/public/resources/image/hsiLogo.svg" alt="HSI logo" style="width: 1.5vw; height: auto">
                     <p class="headerLeftP open">Solicitudes de HSI</p>
                 </a>';} ?>
                 <a href="" class="header" title="Informes de turnos" style="display: none;"><i class="fa-regular fa-calendar"></i>
