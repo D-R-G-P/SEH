@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 26-11-2024 a las 17:07:53
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Servidor: localhost:3306
+-- Tiempo de generación: 02-12-2024 a las 13:08:07
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -135,8 +135,8 @@ CREATE TABLE `hsi` (
   `servicio` varchar(255) NOT NULL,
   `mail` varchar(255) NOT NULL,
   `telefono` varchar(255) NOT NULL,
-  `permisos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `documentos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`documentos`)),
+  `permisos` longtext DEFAULT NULL,
+  `documentos` longtext NOT NULL CHECK (json_valid(`documentos`)),
   `observaciones` longtext NOT NULL,
   `estado` varchar(255) NOT NULL,
   `residente` varchar(2) NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE `hsi` (
   `id_persona` varchar(255) NOT NULL,
   `id_usuario` varchar(255) NOT NULL,
   `nombre_usuario` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `hsi`
@@ -409,14 +409,27 @@ CREATE TABLE `mantenimiento` (
   `fecha_mantenimiento` date NOT NULL,
   `new_reclamante` varchar(255) NOT NULL,
   `new_mantenimiento` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `mantenimiento`
 --
 
 INSERT INTO `mantenimiento` (`id`, `fecha`, `servicio`, `localizacion_explicada`, `problema`, `estado_reclamante`, `reclamante`, `observacion_mantenimiento`, `estado_mantenimiento`, `modificador_mantenimiento`, `fecha_reclamante`, `fecha_mantenimiento`, `new_reclamante`, `new_mantenimiento`) VALUES
+(4, '2024-06-23 21:29:50', '2', 'dsa', 'asd', 'Pendiente', '43.255.000', '', 'Pendiente', '', '0000-00-00', '0000-00-00', 'no', 'si'),
 (4, '2024-06-23 21:29:50', '2', 'dsa', 'asd', 'Pendiente', '43.255.000', '', 'Pendiente', '', '0000-00-00', '0000-00-00', 'no', 'si');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `modulos`
+--
+
+CREATE TABLE `modulos` (
+  `id` int(11) NOT NULL,
+  `modulo` varchar(255) NOT NULL,
+  `descripcion` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -447,7 +460,7 @@ CREATE TABLE `personal` (
 
 INSERT INTO `personal` (`id`, `apellido`, `nombre`, `dni`, `password`, `servicio_id`, `cargo`, `especialidad`, `mn`, `mp`, `sistemas`, `rol`, `estado`, `pr`) VALUES
 (1, 'Lamas', 'Cristian Jonathan', '43.255.000', 'c609e2679e857de8513425ed61fab135', 6, 'Administrativo', '', '', '', '[{\"sistema\": \"Deposito\", \"activo\": \"no\"}, {\"sistema\": \"Mantenimiento\", \"activo\": \"no\"}, {\"sistema\": \"Informatica\", \"activo\": \"no\"}]', 'Administrador', 'Activo', 'si'),
-(11, 'Kopelovich', 'Mercedes', '30.777.309', '', 3, 'Jefe de servicio', '', '', '', '[{\"sistema\":\"Deposito\",\"activo\":\"si\"},{\"sistema\":\"Mantenimiento\",\"activo\":\"si\"},{\"sistema\":\"Informatica\",\"activo\":\"si\"}]', 'Jefe de servicio', 'Activo', ''),
+(11, 'Kopelovich', 'Mercedes', '30.777.309', 'c48620e5517e7796f32744de19ba449b', 3, 'Jefe de servicio', '', '', '', '[{\"sistema\":\"Deposito\",\"activo\":\"no\"},{\"sistema\":\"Mantenimiento\",\"activo\":\"no\"},{\"sistema\":\"Informatica\",\"activo\":\"no\"}]', 'Jefe de servicio', 'Activo', 'si'),
 (12, 'Spoto', 'Marisa Laura', '21.706.596', '', 4, 'Jefe de servicio', '', '', '', '[{\"sistema\":\"Deposito\",\"activo\":\"no\"},{\"sistema\":\"Mantenimiento\",\"activo\":\"no\"},{\"sistema\":\"Informatica\",\"activo\":\"no\"}]', 'Jefe de servicio', 'Activo', ''),
 (13, 'Ramos Romero', 'Graciela', '13.143.151', '', 1, 'Jefe de servicio', '', '', '', '[{\"sistema\":\"Deposito\",\"activo\":\"no\"},{\"sistema\":\"Mantenimiento\",\"activo\":\"no\"},{\"sistema\":\"Informatica\",\"activo\":\"no\"}]', 'Dirección', 'Activo', ''),
 (14, 'Russo', 'Deborah Maria', '31.795.339', '', 6, 'Jefe de servicio', 'Sala de Gestión del Usuario Internación', '', '', '[{\"sistema\": \"Deposito\", \"activo\": \"no\"}, {\"sistema\": \"Mantenimiento\", \"activo\": \"no\"}, {\"sistema\": \"Informatica\", \"activo\": \"no\"}]', 'Sin rol', 'Activo', ''),
@@ -677,6 +690,20 @@ INSERT INTO `personal` (`id`, `apellido`, `nombre`, `dni`, `password`, `servicio
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `role` varchar(255) NOT NULL,
+  `modulo` int(11) NOT NULL,
+  `descripcion` varchar(255) DEFAULT NULL,
+  `activo` tinyint(4) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `roles_hsi`
 --
 
@@ -746,6 +773,21 @@ INSERT INTO `servicios` (`id`, `servicio`, `jefe`, `estado`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `subroles`
+--
+
+CREATE TABLE `subroles` (
+  `id` int(11) NOT NULL,
+  `rol_id` int(11) DEFAULT NULL,
+  `subrol` varchar(255) NOT NULL,
+  `modulo` int(11) NOT NULL,
+  `descripcion` varchar(255) DEFAULT NULL,
+  `activo` tinyint(4) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tipos_equipo`
 --
 
@@ -757,336 +799,27 @@ CREATE TABLE `tipos_equipo` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuarios_roles_hsi`
+-- Estructura de tabla para la tabla `usuarios_roles`
 --
 
-CREATE TABLE `usuarios_roles_hsi` (
+CREATE TABLE `usuarios_roles` (
   `id` int(11) NOT NULL,
   `dni` varchar(10) NOT NULL,
-  `id_rol` int(11) NOT NULL
+  `rol_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `usuarios_roles_hsi`
+-- Estructura de tabla para la tabla `usuarios_subroles`
 --
 
-INSERT INTO `usuarios_roles_hsi` (`id`, `dni`, `id_rol`) VALUES
-(3, '43.255.000', 10),
-(4, '43.255.000', 14),
-(5, '43.255.000', 1),
-(6, '28.129.557', 5),
-(7, '34.818.147', 5),
-(8, '31.531.781', 5),
-(9, '31.531.781', 8),
-(10, '32.999.416', 5),
-(11, '32.999.416', 10),
-(12, '31.795.339', 5),
-(13, '31.795.339', 8),
-(14, '31.795.339', 10),
-(15, '37.934.567', 5),
-(16, '37.934.567', 10),
-(17, '32.690.667', 2),
-(18, '32.690.667', 4),
-(19, '32.690.667', 5),
-(20, '32.690.667', 10),
-(21, '18.212.804', 5),
-(22, '16.737.950', 5),
-(23, '40.666.954', 5),
-(24, '32.870.246', 5),
-(25, '28.671.226', 5),
-(26, '28.671.226', 8),
-(27, '23.924.089', 5),
-(28, '44.784.224', 5),
-(29, '44.784.224', 8),
-(30, '32.869.806', 2),
-(31, '32.869.806', 11),
-(32, '33.356.950', 2),
-(33, '33.356.950', 11),
-(34, '35.399.852', 2),
-(35, '35.399.852', 11),
-(36, '29.172.675', 2),
-(37, '29.172.675', 11),
-(38, '26.836.185', 2),
-(39, '26.836.185', 11),
-(40, '34.065.560', 2),
-(41, '34.065.560', 11),
-(42, '31.899.581', 2),
-(43, '31.899.581', 11),
-(44, '31.447.336', 2),
-(45, '31.447.336', 11),
-(46, '32.193.306', 2),
-(47, '32.193.306', 11),
-(48, '34.500.341', 2),
-(49, '34.500.341', 11),
-(50, '29.558.091', 2),
-(51, '29.558.091', 11),
-(52, '27.616.540', 2),
-(53, '27.616.540', 11),
-(54, '17.419.201', 5),
-(55, '33.151.193', 5),
-(56, '33.151.193', 8),
-(57, '30.227.899', 5),
-(58, '34.253.432', 2),
-(59, '34.253.432', 4),
-(60, '34.206.672', 2),
-(61, '34.206.672', 11),
-(62, '30.682.424', 11),
-(63, '26.251.825', 2),
-(64, '26.251.825', 11),
-(65, '24.575.677', 2),
-(66, '24.575.677', 11),
-(67, '32.844.264', 2),
-(68, '32.844.264', 11),
-(69, '35.360.243', 2),
-(70, '35.360.243', 11),
-(71, '30.728.370', 2),
-(72, '30.728.370', 11),
-(73, '34.769.852', 2),
-(74, '34.769.852', 11),
-(75, '26.758.923', 11),
-(76, '38.453.954', 11),
-(77, '27.857.921', 2),
-(78, '27.857.921', 11),
-(79, '29.683.050', 2),
-(80, '29.683.050', 11),
-(81, '31.709.728', 3),
-(82, '31.709.728', 11),
-(83, '26.698.795', 11),
-(84, '34.968.652', 11),
-(85, '27.866.332', 11),
-(86, '33.334.677', 11),
-(87, '39.716.302', 11),
-(88, '32.223.327', 11),
-(89, '31.940.707', 11),
-(90, '29.993.346', 3),
-(91, '29.993.346', 11),
-(92, '39.150.419', 3),
-(93, '39.150.419', 11),
-(94, '32.393.287', 3),
-(95, '32.393.287', 11),
-(96, '30.312.498', 3),
-(97, '30.312.498', 11),
-(98, '29.957.613', 11),
-(99, '28.768.710', 3),
-(100, '28.768.710', 11),
-(101, '34.406.459', 3),
-(102, '34.406.459', 11),
-(103, '33.990.925', 3),
-(104, '33.990.925', 11),
-(105, '18.625.341', 3),
-(106, '18.625.341', 11),
-(107, '38.454.074', 5),
-(108, '38.454.074', 8),
-(109, '36.936.905', 3),
-(110, '30.700.828', 2),
-(111, '24.733.824', 3),
-(112, '32.714.957', 2),
-(113, '39.280.715', 2),
-(114, '18.052.219', 3),
-(115, '32.641.354', 2),
-(116, '38.835.467', 2),
-(117, '21.828.233', 4),
-(118, '23.615.401', 2),
-(119, '23.615.401', 4),
-(120, '23.615.401', 11),
-(121, '37.985.904', 3),
-(122, '37.985.904', 11),
-(123, '39.150.529', 2),
-(124, '31.552.581', 3),
-(125, '35.243.682', 3),
-(126, '38.049.889', 2),
-(127, '37.912.778', 3),
-(128, '28.366.972', 3),
-(129, '37.756.700', 2),
-(130, '31.958.111', 2),
-(131, '29.994.140', 3),
-(132, '34.295.673', 2),
-(133, '36.817.200', 3),
-(134, '39.748.755', 3),
-(135, '25.178.211', 3),
-(136, '38.865.824', 2),
-(137, '35.610.426', 3),
-(138, '36.221.042', 2),
-(139, '32.392.857', 2),
-(140, '32.392.857', 10),
-(141, '33.043.724', 5),
-(142, '33.043.724', 10),
-(143, '20.294.201', 11),
-(144, '37.828.348', 11),
-(145, '29.485.093', 11),
-(146, '31.899.541', 3),
-(147, '26.134.842', 2),
-(148, '32.313.158', 3),
-(149, '35.721.889', 3),
-(150, '29.057.873', 3),
-(151, '29.307.937', 2),
-(152, '25.402.205', 3),
-(153, '35.116.031', 3),
-(154, '28.991.385', 3),
-(155, '35.609.364', 2),
-(156, '37.353.006', 2),
-(157, '29.957.641', 3),
-(158, '13.143.151', 2),
-(159, '13.143.151', 4),
-(160, '18.276.523', 2),
-(161, '18.276.523', 4),
-(162, '18.276.523', 10),
-(163, '30.464.007', 2),
-(164, '30.464.007', 4),
-(165, '30.464.007', 5),
-(166, '30.464.007', 8),
-(167, '30.464.007', 10),
-(168, '30.464.007', 1),
-(169, '36.067.517', 2),
-(170, '36.067.517', 4),
-(171, '41.850.572', 2),
-(172, '41.850.572', 4),
-(173, '39.242.575', 2),
-(174, '39.242.575', 4),
-(175, '41.137.311', 2),
-(176, '41.137.311', 4),
-(177, '38.836.359', 2),
-(178, '38.836.359', 4),
-(179, '39.430.809', 2),
-(180, '39.430.809', 4),
-(181, '96.175.515', 2),
-(182, '96.175.515', 4),
-(183, '41.927.499', 2),
-(184, '41.927.499', 4),
-(185, '41.148.346', 2),
-(186, '41.148.346', 4),
-(187, '22.928.742', 2),
-(188, '22.928.742', 4),
-(189, '25.415.159', 2),
-(190, '25.415.159', 4),
-(191, '22.894.293', 2),
-(192, '22.894.293', 4),
-(193, '26.846.773', 2),
-(194, '26.846.773', 4),
-(195, '35.418.768', 2),
-(196, '35.418.768', 4),
-(197, '32.858.953', 2),
-(198, '32.858.953', 4),
-(199, '94.943.983', 2),
-(200, '94.943.983', 4),
-(201, '35.568.970', 2),
-(202, '35.568.970', 4),
-(203, '36.392.960', 2),
-(204, '36.392.960', 4),
-(205, '35.414.792', 2),
-(206, '35.414.792', 4),
-(207, '32.007.283', 3),
-(208, '39.554.830', 2),
-(209, '27.616.584', 3),
-(210, '21.096.070', 3),
-(211, '31.664.555', 3),
-(212, '31.664.555', 5),
-(213, '31.664.555', 8),
-(214, '29.266.118', 3),
-(215, '21.959.930', 3),
-(216, '32.714.487', 2),
-(217, '32.714.487', 4),
-(218, '36.577.987', 3),
-(219, '34.957.829', 3),
-(220, '36.362.806', 4),
-(221, '36.362.806', 9),
-(222, '38.045.854', 3),
-(223, '95.304.300', 5),
-(224, '95.304.300', 8),
-(225, '30.281.689', 4),
-(226, '36.193.848', 2),
-(227, '36.683.530', 2),
-(228, '32.363.851', 2),
-(229, '25.312.773', 2),
-(230, '25.312.773', 4),
-(231, '32.690.692', 2),
-(232, '39.033.711', 2),
-(233, '38.794.664', 2),
-(234, '36.036.425', 2),
-(235, '31.462.970', 5),
-(236, '37.229.285', 2),
-(237, '37.229.285', 4),
-(238, '28.052.913', 2),
-(239, '28.052.913', 4),
-(240, '22.851.388', 5),
-(241, '22.851.388', 14),
-(242, '30.958.118', 5),
-(243, '30.958.118', 14),
-(244, '43.014.932', 5),
-(245, '43.014.932', 14),
-(246, '35.247.824', 5),
-(247, '35.247.824', 14),
-(248, '38.407.845', 5),
-(249, '38.407.845', 14),
-(250, '32.533.237', 5),
-(251, '32.533.237', 14),
-(252, '31.238.073', 5),
-(253, '31.238.073', 14),
-(254, '23.898.049', 5),
-(255, '23.898.049', 14),
-(256, '23.450.378', 2),
-(257, '23.450.378', 4),
-(258, '23.450.378', 11),
-(259, '37.381.815', 2),
-(260, '37.181.500', 2),
-(261, '37.181.500', 4),
-(262, '37.181.500', 11),
-(263, '21.430.728', 2),
-(264, '36.628.186', 2),
-(265, '26.708.008', 2),
-(266, '41.156.009', 2),
-(267, '7.637.368', 2),
-(268, '37.781.224', 2),
-(269, '30.322.149', 2),
-(270, '36.778.257', 2),
-(271, '32.174.398', 2),
-(272, '34.841.531', 2),
-(273, '35.640.574', 2),
-(274, '35.640.574', 4),
-(275, '36.778.333', 2),
-(276, '36.778.333', 4),
-(277, '33.416.359', 2),
-(278, '33.416.359', 4),
-(279, '22.377.226', 2),
-(280, '22.377.226', 4),
-(281, '36.181.622', 2),
-(282, '36.181.622', 4),
-(283, '38.589.974', 3),
-(290, '43.255.000', 5),
-(291, '43.255.000', 8),
-(293, '13.423.015', 2),
-(294, '25.720.500', 2),
-(295, '17.992.836', 2),
-(296, '17.280.238', 2),
-(297, '35.346.299', 3),
-(298, '12.742.639', 3),
-(299, '31.665.822', 2),
-(300, '32.175.328', 2),
-(301, '38.524.941', 2),
-(302, '30.078.206', 2),
-(303, '36.683.127', 2),
-(304, '12.530.398', 2),
-(305, '24.835.539', 3),
-(306, '30.596.717', 2),
-(307, '36.617.914', 2),
-(308, '20.415.089', 2),
-(309, '29.994.723', 2),
-(310, '29.764.456', 3),
-(311, '20.233.705', 3),
-(312, '18.135.509', 3),
-(313, '31.675.627', 3),
-(314, '39.097.654', 2),
-(315, '38.083.110', 2),
-(316, '35.520.160', 2),
-(317, '40.768.622', 5),
-(318, '40.768.622', 6),
-(319, '40.768.622', 8),
-(320, '40.768.622', 14),
-(321, '38.925.666', 5),
-(322, '39.513.813', 5),
-(323, '39.513.813', 6),
-(324, '39.513.813', 8),
-(325, '39.513.813', 14);
+CREATE TABLE `usuarios_subroles` (
+  `id` int(11) NOT NULL,
+  `dni` varchar(10) NOT NULL,
+  `rol_id` int(11) NOT NULL,
+  `subrol_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Índices para tablas volcadas
@@ -1108,7 +841,8 @@ ALTER TABLE `equipos`
 -- Indices de la tabla `especialidades`
 --
 ALTER TABLE `especialidades`
-  ADD PRIMARY KEY (`id`) USING BTREE;
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `fk_servicio_id` (`servicio_id`);
 
 --
 -- Indices de la tabla `guardias`
@@ -1130,11 +864,24 @@ ALTER TABLE `licencias`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `modulos`
+--
+ALTER TABLE `modulos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `personal`
 --
 ALTER TABLE `personal`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `dni` (`dni`);
+
+--
+-- Indices de la tabla `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `module_id` (`modulo`);
 
 --
 -- Indices de la tabla `roles_hsi`
@@ -1150,16 +897,35 @@ ALTER TABLE `servicios`
   ADD UNIQUE KEY `jefe` (`jefe`);
 
 --
+-- Indices de la tabla `subroles`
+--
+ALTER TABLE `subroles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rol_id` (`rol_id`),
+  ADD KEY `module_id` (`modulo`);
+
+--
 -- Indices de la tabla `tipos_equipo`
 --
 ALTER TABLE `tipos_equipo`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `usuarios_roles_hsi`
+-- Indices de la tabla `usuarios_roles`
 --
-ALTER TABLE `usuarios_roles_hsi`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `usuarios_roles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `dni` (`dni`),
+  ADD KEY `rol_id` (`rol_id`);
+
+--
+-- Indices de la tabla `usuarios_subroles`
+--
+ALTER TABLE `usuarios_subroles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `dni` (`dni`),
+  ADD KEY `rol_id` (`rol_id`),
+  ADD KEY `subrol_id` (`subrol_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -1202,10 +968,22 @@ ALTER TABLE `licencias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT de la tabla `modulos`
+--
+ALTER TABLE `modulos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `personal`
 --
 ALTER TABLE `personal`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240;
+
+--
+-- AUTO_INCREMENT de la tabla `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `roles_hsi`
@@ -1220,16 +998,28 @@ ALTER TABLE `servicios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
+-- AUTO_INCREMENT de la tabla `subroles`
+--
+ALTER TABLE `subroles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `tipos_equipo`
 --
 ALTER TABLE `tipos_equipo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT de la tabla `usuarios_roles_hsi`
+-- AUTO_INCREMENT de la tabla `usuarios_roles`
 --
-ALTER TABLE `usuarios_roles_hsi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=326;
+ALTER TABLE `usuarios_roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios_subroles`
+--
+ALTER TABLE `usuarios_subroles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -1240,6 +1030,34 @@ ALTER TABLE `usuarios_roles_hsi`
 --
 ALTER TABLE `especialidades`
   ADD CONSTRAINT `fk_servicio_id` FOREIGN KEY (`servicio_id`) REFERENCES `servicios` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `roles`
+--
+ALTER TABLE `roles`
+  ADD CONSTRAINT `roles_ibfk_1` FOREIGN KEY (`modulo`) REFERENCES `modulos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `subroles`
+--
+ALTER TABLE `subroles`
+  ADD CONSTRAINT `subroles_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`),
+  ADD CONSTRAINT `subroles_ibfk_2` FOREIGN KEY (`modulo`) REFERENCES `modulos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `usuarios_roles`
+--
+ALTER TABLE `usuarios_roles`
+  ADD CONSTRAINT `usuarios_roles_ibfk_1` FOREIGN KEY (`dni`) REFERENCES `personal` (`dni`),
+  ADD CONSTRAINT `usuarios_roles_ibfk_2` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`);
+
+--
+-- Filtros para la tabla `usuarios_subroles`
+--
+ALTER TABLE `usuarios_subroles`
+  ADD CONSTRAINT `usuarios_subroles_ibfk_1` FOREIGN KEY (`dni`) REFERENCES `personal` (`dni`),
+  ADD CONSTRAINT `usuarios_subroles_ibfk_2` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`),
+  ADD CONSTRAINT `usuarios_subroles_ibfk_3` FOREIGN KEY (`subrol_id`) REFERENCES `subroles` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
