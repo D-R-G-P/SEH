@@ -41,18 +41,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute($params)) {
             // Registro exitoso, mostrar un mensaje de éxito
             $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Datos modificados correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; document.addEventListener("DOMContentLoaded", function() { loadInfo(\''.$dni.'\', \''.$servicioSelect.'\'); });</script>';
-            header("Location: ../hsiAdmin.php");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit(); // Finalizar el script después de la redirección
         } else {
             // Error al registrar el usuario, mostrar un mensaje de error
             $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al modificar los datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-            header("Location: ../hsiAdmin.php");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit(); // Finalizar el script después de la redirección
         }
     } else {
         // No se recibieron todos los campos necesarios, mostrar un mensaje de error
         $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor verifique todos los datos obligatorios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-        header("Location: ../hsiAdmin.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit(); // Finalizar el script después de la redirección
     }
 }

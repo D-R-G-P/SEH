@@ -92,11 +92,11 @@ if (isset($_POST['docsDniHidden'])) {
 
     // Registro exitoso, mostrar un mensaje de éxito
     $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Archivos subidos exitosamente, aguarde a su verificación.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 5000);} document.addEventListener("DOMContentLoaded", function() { loadInfo(\''.$dni.'\', \''.$servicio.'\'); });</script>';
-    header("Location: ../hsiAdmin.php");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit(); // Finalizar el script después de la redirección
 } else {
     // Error al registrar el usuario, mostrar un mensaje de error
     $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor, suba todos los archivos obligatorios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} document.addEventListener("DOMContentLoaded", function() { loadInfo(\''.$dni.'\', \''.$servicio.'\'); });</script>';
-    header("Location: ../hsiAdmin.php");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit(); // Finalizar el script después de la redirección
 }

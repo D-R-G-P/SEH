@@ -20,12 +20,12 @@ $stmt->bindValue(4, $pedido, PDO::PARAM_STR);
 if ($stmt->execute()) {
     // Si la consulta se ejecuta con éxito, redirigir al usuario a una página de éxito o mostrar un mensaje de éxito
     $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Se establecieron los usuarios de residentes para la baja correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-    header("Location: ../hsiAdmin.php");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit(); // Finalizar el script después de la redirección
 } else {
     // Manejar el error si la consulta no se ejecuta correctamente
     $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al solicitar la baja.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-    header("Location: ../hsi.php");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit(); // Finalizar el script después de la redirección
 }
 ?>

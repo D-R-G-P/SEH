@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($existing_dni) {
             $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis" style="text-align: center;">El agente ya cuenta con usuario, solicite la reactivación mediante pedido.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);} window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '"); });</script>';
-            header("Location: ../hsi.php");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Registro exitoso, mostrar un mensaje de éxito
                 $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Usuario solicitado, verifique su bandeja</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-                header("Location: ../hsi.php");
+                header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
             } else {
                 throw new Exception('Error al registrar el usuario en la tabla hsi.');
@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // No se recibieron todos los campos necesarios, mostrar un mensaje de error
         $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor verifique todos los datos obligatorios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-        header("Location: ../hsi.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit(); // Finalizar el script después de la redirección
     }
 }

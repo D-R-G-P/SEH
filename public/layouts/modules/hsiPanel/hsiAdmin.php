@@ -329,117 +329,118 @@ if (!$sel) {
             <button class="btn-tematico" onclick="back.style.display = 'flex'; rolesModule.style.display = 'flex';"><i class="fa-solid fa-check-to-slot"></i> <b>Gestionar roles</b></button>
         </div>
 
-        <h4>Pendientes</h4>
+        <?php
+$estado = "working";
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Apellido</th>
-                    <th>Nombre</th>
-                    <th>DNI</th>
-                    <th>Servicio</th>
-                    <th>Permisos</th>
-                    <th>Documentos</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-
-                $estado = "working";
-
-                $queryPendientes = "SELECT hsi.*, p.nombre AS nombre_persona, p.apellido AS apellido_persona, s.servicio AS nombre_servicio 
+$queryPendientes = "SELECT hsi.*, 
+                           p.nombre AS nombre_persona, 
+                           p.apellido AS apellido_persona, 
+                           s.servicio AS nombre_servicio 
                     FROM hsi 
-                    LEFT JOIN personal AS p ON hsi.dni COLLATE utf8mb4_spanish2_ci = p.dni COLLATE utf8mb4_spanish2_ci 
+                    LEFT JOIN personal AS p ON hsi.dni = p.dni 
                     LEFT JOIN servicios AS s ON hsi.servicio = s.id 
                     WHERE hsi.estado = :estado 
-                    ORDER BY id ASC";
+                    ORDER BY hsi.id ASC";
 
-                $stmtPendientes = $pdo->prepare($queryPendientes);
-                $stmtPendientes->bindParam(':estado', $estado, PDO::PARAM_INT);
-                $stmtPendientes->execute();
+$stmtPendientes = $pdo->prepare($queryPendientes);
+$stmtPendientes->bindParam(':estado', $estado, PDO::PARAM_STR); // Cambiado a PDO::PARAM_STR para cadenas de texto
+$stmtPendientes->execute();
 
-                if ($stmtPendientes->rowCount() == 0) {
-                    // Si no hay resultados con estado 'news'
-                    echo '<tr><td colspan="8">No hay usuarios pendientes</td></tr>';
-                } else {
-                    while ($rowPendientes = $stmtPendientes->fetch(PDO::FETCH_ASSOC)) {
-                        echo '<tr>';
-                        echo '<td class="table-middle">' . $rowPendientes['id'] . '</td>';
-                        echo '<td class="table-middle">' . $rowPendientes['apellido_persona'] . '</td>';
-                        echo '<td class="table-middle">' . $rowPendientes['nombre_persona'] . '</td>';
-                        echo '<td class="table-middle">' . $rowPendientes['dni'] . '</td>';
-                        echo '<td class="table-middle">' . $rowPendientes['nombre_servicio'] . '</td>';
-                        echo '<td class="table-middle table-left" style="width: max-content;">';
+// Contar registros
+$totalPendientes = $stmtPendientes->rowCount();
+?>
 
-                        $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol FROM usuarios_roles_hsi u JOIN roles_hsi r ON u.id_rol = r.id WHERE u.dni = :dni";
+<h4>Pendientes (<?php echo $totalPendientes; ?>)</h4>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>DNI</th>
+            <th>Servicio</th>
+            <th>Permisos</th>
+            <th>Documentos</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if ($totalPendientes == 0): ?>
+            <tr>
+                <td colspan="8">No hay usuarios pendientes</td>
+            </tr>
+        <?php else: ?>
+            <?php while ($rowPendientes = $stmtPendientes->fetch(PDO::FETCH_ASSOC)): ?>
+                <tr>
+                    <td class="table-middle"><?php echo $rowPendientes['id']; ?></td>
+                    <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['apellido_persona']); ?></td>
+                    <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['nombre_persona']); ?></td>
+                    <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['dni']); ?></td>
+                    <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['nombre_servicio']); ?></td>
+                    <td class="table-middle table-left" style="width: max-content;">
+                        <?php
+                        $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol 
+                                        FROM usuarios_roles_hsi u 
+                                        JOIN roles_hsi r ON u.id_rol = r.id 
+                                        WHERE u.dni = :dni";
 
                         $stmtRolesAct = $pdo->prepare($getRolesAct);
-                        $stmtRolesAct->execute([':dni' => $rowPendientes['dni']]); // Pasar el parámetro :dni
+                        $stmtRolesAct->execute([':dni' => $rowPendientes['dni']]);
 
                         while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
+                            echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i> ' . htmlspecialchars($row['nombre_rol']) . '</div>';
                         }
+                        ?>
+                    </td>
+                    <td class="table-middle table-left" style="width: max-content;">
+                        <div style="display: grid; grid-template-columns: auto min-content; align-items: center;">
+                            <?php
+                            $documentos_array = json_decode($rowPendientes['documentos'], true);
 
-                        echo '</td>';
-                        echo '<td class="table-middle table-left" style="width: max-content;"><div style="display: grid; grid-template-columns: auto min-content; align-items: center;">';
-                        $documentos_array = json_decode($rowPendientes['documentos'], true);
+                            if ($documentos_array !== null) {
+                                foreach ($documentos_array as $documentoPendientes) {
+                                    $documento = $documentoPendientes['documento'];
+                                    $activo = $documentoPendientes['activo'];
 
-                        if ($documentos_array !== null) {
-                            foreach ($documentos_array as $documentoPendientes) {
-                                $documento = $documentoPendientes['documento'];
-                                $activo = $documentoPendientes['activo'];
+                                    // Mapeo de nombres de documentos
+                                    $nombresDocumentos = [
+                                        'Copia de DNI' => 'D.N.I',
+                                        'Copia de matrícula profesional' => 'Matricula',
+                                        'Solicitud de alta de usuario para HSI (ANEXO I)' => 'ANEXO I',
+                                        'Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)' => 'ANEXO II',
+                                        'Declaración Jurada - Usuario prescriptor' => 'Prescriptor'
+                                    ];
 
-                                // Utilizar un switch para cambiar el nombre del documento en cada caso
-                                switch ($documento) {
-                                    case 'Copia de DNI':
-                                        $documento_nombre = 'D.N.I';
-                                        break;
-                                    case 'Copia de matrícula profesional':
-                                        $documento_nombre = 'Matricula';
-                                        break;
-                                    case 'Solicitud de alta de usuario para HSI (ANEXO I)':
-                                        $documento_nombre = 'ANEXO I';
-                                        break;
-                                    case 'Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)':
-                                        $documento_nombre = 'ANEXO II';
-                                        break;
-                                    case 'Declaración Jurada - Usuario prescriptor':
-                                        $documento_nombre = 'Prescriptor';
-                                        break;
-                                    default:
-                                        $documento_nombre = $documento; // Si no hay una coincidencia, mantener el nombre original
-                                        break;
+                                    $documento_nombre = $nombresDocumentos[$documento] ?? $documento;
+
+                                    // Estado del documento
+                                    $simbolos = [
+                                        'no' => '<i class="fa-solid fa-xmark"></i>',
+                                        'pendiente' => '<i class="fa-regular fa-clock"></i>',
+                                        'verificado' => '<i class="fa-solid fa-check"></i>'
+                                    ];
+
+                                    $simbolo = $simbolos[$activo] ?? '<i class="fa-solid fa-question"></i>';
+
+                                    echo '<div>' . htmlspecialchars($documento_nombre) . ':</div>';
+                                    echo '<div>' . $simbolo . '</div>';
                                 }
-
-                                switch ($activo) {
-                                    case 'no':
-                                        $simbolo =  '<i class="fa-solid fa-xmark"></i>';
-                                        break;
-                                    case 'pendiente':
-                                        $simbolo = '<i class="fa-regular fa-clock"></i>';
-                                        break;
-                                    case 'verificado':
-                                        $simbolo = '<i class="fa-solid fa-check"></i>';
-                                        break;
-                                    default:
-                                        $simbolo = '<i class="fa-solid fa-question"></i>';
-                                        break;
-                                }
-
-                                // Imprimir el nombre del documento y el símbolo en las dos columnas del grid
-                                echo '<div>' . $documento_nombre . ':</div>';
-                                echo '<div>' . $simbolo . '</div>';
                             }
-                        }
-                        echo '</div></td>';
-                        echo '<td class="table-middle table-center"><button class="btn-green" onclick="loadInfo(\'' . $rowPendientes['dni'] . '\', \'' . $rowPendientes['servicio'] . '\')"><i class="fa-solid fa-hand-pointer"></i></button></td>';
-                        echo '</tr>';
-                    }
-                }
+                            ?>
+                        </div>
+                    </td>
+                    <td class="table-middle table-center">
+                        <button class="btn-green" onclick="loadInfo('<?php echo htmlspecialchars($rowPendientes['dni']); ?>', '<?php echo htmlspecialchars($rowPendientes['servicio']); ?>')">
+                            <i class="fa-solid fa-hand-pointer"></i>
+                        </button>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
 
-                ?>
             </tbody>
         </table>
 
@@ -457,7 +458,7 @@ if (!$sel) {
                 }
             </style>
 
-            <h4>Habilitados</h4>
+            <h4>Habilitados (<?php echo $totalregistros; ?>)</h4>
             <div style="width: 100%;">
 
                 <form action="hsiAdmin.php#habilitado" method="get" id="formFiltro" style="display: flex;

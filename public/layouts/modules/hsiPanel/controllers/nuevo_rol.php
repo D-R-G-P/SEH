@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($existing_rol) {
             $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis" style="text-align: center;">El rol ya existe.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);}</script>';
-            header("Location: ../hsiAdmin.php");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit(); // Finalizar el script después de la redirección
         }
 
@@ -40,18 +40,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute($params)) {
             // Registro exitoso, mostrar un mensaje de éxito
             $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Rol agregado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { back.style.display = "flex"; rolesModule.style.display = "flex"; })</script>';
-            header("Location: ../hsiAdmin.php");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit(); // Finalizar el script después de la redirección
         } else {
             // Error al registrar el usuario, mostrar un mensaje de error
             $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al registrar el rol.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { back.style.display = "flex"; rolesModule.style.display = "flex"; })</script>';
-            header("Location: ../hsiAdmin.php");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit(); // Finalizar el script después de la redirección
         }
     } else {
         // No se recibieron todos los campos necesarios, mostrar un mensaje de error
         $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor verifique los datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { back.style.display = "flex"; rolesModule.style.display = "flex"; })</script>';
-        header("Location: ../hsi.php");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit(); // Finalizar el script después de la redirección
     }
 }
