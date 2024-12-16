@@ -1,18 +1,23 @@
 <?php
+require_once __DIR__ . '/../../config.php';
+// require_once BASE_PATH . '/app/db/roleManager.php';
 
+$user = new User();  // Suponemos que la clase User está cargada
+$currentUser = $userSession->getCurrentUser(); // Suponemos que $userSession está disponible
 
-$user = new User();
-$currentUser = $userSession->getCurrentUser();
-$user->setUser($currentUser);
-// session_start();
-
-// Verificar si el usuario está actualmente logueado
+// Verificar si el usuario está logueado
 if (!$userSession->getCurrentUser()) {
-    // Si no hay un usuario en la sesión, redirigir a la página de inicio
-    header("Location: /SGH/index.php");
-    exit(); // Asegurarse de que el script se detenga después de redirigir
+    header("Location: " . getBaseURL() . "/index.php"); // Redirección usando la función getBaseURL
+    exit();
 }
 
+// Set user instance
+$user->setUser($currentUser);
+
+// Asegura que las rutas locales se resuelvan correctamente
+$basePath = realpath(dirname(__DIR__));
+
+// Función para generar las URLs relativas
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +27,6 @@ if (!$userSession->getCurrentUser()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S.G.H. - <?php echo $title ?></title>
-    <!-- Sistema de emergentes hospitalarios -->
     <link rel="icon" href="/SGH/node_modules/@fortawesome/fontawesome-free/svgs/solid/notes-medical.svg" type="image/svg+xml">
 
     <!-- FontAwesome -->
@@ -37,6 +41,9 @@ if (!$userSession->getCurrentUser()) {
 
     <link rel="stylesheet" href="/SGH/public/resources/css/base.css">
     <link rel="stylesheet" href="/SGH/public/resources/css/header.css">
+
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>base.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>header.css">
 </head>
 
 <body>
@@ -56,7 +63,7 @@ if (!$userSession->getCurrentUser()) {
 
         <div class="seccond">
             <div class="logoHSM">
-                <img src="/SGH/public/resources/image/hsmlogoheadersvg.svg" alt="HIGA San Martín - Logo">
+                <img src="<?php echo IMG_PATH ?>hsmlogoheadersvg.svg" alt="HIGA San Martín - Logo">
                 <h2>H I G A </br> General San Martín</h2>
             </div>
         </div>
@@ -68,12 +75,10 @@ if (!$userSession->getCurrentUser()) {
         <?php
         if (isset($_SESSION['success_message'])) {
             echo '<div class="success-message">' . $_SESSION['success_message'] . '</div>';
-            // Borrar el mensaje de éxito de la variable de sesión para no mostrarlo nuevamente
             unset($_SESSION['success_message']);
         }
         if (isset($_SESSION['error_message'])) {
             echo '<div class="error-message">' . $_SESSION['error_message'] . '</div>';
-            // Borrar el mensaje de éxito de la variable de sesión para no mostrarlo nuevamente
             unset($_SESSION['error_message']);
         }
         ?>
@@ -87,56 +92,70 @@ if (!$userSession->getCurrentUser()) {
 
             <div class="sistemas">
                 <hr>
-                <a href="/SGH/index.php" class="header" title="Inicio"><i class="fa-solid fa-house"></i>
+                <a href="<?php echo BASE_PATH ?>/index.php" class="header" title="Inicio"><i class="fa-solid fa-house"></i>
                     <p class="headerLeftP open">Inicio</p>
                 </a>
-                <a href="/SGH/public/layouts/modules/tableroPanel/tableroPanel.php" class="header" title="Tablero de mando"><i class="fa-solid fa-house-medical-flag"></i>
-                    <p class="headerLeftP open">Tablero de mando</p>
-                </a>
-                <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/personalPanel/personal.php?selectServicioFilter='. $user->getServicio() .'" class="header" title="Gestión de personal"><i class="fa-solid fa-hospital-user"></i>
-                    <p class="headerLeftP open">Gestión de personal</p>
-                </a>';} ?>
-                <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/hsiPanel/hsi.php?selectServicioFilter='. $user->getServicio() .'" class="header" title="Solicitudes HSI"><img src="/SGH/public/resources/image/hsiLogo.svg" alt="HSI logo" style="width: 1.5vw; height: auto">
-                    <p class="headerLeftP open">Solicitudes de HSI</p>
-                </a>';} ?>
-                <a href="" class="header" title="Informes de turnos" style="display: none;"><i class="fa-regular fa-calendar"></i>
-                    <p class="headerLeftP open">Informes de turnos</p>
-                </a>
-                <a href="" class="header" title="Informes de camas" style="display: none;"><i class="fa-solid fa-bed"></i>
-                    <p class="headerLeftP open">Informes de camas</p>
-                </a>
-                <a href="/SGH/public/layouts/modules/guardiasPanel/guardias.php" class="header" title="Esquema de guardias"><i class="fa-solid fa-calendar-week"></i>
-                    <p class="headerLeftP open">Esquema de guardias</p>
-                </a>
-                <a href="" class="header" title="Depóstio" style="display: none;"><i class="fa-solid fa-box"></i>
-                    <p class="headerLeftP open">Deposito</p>
-                </a>
-                <a href="/SGH/public/layouts/modules/equipos/equipos.php" class="header" title="Informes de equipos"><i class="fa-solid fa-x-ray"></i>
-                    <p class="headerLeftP open">Informes de equipos</p>
-                </a>
-                <a href="/SGH/public/layouts/modules/mantenimiento/mantenimiento.php" class="header" title="Mantenimiento"><i class="fa-solid fa-screwdriver-wrench"></i>
-                    <p class="headerLeftP open">Mantenimiento</p>
-                </a>
-                <a href="" class="header" title="Arquitectura" style="display: none;"><i class="fa-solid fa-pen-ruler"></i>
-                    <p class="headerLeftP open">Arquitectura</p>
-                </a>
-                <a href="" class="header" title="Patrimoniales" style="display: none;"><i class="fa-solid fa-clipboard-check"></i></i>
-                    <p class="headerLeftP open">Patrimoniales</p>
-                </a>
-                <a href="" class="header" title="Informatica" style="display: none;"><i class="fa-solid fa-computer"></i>
-                    <p class="headerLeftP open">Informática</p>
-                </a>
-                <?php if($user->getRol() == "Administrador" || $user->getRol() == "Dirección" || $user->getRol() == "Jefe de servicio") { echo '<a href="/SGH/public/layouts/modules/adminPanel/adminPanel.php" class="header" title="Administración"><i class="fa-solid fa-hammer"></i>
-                    <p class="headerLeftP open">Administración</p>
-                </a>';} ?>
+
+                <?php if (hasAccess([ 'administrador', 'direccion', 'tab_mando' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>tableroPanel/tableroPanel.php" class="header" title="Tablero de mando">
+                        <i class="fa-solid fa-house-medical-flag"></i>
+                        <p class="headerLeftP open">Tablero de mando</p>
+                    </a>
+                <?php endif; ?>
+
+                <!-- Acceso basado en el rol del usuario -->
+                <?php if (hasAccess([ 'administrador', 'direccion', 'gest_personal' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>personalPanel/personal.php?selectServicioFilter=<?php echo $user->getServicio(); ?>" class="header" title="Gestión de personal">
+                        <i class="fa-solid fa-hospital-user"></i>
+                        <p class="headerLeftP open">Gestión de personal</p>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (hasAccess([ 'administrador', 'direccion', 'hsi' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>hsiPanel/hsi.php?selectServicioFilter=<?php echo $user->getServicio(); ?>" class="header" title="Solicitudes HSI">
+                        <img src="<?php echo IMG_PATH ?>hsiLogo.svg" alt="HSI logo" style="width: 1.5vw; height: auto">
+                        <p class="headerLeftP open">Solicitudes de HSI</p>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (hasAccess([ 'administrador', 'direccion', 'guardias' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>guardiasPanel/guardias.php" class="header" title="Esquema de guardias">
+                        <i class="fa-solid fa-calendar-week"></i>
+                        <p class="headerLeftP open">Esquema de guardias</p>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (hasAccess([ 'administrador', 'direccion', 'inf_equipos' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>equipos/equipos.php" class="header" title="Informes de equipos">
+                        <i class="fa-solid fa-x-ray"></i>
+                        <p class="headerLeftP open">Informes de equipos</p>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (hasAccess([ 'administrador', 'direccion', 'mantenimiento' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>mantenimiento/mantenimiento.php" class="header" title="Mantenimiento">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        <p class="headerLeftP open">Mantenimiento</p>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (hasAccess([ 'administrador', 'direccion', 'administracion' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>adminPanel/adminPanel.php" class="header" title="Administración">
+                        <i class="fa-solid fa-hammer"></i>
+                        <p class="headerLeftP open">Administración</p>
+                    </a>
+                <?php endif; ?>
+
                 <hr>
             </div>
 
             <div class="user">
-                <a href="/SGH/public/layouts/modules/miUsuario/miUsuario.php" class="header" title="Mi usuario"><i class="fa-solid fa-user"></i>
+                <a href="<?php echo MODULE_PATH ?>miUsuario/miUsuario.php" class="header" title="Mi usuario">
+                    <i class="fa-solid fa-user"></i>
                     <p class="headerLeftP open">Mi usuario</p>
                 </a>
-                <a href="/SGH/app/db/logout.php" class="logout" title="Cerrar sesión"><i class="fa-solid fa-power-off"></i>
+                <a href="<?php echo BASE_PATH ?>/app/db/logout.php" class="logout" title="Cerrar sesión">
+                    <i class="fa-solid fa-power-off"></i>
                     <p class="headerLeftP open">Cerrar sesión</p>
                 </a>
             </div>

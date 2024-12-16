@@ -4,11 +4,15 @@ require_once '../../../../app/db/db.php';
 require_once '../../../../app/db/user_session.php';
 require_once '../../../../app/db/user.php';
 require_once 'controllers/search_personal.php';
+require_once '../../../config.php';
+
 
 $user = new User();
 $userSession = new UserSession();
 $currentUser = $userSession->getCurrentUser();
 $user->setUser($currentUser);
+
+requireRole(['administrador', 'direccion', 'gest_personal']);
 
 $title = "Gestión de personal";
 
