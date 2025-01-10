@@ -22,5 +22,7 @@ $servicioFilter = $user->getServicio();
 ?>
 
 <?php require_once '../../base/header.php'; ?>
-
+<div class="content">
+    <h1>Esto está en planeamiento de desarrollo, no hay nada que ver.</h1>
+</div>
 <?php require_once '../../base/footer.php'; ?>

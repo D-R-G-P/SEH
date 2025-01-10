@@ -24,7 +24,7 @@ $sel = isset($_GET['selectServicioFilter']) ? $_GET['selectServicioFilter'] : nu
 
 // Si el parámetro 'selectServicioFilter' no coincide con el servicio del usuario
 // y el usuario no tiene rol de "Administrador" ni "Dirección"
-if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])) || !$sel) {
+if (($sel !== $user->getServicio() || !$sel) && !hasAccess(['administrador', 'direccion'])) {
     
     // Asignar el servicio del usuario a 'selectServicioFilter' si no es válido
     $selectServicioFilter = $user->getServicio();
