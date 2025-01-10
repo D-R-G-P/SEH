@@ -2,10 +2,10 @@
 
 <footer>
     <div class="left" style="font-size: 1vw;">
-        Version Beta 1.0.3
+        Version 1.0.0
     </div>
     <div class="right" style="font-size: 1vw;">
-        © Dirección de Redes y Gestión de Personas. Todos los derechos reservados
+        © Departamento de Salud Digital - HIGA Gral San Martín
     </div>
 </footer>
 

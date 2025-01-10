@@ -32,8 +32,17 @@ if ($user->getPr() == "si") {
         <h3>Actualizaciónes</h3>
 
         <div style="margin-top: 1vw;" class="modulo">
-            <h4 style="text-align: start;">Version Beta 1.0.3</h4>
-            <p style="margin-top: .5vw; text-align: start;">Se ha implementado la funcionalidad inicial de los modulos Inicio, Gestión de personal, Solicitudes de HSI (lado solicitable y lado administrador), Administración (lado dirección y lado servicios) y Mi Usuario.</p>
+            <h4 style="text-align: start;">Version 1.0.0</h4>
+            <p style="margin-top: .5vw; text-align: start;">Se realizaron múltiples implementaciones de diversos sistemas, se establece en el plan de desarrollo los módulos de:
+                <div style="padding: 1vw 3vw; text-align: left;">
+                <ul>
+                    <li>Depósito</li>
+                    <li>Camilleros</li>
+                    <li>Gestión de roles (Actualmente serán otorgados por el administrador)</li>
+                </ul>
+                </div>
+            Estos, serán cruciales para un eficaz funcionamiento del hospital.
+            </p>
         </div>
     </div>
 </div>

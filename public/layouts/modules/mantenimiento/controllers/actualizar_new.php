@@ -19,5 +19,5 @@ if (isset($_POST['id'])) {
 } else {
     // Si no se proporcionó un ID, devolver un mensaje de error
     http_response_code(400);
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al generar la contraseña.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al obtener el ID.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
 }

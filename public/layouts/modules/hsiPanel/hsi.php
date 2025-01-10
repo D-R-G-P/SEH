@@ -25,7 +25,7 @@ $sel = isset($_GET['selectServicioFilter']) ? $_GET['selectServicioFilter'] : nu
 
 // Si el parámetro 'selectServicioFilter' no coincide con el servicio del usuario
 // y el usuario no tiene rol de "Administrador" ni "Dirección"
-if (($sel != $user->getServicio()) && ($user->getRol() != "Administrador" && $user->getRol() != "Dirección") || !$sel) {
+if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])) || !$sel) {
 
   // Asignar el servicio del usuario a 'selectServicioFilter' si no es válido
   $selectServicioFilter = $user->getServicio();
@@ -95,7 +95,7 @@ if (($sel != $user->getServicio()) && ($user->getRol() != "Administrador" && $us
             <option value="" selected disabled>Seleccionar agente...</option>
             <?php
 
-            if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
+            if (hasAccess(['administrador', 'direccion'])) {
               // Realiza la consulta a la tabla personal, excluyendo los dni que están en la tabla hsi
               $getPersonal = "SELECT apellido, nombre, dni FROM personal WHERE CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci NOT IN (SELECT CONVERT(dni USING utf8mb4) COLLATE utf8mb4_spanish_ci FROM hsi)";
               $stmt = $pdo->query($getPersonal);
@@ -128,7 +128,7 @@ if (($sel != $user->getServicio()) && ($user->getRol() != "Administrador" && $us
             <option value="" selected disabled>Seleccionar un servicio...</option>
             <?php
 
-            if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
+            if (hasAccess(['administrador', 'direccion'])) {
               // Realiza la consulta a la tabla servicios
               $getServicio = "SELECT id, servicio FROM servicios";
               $stmt = $pdo->query($getServicio);
@@ -505,14 +505,15 @@ grid-template-rows: 1fr;
 grid-column-gap: 1vw;
 grid-row-gap: 0px;
 overflow-y: hidden;">
-              <select name="selectServicioFilter" id="selectServicioFilter" class="select2" <?php if ($user->getRol() != 'Administrador' && $user->getRol() != 'Dirección') {
-                                                                                              echo "disabled";
-                                                                                            } ?>>
+              <select name="selectServicioFilter" id="selectServicioFilter" class="select2"
+                <?php if (!hasAccess(['administrador', 'direccion'])) {
+                  echo "disabled";
+                } ?>>
 
                 <?php
                 $selectedServicio = isset($_GET['selectServicioFilter']) ? htmlspecialchars($_GET['selectServicioFilter']) : '';
 
-                if ($user->getRol() == 'Administrador' || $user->getRol() == 'Dirección') {
+                if (hasAccess(['administrador', 'direccion'])) {
                   echo '<option value="" selected disabled>Seleccionar un servicio...</option>';
                   echo '<option value="clr"' . ($selectedServicio === 'clr' ? ' selected' : '') . '>Seleccionar todos los servicios</option>';
 

@@ -25,7 +25,7 @@ if ($search) {
     $consulta .= " AND (dni LIKE :searchTerm OR nombre LIKE :searchTerm2 OR apellido LIKE :searchTerm3)";
 }
 
-$consulta .= " ORDER BY apellido ASC LIMIT :inicio, :regpagina";
+$consulta .= " ORDER BY id ASC LIMIT :inicio, :regpagina";
 
 // Preparar la consulta
 $registros = $pdo->prepare($consulta);

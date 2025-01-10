@@ -35,7 +35,7 @@ $servicioUser = $user->getServicio();
 
 	<?php
 
-	if ($user->getRol() === "Administrador" || $user->getRol() === "Dirección") {
+	if (hasAccess(['administrador', 'direccion'])) {
 
 	?>
 
@@ -342,7 +342,7 @@ $servicioUser = $user->getServicio();
 
 	}
 
-	if ($user->getRol() === "Administrador" || $user->getRol() === "Dirección" || $user->getRol() === "Jefe de servicio") {
+	if (hasAccess(['administrador', 'direccion']) || hasSubAccess(['jefe_servicio'])) {
 
 	?>
 
@@ -477,9 +477,6 @@ $servicioUser = $user->getServicio();
 
 	<?php
 
-	} else {
-
-		echo 'No cuenta con permisos para acceder a este panel';
 	}
 	?>
 </div>
