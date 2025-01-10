@@ -29,6 +29,8 @@ $basePath = realpath(dirname(__DIR__));
     <title>S.G.H. - <?php echo $title ?></title>
     <link rel="icon" href="/SGH/node_modules/@fortawesome/fontawesome-free/svgs/solid/notes-medical.svg" type="image/svg+xml">
 
+    <meta name="author" content="Cristian Lamas Jonathan">
+
     <!-- FontAwesome -->
     <script src="/SGH/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
 
@@ -105,14 +107,14 @@ $basePath = realpath(dirname(__DIR__));
 
                 <!-- Acceso basado en el rol del usuario -->
                 <?php if (hasAccess([ 'administrador', 'direccion', 'gest_personal' ])): ?>
-                    <a href="<?php echo MODULE_PATH ?>personalPanel/personal.php?selectServicioFilter=<?php echo $user->getServicio(); ?>" class="header" title="Gestión de personal">
+                    <a href="<?php echo MODULE_PATH ?>personalPanel/personal.php" class="header" title="Gestión de personal">
                         <i class="fa-solid fa-hospital-user"></i>
                         <p class="headerLeftP open">Gestión de personal</p>
                     </a>
                 <?php endif; ?>
 
                 <?php if (hasAccess([ 'administrador', 'direccion', 'hsi' ])): ?>
-                    <a href="<?php echo MODULE_PATH ?>hsiPanel/hsi.php?selectServicioFilter=<?php echo $user->getServicio(); ?>" class="header" title="Solicitudes HSI">
+                    <a href="<?php echo MODULE_PATH ?>hsiPanel/hsi.php" class="header" title="Solicitudes HSI">
                         <img src="<?php echo IMG_PATH ?>hsiLogo.svg" alt="HSI logo" style="width: 1.5vw; height: auto">
                         <p class="headerLeftP open">Solicitudes de HSI</p>
                     </a>
@@ -132,6 +134,13 @@ $basePath = realpath(dirname(__DIR__));
                     </a>
                 <?php endif; ?>
 
+                <?php if (hasAccess([ 'administrador', 'direccion', 'camillero' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>camilleros/camilleros.php" class="header" title="Camilleros">
+                    <img src="<?php echo IMG_PATH ?>camilla.svg" alt="Camilla logo" style="width: 1.5vw; height: auto; color: #fff;">
+                        <p class="headerLeftP open">Camilleros</p>
+                    </a>
+                <?php endif; ?>
+
                 <?php if (hasAccess([ 'administrador', 'direccion', 'mantenimiento' ])): ?>
                     <a href="<?php echo MODULE_PATH ?>mantenimiento/mantenimiento.php" class="header" title="Mantenimiento">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
@@ -143,6 +152,13 @@ $basePath = realpath(dirname(__DIR__));
                     <a href="<?php echo MODULE_PATH ?>adminPanel/adminPanel.php" class="header" title="Administración">
                         <i class="fa-solid fa-hammer"></i>
                         <p class="headerLeftP open">Administración</p>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (hasAccess([ 'developer' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>developer/developer.php" class="header" title="Desarrollador">
+                        <i class="fa-solid fa-code"></i>
+                        <p class="headerLeftP open">Desarrollador</p>
                     </a>
                 <?php endif; ?>
 

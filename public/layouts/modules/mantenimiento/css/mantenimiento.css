@@ -6,7 +6,8 @@
     margin-top: -3vw;
 }
 
-.caso .left, .caso .right {
+.caso .left,
+.caso .right {
     border: .2vw #000 solid;
     border-radius: .8vw;
     padding: .5vw;
@@ -15,4 +16,72 @@
 select {
     border-radius: .5vw;
     width: 100%;
+}
+
+.fa-circle-info {
+    color: var(--color2);
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.fa-circle-info:hover {
+    color: var(--color3);
+}
+
+/* Estilo para el checkbox y el texto asociado */
+.accept-checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 1.2vw;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.accept-checkbox input[type="checkbox"] {
+    margin-right: 0.5vw;
+    width: 1.5vw;
+    /* Ajusta el tamaño del checkbox */
+    height: 1.5vw;
+    /* Ajusta el tamaño del checkbox */
+}
+
+.accept-checkbox label {
+    margin: 0;
+    /* Elimina el margen por defecto del label */
+    font-size: 1.2vw;
+}
+
+.pendiente {
+    background-color: rgba(242, 200, 76, 0.8); /* Amarillo claro: Indica espera o próxima acción */
+}
+.pendiente:hover {
+    background-color: rgb(224, 180, 41, 0.8); /* Amarillo más oscuro: Resaltado al pasar el cursor */
+}
+
+.en_proceso {
+    background-color: rgb(76, 175, 80, 0.8); /* Verde: Representa progreso y actividad */
+}
+.en_proceso:hover {
+    background-color: rgb(56, 142, 60, 0.8); /* Verde más oscuro: Resaltado al pasar el cursor */
+}
+
+.completado {
+    background-color: rgb(33, 150, 243, 0.8); /* Azul claro: Simboliza finalización exitosa */
+}
+.completado:hover {
+    background-color: rgb(25, 118, 210, 0.8); /* Azul más oscuro: Resaltado al pasar el cursor */
+}
+
+.rechazado {
+    background-color: rgb(244, 67, 54, 0.8); /* Rojo: Indica un estado negativo o error */
+}
+.rechazado:hover {
+    background-color: rgb(211, 47, 47, 0.8); /* Rojo más oscuro: Resaltado al pasar el cursor */
+}
+
+.programado {
+    background-color: rgb(156, 39, 176, 0.8); /* Morado: Sugiere planificación y organización */
+}
+.programado:hover {
+    background-color: rgb(123, 31, 162, 0.8); /* Morado más oscuro: Resaltado al pasar el cursor */
 }

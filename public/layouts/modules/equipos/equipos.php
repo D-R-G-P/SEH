@@ -104,7 +104,7 @@ $servicioFilter = $user->getServicio();
             <option value="" disabled selected>Seleccione un servicio...</option>
             <?php
 
-            if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
+            if (hasAccess(['administrador', 'direccion'])) {
               // Realiza la consulta a la tabla servicios
               $getServicio = "SELECT id, servicio FROM servicios";
               $stmt = $pdo->query($getServicio);
@@ -186,7 +186,7 @@ $servicioFilter = $user->getServicio();
             <option value="" disabled selected>Seleccione un servicio...</option>
             <?php
 
-            if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
+            if (hasAccess(['administrador', 'direccion'])) {
               // Realiza la consulta a la tabla servicios
               $getServicio = "SELECT id, servicio FROM servicios";
               $stmt = $pdo->query($getServicio);

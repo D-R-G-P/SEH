@@ -48,7 +48,7 @@ if (!$sel) {
 <link rel="stylesheet" href="/SGH/public/layouts/modules/hsiPanel/css/hsi.css">
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#servicioSelectNew').select2();
         $('#permisosSelect').select2();
         $('#dniSelect').select2();
@@ -72,22 +72,27 @@ if (!$sel) {
 
     <div class="modulo" style="text-align: center;">
         <h3 style="margin-bottom: .5vw;">Sistema de administración de HSI</h3>
-        <p>Este sistema está oreintado a la gestion y administración de los </br> usuarios de HSI para los administradores institucionales.</p>
+        <p>Este sistema está oreintado a la gestion y administración de los </br> usuarios de HSI para los
+            administradores institucionales.</p>
     </div>
 
     <div class="admInst" style="position: relative; top: -6vw; left: -29vw;">
-        <a class="btn-tematico" style="text-decoration: none;" href="hsi.php"><i class="fa-solid fa-toolbox"></i> <b>Acceder a panel general</b></a>
+        <a class="btn-tematico" style="text-decoration: none;" href="hsi.php"><i class="fa-solid fa-toolbox"></i>
+            <b>Acceder a panel general</b></a>
     </div>
 
     <div class="back" id="back">
 
         <div class="divBackForm" id="neUser" style="display: none;">
             <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-                <button class="btn-red" onclick="back.style.display = 'none'; neUser.style.display = 'none'; newUserForm.reset(); $('#dniSelect').val(null).trigger('change'); $('#servicioSelectNew').val(null).trigger('change'); $('#permisosSelect').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+                <button class="btn-red"
+                    onclick="back.style.display = 'none'; neUser.style.display = 'none'; newUserForm.reset(); $('#dniSelect').val(null).trigger('change'); $('#servicioSelectNew').val(null).trigger('change'); $('#permisosSelect').val(null).trigger('change');"
+                    style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
             </div>
             <h3>Agregar nuevo usuario</h3>
 
-            <form action="/SGH/public/layouts/modules/hsiPanel/controllers/newUserAdm.php" method="post" class="backForm" id="newUserForm">
+            <form action="/SGH/public/layouts/modules/hsiPanel/controllers/newUserAdm.php" method="post"
+                class="backForm" id="newUserForm">
 
                 <div>
                     <label for="dniSelect">DNI</label>
@@ -138,7 +143,8 @@ if (!$sel) {
                 </div>
                 <div>
                     <label for="permisosSelect">Permisos</label>
-                    <select name="permisos[]" id="permisosSelect" style="width: 95%;" multiple="multiple" placeholder="Seleccionar permiso(s)" required>
+                    <select name="permisos[]" id="permisosSelect" style="width: 95%;" multiple="multiple"
+                        placeholder="Seleccionar permiso(s)" required>
                         <?php
 
                         $getRoles = "SELECT * FROM roles_hsi WHERE estado = 'activo'";
@@ -153,35 +159,43 @@ if (!$sel) {
                 </div>
 
                 <div style="display: flex; flex-direction: row; justify-content: center;">
-                    <button type="submit" class="btn-green"><b><i class="fa-solid fa-plus"></i> Agregar nuevo usuario</b></button>
+                    <button type="submit" class="btn-green"><b><i class="fa-solid fa-plus"></i> Agregar nuevo
+                            usuario</b></button>
                 </div>
             </form>
         </div>
 
         <div class="divBackForm" id="addDocsDiv" style="display: none;">
             <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-                <button class="btn-red" onclick="back.style.display = 'none'; addDocsDiv.style.display = 'none'; addDocsForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+                <button class="btn-red"
+                    onclick="back.style.display = 'none'; addDocsDiv.style.display = 'none'; addDocsForm.reset();"
+                    style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
             </div>
             <h3>Agregar documentación</h3>
             <p style="color: red;">* documentos obligatorios en formato pdf</p>
 
-            <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUploadAdm.php" class="backForm" method="post" id="addDocsForm" enctype="multipart/form-data">
+            <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUploadAdm.php" class="backForm"
+                method="post" id="addDocsForm" enctype="multipart/form-data">
                 <input type="hidden" name="docsDniHidden" id="docsDniHidden">
                 <input type="hidden" name="docsServicio" id="docsServicio">
                 <div style="margin-top: 6vw;">
-                    <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b style="color: red;">*</b></label>
+                    <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b
+                            style="color: red;">*</b></label>
                     <input type="file" name="docsDni" id="docsDni" accept="application/pdf">
                 </div>
                 <div>
-                    <label for="docsMatricula">Matricula Profesional <br> (frente y dorso en un archivo) si corresponde</label>
+                    <label for="docsMatricula">Matricula Profesional <br> (frente y dorso en un archivo) si
+                        corresponde</label>
                     <input type="file" name="docsMatricula" id="docsMatricula" accept="application/pdf">
                 </div>
                 <div>
-                    <label for="docsAnexoI">Solicitud de alta de usuario para HSI <br> (ANEXO I) <b style="color: red;">*</b></label>
+                    <label for="docsAnexoI">Solicitud de alta de usuario para HSI <br> (ANEXO I) <b
+                            style="color: red;">*</b></label>
                     <input type="file" name="docsAnexoI" id="docsAnexoI" accept="application/pdf">
                 </div>
                 <div>
-                    <label for="docsAnexoII">Declaración Jurada - Convenio de confidencialidad usuarios HSI <br> (ANEXO II) <b style="color: red;">*</b></label>
+                    <label for="docsAnexoII">Declaración Jurada - Convenio de confidencialidad usuarios HSI <br> (ANEXO
+                        II) <b style="color: red;">*</b></label>
                     <input type="file" name="docsAnexoII" id="docsAnexoII" accept="application/pdf">
                 </div>
                 <div>
@@ -189,13 +203,15 @@ if (!$sel) {
                     <input type="file" name="docsPrescriptor" id="docsPrescriptor" accept="application/pdf">
                 </div>
 
-                <button class="btn-green" type="submit"><i class="fa-solid fa-file-arrow-up"></i> Subir archivos</button>
+                <button class="btn-green" type="submit"><i class="fa-solid fa-file-arrow-up"></i> Subir
+                    archivos</button>
             </form>
         </div>
 
         <div id="warnBajaRes" class="divBackForm" style="display: none; padding: 3vw;">
             <h3>¡¡ATENCIÓN!!</h3>
-            <p style="margin-top: 2vw;">Está por solicitar la baja de todos los usuarios habilitados como residentes, esto causará que:</p>
+            <p style="margin-top: 2vw;">Está por solicitar la baja de todos los usuarios habilitados como residentes,
+                esto causará que:</p>
             <ul style="margin-top: 2vw;">
                 <li>Todos los usuarios se marquen para deshabilitar.</li>
                 <li>Todos los usuarios pasaran a pendiente.</li>
@@ -204,15 +220,19 @@ if (!$sel) {
 
             <h4 style="margin-top: 2vw;">¿Desea continuar?</h4>
             <div>
-                <button class="btn-red" onclick="back.style.display = 'none'; warnBajaRes.style.display = 'none';"><i class="fa-solid fa-xmark"></i> <b>Cancelar acción</b></button>
+                <button class="btn-red" onclick="back.style.display = 'none'; warnBajaRes.style.display = 'none';"><i
+                        class="fa-solid fa-xmark"></i> <b>Cancelar acción</b></button>
 
-                <a class="btn-yellow" href="controllers/bajaRes.php"><i class="fa-solid fa-triangle-exclamation"></i> <b>Establecer baja de residentes</b></a>
+                <a class="btn-yellow" href="controllers/bajaRes.php"><i class="fa-solid fa-triangle-exclamation"></i>
+                    <b>Establecer baja de residentes</b></a>
             </div>
         </div>
 
         <div class="divBackForm infoModule" id="infoModule" style="display: none;">
-            <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
-                <button class="btn-red close-btn" onclick="cerrarVista();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+            <div class="close"
+                style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
+                <button class="btn-red close-btn" onclick="cerrarVista();" style="width: 2.3vw; height: 2.3vw;"><b><i
+                            class="fa-solid fa-xmark"></i></b></button>
             </div>
             <h3>Información de usuario</h3>
             <div class="cuerpoInfo" id="infoUsuario">
@@ -221,8 +241,11 @@ if (!$sel) {
         </div>
 
         <div class="divBackForm" id="rolesModule" style="display: none;">
-            <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
-                <button class="btn-red close-btn" onclick="back.style.display = 'none'; rolesModule.style.display = 'none';" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+            <div class="close"
+                style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
+                <button class="btn-red close-btn"
+                    onclick="back.style.display = 'none'; rolesModule.style.display = 'none';"
+                    style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
             </div>
 
             <h3>Roles de HSI</h3>
@@ -327,15 +350,19 @@ if (!$sel) {
     <div class="modulo" style="text-align: center;">
 
         <div class="inlineDiv">
-            <button class="btn-green" onclick="newUser()"><b><i class="fa-solid fa-plus"></i> Agregar nuevo usuario</b></button>
-            <button class="btn-tematico" onclick="back.style.display = 'flex'; warnBajaRes.style.display = 'flex';"><b><i class="fa-solid fa-user-graduate"></i></i> Establecer baja para usuarios residentes</b></button>
-            <button class="btn-tematico" onclick="back.style.display = 'flex'; rolesModule.style.display = 'flex';"><i class="fa-solid fa-check-to-slot"></i> <b>Gestionar roles</b></button>
+            <button class="btn-green" onclick="newUser()"><b><i class="fa-solid fa-plus"></i> Agregar nuevo
+                    usuario</b></button>
+            <button class="btn-tematico"
+                onclick="back.style.display = 'flex'; warnBajaRes.style.display = 'flex';"><b><i
+                        class="fa-solid fa-user-graduate"></i></i> Establecer baja para usuarios residentes</b></button>
+            <button class="btn-tematico" onclick="back.style.display = 'flex'; rolesModule.style.display = 'flex';"><i
+                    class="fa-solid fa-check-to-slot"></i> <b>Gestionar roles</b></button>
         </div>
 
         <?php
-$estado = "working";
+        $estado = "working";
 
-$queryPendientes = "SELECT hsi.*, 
+        $queryPendientes = "SELECT hsi.*, 
                            p.nombre AS nombre_persona, 
                            p.apellido AS apellido_persona, 
                            s.servicio AS nombre_servicio 
@@ -345,106 +372,107 @@ $queryPendientes = "SELECT hsi.*,
                     WHERE hsi.estado = :estado 
                     ORDER BY hsi.id ASC";
 
-$stmtPendientes = $pdo->prepare($queryPendientes);
-$stmtPendientes->bindParam(':estado', $estado, PDO::PARAM_STR); // Cambiado a PDO::PARAM_STR para cadenas de texto
-$stmtPendientes->execute();
+        $stmtPendientes = $pdo->prepare($queryPendientes);
+        $stmtPendientes->bindParam(':estado', $estado, PDO::PARAM_STR); // Cambiado a PDO::PARAM_STR para cadenas de texto
+        $stmtPendientes->execute();
 
-// Contar registros
-$totalPendientes = $stmtPendientes->rowCount();
-?>
+        // Contar registros
+        $totalPendientes = $stmtPendientes->rowCount();
+        ?>
 
-<h4>Pendientes (<?php echo $totalPendientes; ?>)</h4>
+        <h4>Pendientes (<?php echo $totalPendientes; ?>)</h4>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Apellido</th>
-            <th>Nombre</th>
-            <th>DNI</th>
-            <th>Servicio</th>
-            <th>Permisos</th>
-            <th>Documentos</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if ($totalPendientes == 0): ?>
-            <tr>
-                <td colspan="8">No hay usuarios pendientes</td>
-            </tr>
-        <?php else: ?>
-            <?php while ($rowPendientes = $stmtPendientes->fetch(PDO::FETCH_ASSOC)): ?>
+        <table>
+            <thead>
                 <tr>
-                    <td class="table-middle"><?php echo $rowPendientes['id']; ?></td>
-                    <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['apellido_persona']); ?></td>
-                    <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['nombre_persona']); ?></td>
-                    <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['dni']); ?></td>
-                    <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['nombre_servicio']); ?></td>
-                    <td class="table-middle table-left" style="width: max-content;">
-                        <?php
-                        $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol 
+                    <th>ID</th>
+                    <th>Apellido</th>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                    <th>Servicio</th>
+                    <th>Permisos</th>
+                    <th>Documentos</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if ($totalPendientes == 0): ?>
+                    <tr>
+                        <td colspan="8">No hay usuarios pendientes</td>
+                    </tr>
+                <?php else: ?>
+                    <?php while ($rowPendientes = $stmtPendientes->fetch(PDO::FETCH_ASSOC)): ?>
+                        <tr>
+                            <td class="table-middle"><?php echo $rowPendientes['id']; ?></td>
+                            <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['apellido_persona']); ?></td>
+                            <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['nombre_persona']); ?></td>
+                            <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['dni']); ?></td>
+                            <td class="table-middle"><?php echo htmlspecialchars($rowPendientes['nombre_servicio']); ?></td>
+                            <td class="table-middle table-left" style="width: max-content;">
+                                <?php
+                                $getRolesAct = "SELECT u.id, u.id_rol, r.rol AS nombre_rol 
                                         FROM usuarios_roles_hsi u 
                                         JOIN roles_hsi r ON u.id_rol = r.id 
                                         WHERE u.dni = :dni";
 
-                        $stmtRolesAct = $pdo->prepare($getRolesAct);
-                        $stmtRolesAct->execute([':dni' => $rowPendientes['dni']]);
+                                $stmtRolesAct = $pdo->prepare($getRolesAct);
+                                $stmtRolesAct->execute([':dni' => $rowPendientes['dni']]);
 
-                        while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i> ' . htmlspecialchars($row['nombre_rol']) . '</div>';
-                        }
-                        ?>
-                    </td>
-                    <td class="table-middle table-left" style="width: max-content;">
-                        <div style="display: grid; grid-template-columns: auto min-content; align-items: center;">
-                            <?php
-                            $documentos_array = json_decode($rowPendientes['documentos'], true);
-
-                            if ($documentos_array !== null) {
-                                foreach ($documentos_array as $documentoPendientes) {
-                                    $documento = $documentoPendientes['documento'];
-                                    $activo = $documentoPendientes['activo'];
-
-                                    // Mapeo de nombres de documentos
-                                    $nombresDocumentos = [
-                                        'Copia de DNI' => 'D.N.I',
-                                        'Copia de matrícula profesional' => 'Matricula',
-                                        'Solicitud de alta de usuario para HSI (ANEXO I)' => 'ANEXO I',
-                                        'Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)' => 'ANEXO II',
-                                        'Declaración Jurada - Usuario prescriptor' => 'Prescriptor'
-                                    ];
-
-                                    $documento_nombre = $nombresDocumentos[$documento] ?? $documento;
-
-                                    // Estado del documento
-                                    $simbolos = [
-                                        'no' => '<i class="fa-solid fa-xmark"></i>',
-                                        'pendiente' => '<i class="fa-regular fa-clock"></i>',
-                                        'verificado' => '<i class="fa-solid fa-check"></i>'
-                                    ];
-
-                                    $simbolo = $simbolos[$activo] ?? '<i class="fa-solid fa-question"></i>';
-
-                                    echo '<div>' . htmlspecialchars($documento_nombre) . ':</div>';
-                                    echo '<div>' . $simbolo . '</div>';
+                                while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
+                                    echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i> ' . htmlspecialchars($row['nombre_rol']) . '</div>';
                                 }
-                            }
-                            ?>
-                        </div>
-                    </td>
-                    <td class="table-middle table-center">
-                        <button class="btn-green" onclick="loadInfo('<?php echo htmlspecialchars($rowPendientes['dni']); ?>', '<?php echo htmlspecialchars($rowPendientes['servicio']); ?>')">
-                            <i class="fa-solid fa-hand-pointer"></i>
-                        </button>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        <?php endif; ?>
-    </tbody>
-</table>
+                                ?>
+                            </td>
+                            <td class="table-middle table-left" style="width: max-content;">
+                                <div style="display: grid; grid-template-columns: auto min-content; align-items: center;">
+                                    <?php
+                                    $documentos_array = json_decode($rowPendientes['documentos'], true);
 
+                                    if ($documentos_array !== null) {
+                                        foreach ($documentos_array as $documentoPendientes) {
+                                            $documento = $documentoPendientes['documento'];
+                                            $activo = $documentoPendientes['activo'];
+
+                                            // Mapeo de nombres de documentos
+                                            $nombresDocumentos = [
+                                                'Copia de DNI' => 'D.N.I',
+                                                'Copia de matrícula profesional' => 'Matricula',
+                                                'Solicitud de alta de usuario para HSI (ANEXO I)' => 'ANEXO I',
+                                                'Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)' => 'ANEXO II',
+                                                'Declaración Jurada - Usuario prescriptor' => 'Prescriptor'
+                                            ];
+
+                                            $documento_nombre = $nombresDocumentos[$documento] ?? $documento;
+
+                                            // Estado del documento
+                                            $simbolos = [
+                                                'no' => '<i class="fa-solid fa-xmark"></i>',
+                                                'pendiente' => '<i class="fa-regular fa-clock"></i>',
+                                                'verificado' => '<i class="fa-solid fa-check"></i>'
+                                            ];
+
+                                            $simbolo = $simbolos[$activo] ?? '<i class="fa-solid fa-question"></i>';
+
+                                            echo '<div>' . htmlspecialchars($documento_nombre) . ':</div>';
+                                            echo '<div>' . $simbolo . '</div>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </td>
+                            <td class="table-middle table-center">
+                                <button class="btn-green"
+                                    onclick="loadInfo('<?php echo htmlspecialchars($rowPendientes['dni']); ?>', '<?php echo htmlspecialchars($rowPendientes['servicio']); ?>')">
+                                    <i class="fa-solid fa-hand-pointer"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php endif; ?>
             </tbody>
+        </table>
+
+        </tbody>
         </table>
 
         <div class="habilitado">
@@ -469,48 +497,30 @@ flex-direction: row;
 flex-wrap: nowrap;
 align-items: center;
 overflow-y: hidden;">
-                    <input type="hidden" name="pagina" value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
+                    <input type="hidden" name="pagina"
+                        value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
 
-                    <div style="display: grid;
-grid-template-columns: repeat(2, 1fr);
-grid-template-rows: 1fr;
-grid-column-gap: 1vw;
-grid-row-gap: 0px;
-overflow-y: hidden;">
-                        <select name="selectServicioFilter" id="selectServicioFilter" class="select2" <?php if ($user->getRol() != 'Administrador' && $user->getRol() != 'Dirección') {
-                                                                                                            echo "disabled";
-                                                                                                        } ?>>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: 1fr; grid-column-gap: 1vw; grid-row-gap: 0px; overflow-y: hidden;">
+                        <select name="selectServicioFilter" id="selectServicioFilter" class="select2">
+                        <?php
+                        $selectedServicio = isset($_GET['selectServicioFilter']) ? htmlspecialchars($_GET['selectServicioFilter']) : '';
 
-                            <?php
-                            $selectedServicio = isset($_GET['selectServicioFilter']) ? htmlspecialchars($_GET['selectServicioFilter']) : '';
+                        echo '<option value="" selected disabled>Seleccionar un servicio...</option>';
+                        echo '<option value="clr"' . ($selectedServicio === 'clr' ? ' selected' : '') . '>Seleccionar todos los servicios</option>';
 
-                            if ($user->getRol() == 'Administrador' || $user->getRol() == 'Dirección') {
-                                echo '<option value="" selected disabled>Seleccionar un servicio...</option>';
-                                echo '<option value="clr"' . ($selectedServicio === 'clr' ? ' selected' : '') . '>Seleccionar todos los servicios</option>';
+                        $getServicios = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
+                        $stmtServicios = $pdo->query($getServicios);
 
-                                $getServicios = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
-                                $stmtServicios = $pdo->query($getServicios);
-
-                                while ($row = $stmtServicios->fetch(PDO::FETCH_ASSOC)) {
-                                    $selected = ($selectedServicio == $row['id']) ? ' selected' : '';
-                                    echo '<option value="' . $row['id'] . '"' . $selected . '>' . $row['servicio'] . '</option>';
-                                }
-                            } else {
-                                $servicioUsuario = $user->getServicio();
-                                $getServicioUsuario = "SELECT id, servicio FROM servicios WHERE id = ?";
-                                $stmtServicioUsuario = $pdo->prepare($getServicioUsuario);
-                                $stmtServicioUsuario->execute([$servicioUsuario]);
-                                $rowServicioUsuario = $stmtServicioUsuario->fetch(PDO::FETCH_ASSOC);
-
-                                if ($rowServicioUsuario) {
-                                    echo '<option value="' . $rowServicioUsuario['id'] . '" selected>' . $rowServicioUsuario['servicio'] . '</option>';
-                                }
-                            }
-                            ?>
+                        while ($row = $stmtServicios->fetch(PDO::FETCH_ASSOC)) {
+                            $selected = ($selectedServicio == $row['id']) ? ' selected' : '';
+                            echo '<option value="' . $row['id'] . '"' . $selected . '>' . $row['servicio'] . '</option>';
+                        }
+                        ?> 
                         </select>
 
-                        <input type="text" name="searchInput" id="searchInput" style="width: 100%;" placeholder="Buscar por DNI o nombre..."
-                            value="<?php echo isset($_GET['searchInput']) ? htmlspecialchars($_GET['searchInput']) : ''; ?>">
+                            <input type="text" name="searchInput" id="searchInput" style="width: 100%;"
+                                placeholder="Buscar por DNI o nombre..."
+                                value="<?php echo isset($_GET['searchInput']) ? htmlspecialchars($_GET['searchInput']) : ''; ?>">
 
                     </div>
                     <button type="submit" class="btn-green"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -536,7 +546,7 @@ overflow-y: hidden;">
         <div class="tablaHabilitados" id="tablaHabilitados">
             <?php
             if (count($registros) > 0):
-            ?>
+                ?>
                 <table id="habilitado">
                     <thead>
                         <tr>
@@ -572,7 +582,8 @@ overflow-y: hidden;">
                                     ?>
                                 </td>
                                 <td class="table-center table-middle">
-                                    <button class="btn-green" onclick="loadInfo('<?= $reg['dni'] ?>', '<?= $reg['servicio'] ?>')">
+                                    <button class="btn-green"
+                                        onclick="loadInfo('<?= $reg['dni'] ?>', '<?= $reg['servicio'] ?>')">
                                         <i class="fa-solid fa-hand-pointer"></i>
                                     </button>
                                 </td>
@@ -604,7 +615,7 @@ overflow-y: hidden;">
                 if ($pagina + floor($max_paginacion / 2) > $numeropaginas) {
                     $inicio_pagina = max(1, $inicio_pagina - ($pagina + floor($max_paginacion / 2) - $numeropaginas));
                 }
-            ?>
+                ?>
 
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
@@ -612,35 +623,47 @@ overflow-y: hidden;">
                         <?php if ($pagina == 1): ?>
                             <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
                         <?php else: ?>
-                            <li class="page-item"><a class="page-link" href="hsiAdmin.php?pagina=<?php echo $pagina - 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&laquo;</a></li>
+                            <li class="page-item"><a class="page-link"
+                                    href="hsiAdmin.php?pagina=<?php echo $pagina - 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&laquo;</a>
+                            </li>
                         <?php endif; ?>
 
                         <!-- Página 1 -->
                         <?php if ($inicio_pagina > 1): ?>
-                            <li class="page-item"><a class="page-link" href="hsiAdmin.php?pagina=1&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">1</a></li>
+                            <li class="page-item"><a class="page-link"
+                                    href="hsiAdmin.php?pagina=1&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">1</a>
+                            </li>
                             <li class="page-item disabled"><span class="page-link">...</span></li>
                         <?php endif; ?>
 
                         <!-- Páginas intermedias -->
                         <?php for ($i = $inicio_pagina; $i <= $fin_pagina; $i++): ?>
                             <?php if ($pagina == $i): ?>
-                                <li class="page-item active"><a class="page-link" href="hsiAdmin.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a></li>
+                                <li class="page-item active"><a class="page-link"
+                                        href="hsiAdmin.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a>
+                                </li>
                             <?php else: ?>
-                                <li class="page-item"><a class="page-link" href="hsiAdmin.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a></li>
+                                <li class="page-item"><a class="page-link"
+                                        href="hsiAdmin.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a>
+                                </li>
                             <?php endif; ?>
                         <?php endfor; ?>
 
                         <!-- Última página -->
                         <?php if ($fin_pagina < $numeropaginas): ?>
                             <li class="page-item disabled"><span class="page-link">...</span></li>
-                            <li class="page-item"><a class="page-link" href="hsiAdmin.php?pagina=<?php echo $numeropaginas; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $numeropaginas; ?></a></li>
+                            <li class="page-item"><a class="page-link"
+                                    href="hsiAdmin.php?pagina=<?php echo $numeropaginas; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $numeropaginas; ?></a>
+                            </li>
                         <?php endif; ?>
 
                         <!-- Botón de "siguiente" -->
                         <?php if ($pagina == $numeropaginas): ?>
                             <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
                         <?php else: ?>
-                            <li class="page-item"><a class="page-link" href="hsiAdmin.php?pagina=<?php echo $pagina + 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&raquo;</a></li>
+                            <li class="page-item"><a class="page-link"
+                                    href="hsiAdmin.php?pagina=<?php echo $pagina + 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&raquo;</a>
+                            </li>
                         <?php endif; ?>
                     </ul>
                 </nav>
@@ -650,9 +673,12 @@ overflow-y: hidden;">
 
         <div class="disabledSearch" style="margin-top: 2vw;">
             <h4>Buscar usuario por D.N.I.</h4>
-            <input type="text" name="disabledInput" id="disabledInput" style="width: 45%; height: 3vw; margin-left: 2vw;" placeholder="Buscar por DNI..." oninput="formatNumber(this)">
+            <input type="text" name="disabledInput" id="disabledInput"
+                style="width: 45%; height: 3vw; margin-left: 2vw;" placeholder="Buscar por DNI..."
+                oninput="formatNumber(this)">
 
-            <button class="btn-green" onclick="loadInfoDelet(disabledInput.value); disabledInput.value=''"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="btn-green" onclick="loadInfoDelet(disabledInput.value); disabledInput.value=''"><i
+                    class="fa-solid fa-magnifying-glass"></i></button>
         </div>
     </div>
 </div>

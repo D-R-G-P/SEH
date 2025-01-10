@@ -116,7 +116,7 @@ $fecha_formateada = $nombre_mes . ' de ' . $anio;
                         <option value="" selected disabled>Seleccionar agente...</option>
                         <?php
 
-                        if ($user->getRol() == "Administrador" || $user->getRol() == "Direccion") {
+                        if (hasAccess(['administrador', 'direccion'])) {
                             // Realiza la consulta a la tabla servicios
                             $getPersonal = "SELECT apellido, nombre, dni FROM personal";
                             $stmt = $pdo->query($getPersonal);

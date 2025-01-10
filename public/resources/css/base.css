@@ -78,6 +78,18 @@ input[type=number] {
   transition: all 0.15s ease-in-out;
 }
 
+.btn-green:disabled {
+  color: #fff;
+  background-color: #757575;
+  border: #757575;
+  padding: 0.5vw;
+  border-radius: 0.5vw;
+  font-size: 1.05vw;
+  cursor: not-allowed;
+  transition: all 0.15s ease-in-out;
+  margin: .5vw .5vw;
+}
+
 .btn-red {
   color: #fff;
   background-color: #dc3545;
