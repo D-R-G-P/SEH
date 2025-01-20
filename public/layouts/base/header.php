@@ -134,7 +134,7 @@ $basePath = realpath(dirname(__DIR__));
                     </a>
                 <?php endif; ?>
 
-                <?php if (hasAccess([ 'administrador', 'direccion', 'camillero' ])): ?>
+                <?php if (hasAccess([ 'administrador', 'camillero' ])): ?>
                     <a href="<?php echo MODULE_PATH ?>camilleros/camilleros.php" class="header" title="Camilleros">
                     <img src="<?php echo IMG_PATH ?>camilla.svg" alt="Camilla logo" style="width: 1.5vw; height: auto; color: #fff;">
                         <p class="headerLeftP open">Camilleros</p>
