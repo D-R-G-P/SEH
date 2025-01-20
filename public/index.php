@@ -1,5 +1,16 @@
 <?php
 
+require_once 'app/db/db.php';
+require_once 'app/db/user_session.php';
+require_once 'app/db/user.php';
+require_once 'config.php';
+
+$user = new User();
+$currentUser = $userSession->getCurrentUser();
+$user->setUser($currentUser);
+$db = new DB();
+$pdo = $db->connect();
+
 $title = "Inicio";
 
 // Verificar si el usuario está actualmente logueado
@@ -25,25 +36,35 @@ if ($user->getPr() == "si") {
 
     <div class="modulo" style="text-align: center;">
         <h3>Descargas</h3>
-        <a href="/SGH/public/resources/docs/Menú de usuario.pdf" class="btn-tematico" target="_blank" style="text-decoration: none; color: #fff; display: flex; align-items: center;"><i style="font-size: 2.5vw;" class="fa-solid fa-file-pdf"></i> <b style="margin-left: 1vw;">Manúal de usuario</b></a>
+        <a href="/SGH/public/resources/docs/Menú de usuario.pdf" class="btn-tematico" target="_blank"
+            style="text-decoration: none; color: #fff; display: flex; align-items: center;"><i style="font-size: 2.5vw;"
+                class="fa-solid fa-file-pdf"></i> <b style="margin-left: 1vw;">Manúal de usuario</b></a>
     </div>
 
     <div class="modulo" style="text-align: center;">
         <h3>Actualizaciónes</h3>
 
-        <div style="margin-top: 1vw;" class="modulo">
-            <h4 style="text-align: start;">Version 1.0.0</h4>
-            <p style="margin-top: .5vw; text-align: start;">Se realizaron múltiples implementaciones de diversos sistemas, se establece en el plan de desarrollo los módulos de:
-                <div style="padding: 1vw 3vw; text-align: left;">
-                <ul>
-                    <li>Depósito</li>
-                    <li>Camilleros</li>
-                    <li>Gestión de roles (Actualmente serán otorgados por el administrador)</li>
-                </ul>
+        <?php
+        $query = "SELECT * FROM updates ORDER BY id DESC LIMIT 5";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+
+        if ($stmt->rowCount() == 0) {
+            // Si no hay resultados con estado ''
+            echo '<div class="modulo">No hay ninguna update para mostrar</div>';
+        } else {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                ?>
+
+                <div class="modulo" style="margin-top: 1vw;">
+                    <h4 style="text-align: .5vw; text-align: start;">Version <?= $row['version'] ?></h4>
+                    <p style="margin-top: .5vw; text-align: start;"><?= $row['descripcion'] ?></p>
                 </div>
-            Estos, serán cruciales para un eficaz funcionamiento del hospital.
-            </p>
-        </div>
+
+                <?php
+            }
+        }
+        ?>
     </div>
 </div>
 

@@ -175,7 +175,8 @@ $pdo = $db->connect();
 
                 <div>
                     <label for="modulo_subrol_select">Módulo al que pertenece</label>
-                    <select name="modulo_subrol_select" id="modulo_subrol_select" class="select2" style="width: 95%;" required>
+                    <select name="modulo_subrol_select" id="modulo_subrol_select" class="select2" style="width: 95%;"
+                        required>
                         <option value="" disabled selected>Seleccionar una opción</option>
                         <option value="">Sin módulo asociado</option>
                         <?php
@@ -199,8 +200,7 @@ $pdo = $db->connect();
 
                 <div>
                     <label for="subDesc">Descripción</label>
-                    <textarea name="subDesc" id="subDesc"
-                        style="width: 95%; height: 8vw; resize: none;"></textarea>
+                    <textarea name="subDesc" id="subDesc" style="width: 95%; height: 8vw; resize: none;"></textarea>
                 </div>
 
                 <div id="subrol_estado_div" style="display: none;">
@@ -226,6 +226,31 @@ $pdo = $db->connect();
 
             </form>
 
+        </div>
+
+        <div class="divBackForm" id="newUpdate" style="display: none;">
+            <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+                <button class="btn-red"
+                    onclick="document.getElementById('back').style.display = 'none'; document.getElementById('newUpdate').style.display = 'none'; newUpdateForm.reset();"
+                    style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+            </div>
+            <h3 class="formTitle">Nuevo update</h3>
+
+            <form action="controllers/update.php" class="backForm" method="post">
+                <div>
+                    <label for="version">Versión</label>
+                    <input type="text" name="version" id="version"
+                        placeholder="Ultimo update: <?php echo getLastUpdate(); ?>">
+                </div>
+
+                <div>
+                    <label for="descripcion">Descripción del update</label>
+                    <textarea name="descripcion" id="descripcion"
+                        style="width: 95%; height: 20vw; resize: none;"></textarea>
+                </div>
+
+                <button class="btn-green" type="submit"><i class="fa-solid fa-plus"></i> Nuevo update</button>
+            </form>
         </div>
 
     </div>
@@ -369,6 +394,56 @@ $pdo = $db->connect();
                                     <button class="btn-green" onclick="vistaSubrol(<?= htmlspecialchars($subrol['id']) ?>)">
                                         <i class="fa-solid fa-hand-pointer"></i>
                                     </button>
+                                </td>
+                            </tr>
+                        <?php endforeach;
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modulo" id="tabla_versions">
+        <div class="tabla_versiones">
+            <h4>Versiones</h4>
+
+            <button class="btn-green" onclick="back.style.display = 'flex'; newUpdate.style.display = 'flex';"
+                style="width: max-content;"><i class="fa-solid fa-plus"></i> <b>Nueva versión</b></button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Version</th>
+                        <th>Fecha</th>
+                        <th>Descripcion</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $version_consulta = "SELECT * FROM updates";
+                    $versiones = $pdo->query($version_consulta)->fetchAll(PDO::FETCH_ASSOC);
+
+                    if (empty($versiones)) {
+                        echo '<tr><td colspan="8">No hay versiones registradas</td></tr>';
+                    } else {
+                        foreach ($versiones as $version): ?>
+                            <tr>
+                                <td class="table-center table-middle"><?= $version['id'] ?></td>
+                                <td class="table-center table-middle"><?= htmlspecialchars($version['version']) ?></td>
+                                <td class="table-center table-middle">
+                                    <span style="display: flex; width: max-content;"><?php
+
+                                    echo date('d/m/Y', strtotime($version['fecha']));
+                                    ?></span>
+                                </td>
+                                <td class="table-middle"><?= htmlspecialchars($version['descripcion']) ?></td>
+                                <td class="table-middle table-center">
+                                    <button class="btn-red" onclick="location.href='controllers/delete_new.php?id=<?= $version['id']; ?>';">
+                                    <i class="fa-solid fa-trash"></i></i>
+                                    </buton>
                                 </td>
                             </tr>
                         <?php endforeach;

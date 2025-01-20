@@ -111,3 +111,27 @@ function requireSubRole(array $requiredSubRoles)
         // exit; 
     }
 }
+
+function getLastUpdate(): ?string
+{
+    $db = new DB();
+    $pdo = $db->connect();
+
+    try {
+        $query = "
+            SELECT version
+            FROM updates
+            ORDER BY id DESC
+            LIMIT 1
+        ";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+
+        $lastUpdate = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $lastUpdate ? $lastUpdate['version'] : null;
+    } catch (PDOException $e) {
+        error_log('Error en getLastUpdate: ' . $e->getMessage());
+        return null;
+    }
+}
