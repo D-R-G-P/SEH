@@ -3,6 +3,7 @@ $(document).ready(function () {
     $('#dniSelect').select2();
     $('#servicioSelect').select2();
     $('#selectServicioFilter').select2();
+    $('#printServicio').select2();
 });
 
 $(".js-example-language").select2({
@@ -71,4 +72,10 @@ function buttonSol(dni, action) {
     
     // Redirigir a la página con la URL construida
     window.location.href = url;
+}
+
+function printInforme() {
+    back.style.display = "flex";
+    printModal.style.display = "flex";
+    $('#printServicio').val(servicioUser).trigger('change');
 }

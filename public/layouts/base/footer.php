@@ -2,7 +2,7 @@
 
 <footer>
     <div class="left" style="font-size: 1vw;">
-        Version 1.0.0
+        Version <?php echo getLastUpdate(); ?>
     </div>
     <div class="right" style="font-size: 1vw;">
         © Departamento de Salud Digital - HIGA Gral San Martín

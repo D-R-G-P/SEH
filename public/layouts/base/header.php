@@ -148,6 +148,13 @@ $basePath = realpath(dirname(__DIR__));
                     </a>
                 <?php endif; ?>
 
+                <?php if (hasAccess([ 'administrador', 'direccion', 'arquitectura' ])): ?>
+                    <a href="<?php echo MODULE_PATH ?>arquitectura/arquitectura.php" class="header" title="Arquitectura">
+                    <img src="<?php echo IMG_PATH ?>camilla.svg" alt="Camilla logo" style="width: 1.5vw; height: auto; color: #fff;">
+                        <p class="headerLeftP open">Arquitectura</p>
+                    </a>
+                <?php endif; ?>
+
                 <?php if (hasAccess([ 'administrador', 'direccion', 'administracion' ])): ?>
                     <a href="<?php echo MODULE_PATH ?>adminPanel/adminPanel.php" class="header" title="Administración">
                         <i class="fa-solid fa-hammer"></i>

@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $('#servicioFilter').select2();
     $('#selectServicioFilter').select2();
+    $('#printServicio').select2();
 });
 
 function loadInfo(dni, servicio) {
@@ -69,4 +70,11 @@ function verificDoc(dni, documento, action, servicio) {
 
 function modifyPermiso(dni, permiso, servicio) {
     window.location.href = "/SGH/public/layouts/modules/hsiPanel/controllers/buttonPermisos.php?dni=" + dni + "&permiso=" + permiso + "&servicio=" + servicio;
+}
+
+function printInforme() {
+    servicioUser = "";
+    back.style.display = "flex";
+    printModal.style.display = "flex";
+    $('#printServicio').val(servicioUser).trigger('change');
 }

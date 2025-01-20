@@ -47,6 +47,10 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
 <?php require_once '../../base/header.php'; ?>
 <link rel="stylesheet" href="/SGH/public/layouts/modules/hsiPanel/css/hsi.css">
 
+<script>
+  servicioUser = <?= $servicioFilter ?>
+</script>
+
 <div class="content">
 
   <div class="modulo" style="text-align: center;">
@@ -80,14 +84,18 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
   ?>
 
 
-  <div class="back" id="back" style="display: none;">
+  <div class="back" id="back">
+
     <div class="divBackForm" id="neUser" style="display: none;">
       <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-        <button class="btn-red" onclick="back.style.display = 'none'; neUser.style.display = 'none'; newUserForm.reset(); $('#dniSelect').val(null).trigger('change'); $('#servicioSelect').val(null).trigger('change'); $('#permisosSelect').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+        <button class="btn-red"
+          onclick="back.style.display = 'none'; neUser.style.display = 'none'; newUserForm.reset(); $('#dniSelect').val(null).trigger('change'); $('#servicioSelect').val(null).trigger('change'); $('#permisosSelect').val(null).trigger('change');"
+          style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
       </div>
       <h3>Solicitar nuevo usuario</h3>
 
-      <form action="/SGH/public/layouts/modules/hsiPanel/controllers/newUser.php" method="post" class="backForm" id="newUserForm">
+      <form action="/SGH/public/layouts/modules/hsiPanel/controllers/newUser.php" method="post" class="backForm"
+        id="newUserForm">
 
         <div>
           <label for="dniSelect">DNI</label>
@@ -161,7 +169,8 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
         </div>
         <div>
           <label for="permisosSelect">Permisos</label>
-          <select name="permisos[]" id="permisosSelect" style="width: 95%;" multiple="multiple" placeholder="Seleccionar permiso(s)" required>
+          <select name="permisos[]" id="permisosSelect" style="width: 95%;" multiple="multiple"
+            placeholder="Seleccionar permiso(s)" required>
 
             <?php
 
@@ -182,20 +191,25 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
         </div>
 
         <div style="display: flex; flex-direction: row; justify-content: center;">
-          <button type="button" class="btn-green" onclick="confirmUsuario.style.display = 'flex'"><b><i class="fa-solid fa-plus"></i> Solicitar nuevo usuario</b></button>
+          <button type="button" class="btn-green" onclick="confirmUsuario.style.display = 'flex'"><b><i
+                class="fa-solid fa-plus"></i> Solicitar nuevo usuario</b></button>
         </div>
 
         <div id="confirmUsuario" class="divBackForm" style="display: none;">
           <h4>Antes de solicitar el usuario</h4>
           <p style="margin-top: 1vw;">Es necesario que descargue los anexos correspondientes</p>
 
-          <div class="pdfs" style="display: flex; flex-direction: row; align-content: center; flex-wrap: wrap; justify-content: space-evenly; margin: 2vw 0">
-            <a href="/SGH/public/layouts/modules/hsiPanel/docs/Anexo 1.pdf" style="color: #000;" target="_blank"><i class="fa-solid fa-file-pdf"></i> Anexo I</a>
-            <a href="/SGH/public/layouts/modules/hsiPanel/docs/Anexo 2.pdf" style="color: #000;" target="_blank"><i class="fa-solid fa-file-pdf"></i> Anexo II</a>
+          <div class="pdfs"
+            style="display: flex; flex-direction: row; align-content: center; flex-wrap: wrap; justify-content: space-evenly; margin: 2vw 0">
+            <a href="/SGH/public/layouts/modules/hsiPanel/docs/Anexo 1.pdf" style="color: #000;" target="_blank"><i
+                class="fa-solid fa-file-pdf"></i> Anexo I</a>
+            <a href="/SGH/public/layouts/modules/hsiPanel/docs/Anexo 2.pdf" style="color: #000;" target="_blank"><i
+                class="fa-solid fa-file-pdf"></i> Anexo II</a>
           </div>
 
           <div style="display: flex; flex-direction: row; justify-content: center;">
-            <button class="btn-red" type="button" onclick="confirmUsuario.style.display = 'none';"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+            <button class="btn-red" type="button" onclick="confirmUsuario.style.display = 'none';"><i
+                class="fa-solid fa-xmark"></i> Cancelar</button>
 
             <button class="btn-green" type="submit"><i class="fa-solid fa-plus"></i>
               Solicitar usuario</button>
@@ -206,15 +220,19 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
 
     <div class="divBackForm" id="addDocsDiv" style="display: none;">
       <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-        <button class="btn-red" onclick="back.style.display = 'none'; addDocsDiv.style.display = 'none'; addDocsForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+        <button class="btn-red"
+          onclick="back.style.display = 'none'; addDocsDiv.style.display = 'none'; addDocsForm.reset();"
+          style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
       </div>
       <h3>Agregar documentación</h3>
       <p style="color: red;">* documentos obligatorios en formato pdf</p>
 
-      <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUpload.php" class="backForm" method="post" id="addDocsForm" enctype="multipart/form-data">
+      <form action="/SGH/public/layouts/modules/hsiPanel/controllers/docsUpload.php" class="backForm" method="post"
+        id="addDocsForm" enctype="multipart/form-data">
         <input type="hidden" name="docsDniHidden" id="docsDniHidden">
         <div style="margin-top: 6vw;">
-          <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b style="color: red;">*</b></label>
+          <label for="docsDni">Documento Nacional de Identidad <br> (Frente y dorso en un archivo) <b
+              style="color: red;">*</b></label>
           <input type="file" name="docsDni" id="docsDni" accept="application/pdf">
         </div>
         <div>
@@ -222,11 +240,13 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
           <input type="file" name="docsMatricula" id="docsMatricula" accept="application/pdf">
         </div>
         <div>
-          <label for="docsAnexoI">Solicitud de alta de usuario para HSI <br> (ANEXO I) <b style="color: red;">*</b></label>
+          <label for="docsAnexoI">Solicitud de alta de usuario para HSI <br> (ANEXO I) <b
+              style="color: red;">*</b></label>
           <input type="file" name="docsAnexoI" id="docsAnexoI" accept="application/pdf">
         </div>
         <div>
-          <label for="docsAnexoII">Declaración Jurada - Convenio de confidencialidad usuarios HSI <br> (ANEXO II) <b style="color: red;">*</b></label>
+          <label for="docsAnexoII">Declaración Jurada - Convenio de confidencialidad usuarios HSI <br> (ANEXO II) <b
+              style="color: red;">*</b></label>
           <input type="file" name="docsAnexoII" id="docsAnexoII" accept="application/pdf">
         </div>
         <div>
@@ -240,22 +260,91 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
 
 
     <div class="divBackForm infoModule" id="infoModule" style="display: none;">
-      <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
-        <button class="btn-red" onclick="back.style.display = 'none'; infoModule.style.display = 'none'; infoForm.reset();" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+      <div class="close"
+        style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
+        <button class="btn-red"
+          onclick="back.style.display = 'none'; infoModule.style.display = 'none'; infoForm.reset();"
+          style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
       </div>
       <h3>Información de usuario</h3>
 
       <div class="cuerpoInfo" id="infoUsuario">
       </div>
     </div>
+
+    <div class="divBackForm" id="printModal" style="display: none;">
+      <div class="close"
+        style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw; margin-bottom: -3.5vw;">
+        <button class="btn-red"
+          onclick="back.style.display = 'none'; printModal.style.display = 'none'; printModalForm.reset();"
+          style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+      </div>
+      <h3>Impresión de informe</h3>
+
+      <form action="controllers/print.php" method="post" class="backForm" id="printModalForm" target="_blank">
+
+        <div>
+          <label for="printServicio">Seleccionar servicio</label>
+          <select name="printServicio" id="printServicio" class="select2">
+            <?php
+
+            if (hasAccess(['administrador', 'direccion'])) {
+              // Realiza la consulta a la tabla servicios
+              $getServicio = "SELECT id, servicio FROM servicios";
+              $stmt = $pdo->query($getServicio);
+
+              // Itera sobre los resultados y muestra las filas en la tabla
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+              }
+            } else {
+              // Realiza la consulta a la tabla servicios
+              $getServicio = "SELECT id, servicio FROM servicios WHERE id = $servicioFilter";
+              $stmt = $pdo->query($getServicio);
+
+              // Itera sobre los resultados y muestra las filas en la tabla
+              while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
+              }
+            }
+
+            ?>
+          </select>
+        </div>
+
+        <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+          <input type="checkbox" name="pendientes" id="pendientes" style="width: auto; margin-right: 1vw;">
+          <label for="pendientes">¿Incluir pendientes?</label>
+        </div>
+
+        <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+          <input type="checkbox" name="activos" id="activos" style="width: auto; margin-right: 1vw;">
+          <label for="activos">¿Incluir activos?</label>
+        </div>
+
+        <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+          <input type="checkbox" name="deshabilitados" id="deshabilitados" style="width: auto; margin-right: 1vw;">
+          <label for="deshabilitados">¿Incluir deshabilitados?</label>
+        </div>
+
+        <button class="btn-green"><i class="fa-solid fa-print"></i> Imprimir informe</button>
+
+      </form>
+    </div>
+
   </div>
 
 
   <div class="modulo">
 
     <div class="inlineDiv">
-      <button class="btn-green" onclick="newUser()"><b><i class="fa-solid fa-plus"></i> Solicitar nuevo usuario</b></button>
+      <button class="btn-green" onclick="newUser()"><b><i class="fa-solid fa-plus"></i> Solicitar nuevo
+          usuario</b></button>
+
+      <button class="btn-tematico" onclick="printInforme()"><i class="fa-solid fa-print"></i> <b>Imprimir informe de
+          usuarios</b></button>
     </div>
+
 
     <div class="tables">
 
@@ -330,7 +419,7 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
 
                 echo '</td>';
 
-                echo '<td class="table-middle">' .  $rowNews['observaciones'] . '</td>';
+                echo '<td class="table-middle">' . $rowNews['observaciones'] . '</td>';
 
                 echo '<td class="table-center table-middle">
                 <button onclick="checkNews(' . $rowNews['id'] . ')" class="btn-green" title="Marcar como visto"><i class="fa-solid fa-check"></i></button>
@@ -412,7 +501,7 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
 
                 $stmtRolesAct = $pdo->prepare($getRolesAct);
                 $stmtRolesAct->execute([':dni' => $rowWorking['dni']]); // Pasar el parámetro :dni
-
+            
                 while ($row = $stmtRolesAct->fetch(PDO::FETCH_ASSOC)) {
                   echo '<div style="text-wrap-mode: nowrap;"><i class="fa-solid fa-chevron-right"></i>' . htmlspecialchars($row['nombre_rol']) . '</div>';
                 }
@@ -453,7 +542,7 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
 
                     switch ($activo) {
                       case 'no':
-                        $simbolo =  '<i class="fa-solid fa-xmark"></i>';
+                        $simbolo = '<i class="fa-solid fa-xmark"></i>';
                         break;
                       case 'pendiente':
                         $simbolo = '<i class="fa-regular fa-clock"></i>';
@@ -497,7 +586,8 @@ flex-direction: row;
 flex-wrap: nowrap;
 align-items: center;
 overflow-y: hidden;">
-            <input type="hidden" name="pagina" value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
+            <input type="hidden" name="pagina"
+              value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
 
             <div style="display: grid;
 grid-template-columns: repeat(2, 1fr);
@@ -505,10 +595,9 @@ grid-template-rows: 1fr;
 grid-column-gap: 1vw;
 grid-row-gap: 0px;
 overflow-y: hidden;">
-              <select name="selectServicioFilter" id="selectServicioFilter" class="select2"
-                <?php if (!hasAccess(['administrador', 'direccion'])) {
-                  echo "disabled";
-                } ?>>
+              <select name="selectServicioFilter" id="selectServicioFilter" class="select2" <?php if (!hasAccess(['administrador', 'direccion'])) {
+                echo "disabled";
+              } ?>>
 
                 <?php
                 $selectedServicio = isset($_GET['selectServicioFilter']) ? htmlspecialchars($_GET['selectServicioFilter']) : '';
@@ -538,7 +627,8 @@ overflow-y: hidden;">
                 ?>
               </select>
 
-              <input type="text" name="searchInput" id="searchInput" style="width: 100%;" placeholder="Buscar por DNI o nombre..."
+              <input type="text" name="searchInput" id="searchInput" style="width: 100%;"
+                placeholder="Buscar por DNI o nombre..."
                 value="<?php echo isset($_GET['searchInput']) ? htmlspecialchars($_GET['searchInput']) : ''; ?>">
 
             </div>
@@ -641,7 +731,7 @@ overflow-y: hidden;">
             if ($pagina + floor($max_paginacion / 2) > $numeropaginas) {
               $inicio_pagina = max(1, $inicio_pagina - ($pagina + floor($max_paginacion / 2) - $numeropaginas));
             }
-          ?>
+            ?>
 
             <nav aria-label="Page navigation">
               <ul class="pagination">
@@ -649,35 +739,47 @@ overflow-y: hidden;">
                 <?php if ($pagina == 1): ?>
                   <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
                 <?php else: ?>
-                  <li class="page-item"><a class="page-link" href="hsi.php?pagina=<?php echo $pagina - 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&laquo;</a></li>
+                  <li class="page-item"><a class="page-link"
+                      href="hsi.php?pagina=<?php echo $pagina - 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&laquo;</a>
+                  </li>
                 <?php endif; ?>
 
                 <!-- Página 1 -->
                 <?php if ($inicio_pagina > 1): ?>
-                  <li class="page-item"><a class="page-link" href="hsi.php?pagina=1&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">1</a></li>
+                  <li class="page-item"><a class="page-link"
+                      href="hsi.php?pagina=1&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">1</a>
+                  </li>
                   <li class="page-item disabled"><span class="page-link">...</span></li>
                 <?php endif; ?>
 
                 <!-- Páginas intermedias -->
                 <?php for ($i = $inicio_pagina; $i <= $fin_pagina; $i++): ?>
                   <?php if ($pagina == $i): ?>
-                    <li class="page-item active"><a class="page-link" href="hsi.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a></li>
+                    <li class="page-item active"><a class="page-link"
+                        href="hsi.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a>
+                    </li>
                   <?php else: ?>
-                    <li class="page-item"><a class="page-link" href="hsi.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a></li>
+                    <li class="page-item"><a class="page-link"
+                        href="hsi.php?pagina=<?php echo $i; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $i; ?></a>
+                    </li>
                   <?php endif; ?>
                 <?php endfor; ?>
 
                 <!-- Última página -->
                 <?php if ($fin_pagina < $numeropaginas): ?>
                   <li class="page-item disabled"><span class="page-link">...</span></li>
-                  <li class="page-item"><a class="page-link" href="hsi.php?pagina=<?php echo $numeropaginas; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $numeropaginas; ?></a></li>
+                  <li class="page-item"><a class="page-link"
+                      href="hsi.php?pagina=<?php echo $numeropaginas; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>"><?php echo $numeropaginas; ?></a>
+                  </li>
                 <?php endif; ?>
 
                 <!-- Botón de "siguiente" -->
                 <?php if ($pagina == $numeropaginas): ?>
                   <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
                 <?php else: ?>
-                  <li class="page-item"><a class="page-link" href="hsi.php?pagina=<?php echo $pagina + 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&raquo;</a></li>
+                  <li class="page-item"><a class="page-link"
+                      href="hsi.php?pagina=<?php echo $pagina + 1; ?>&selectServicioFilter=<?php echo isset($_GET['selectServicioFilter']) ? urlencode($_GET['selectServicioFilter']) : ''; ?>&searchInput=<?php echo isset($_GET['searchInput']) ? urlencode($_GET['searchInput']) : ''; ?>">&raquo;</a>
+                  </li>
                 <?php endif; ?>
               </ul>
             </nav>
@@ -696,17 +798,17 @@ overflow-y: hidden;">
 
 <script id="JSON">
   [{
-      "documento": "Copia de DNI",
-      "activo": "no"
-    },
-    {
-      "documento": "Copia de matrícula profesional",
-      "activo": "no"
-    },
-    {
-      "documento": "Solicitud de alta de usuario para HSI (ANEXO I)",
-      "activo": "no"
-    },
+    "documento": "Copia de DNI",
+    "activo": "no"
+  },
+  {
+    "documento": "Copia de matrícula profesional",
+    "activo": "no"
+  },
+  {
+    "documento": "Solicitud de alta de usuario para HSI (ANEXO I)",
+    "activo": "no"
+  },
     {
       "documento": "Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)",
       "activo": "no"
