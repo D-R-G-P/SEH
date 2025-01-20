@@ -1,5 +1,5 @@
 <?php
-session_start(); // Inicia la sesión (si aún no se ha iniciado)
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verifica que el formulario se ha enviado por el método POST
@@ -10,8 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $dni = htmlspecialchars(trim($_POST["dni"]));
     $servicio = htmlspecialchars(trim($_POST["servicio"]));
     $especialidad = htmlspecialchars(trim($_POST["especialidad"])) ?: ""; // Si está vacío, asigna "0"
-    $mn = htmlspecialchars(trim($_POST["mn"]));
-    $mp = htmlspecialchars(trim($_POST["mp"]));
+    $mn = htmlspecialchars(trim($_POST["mn"])) ?: "";
+    $mp = htmlspecialchars(trim($_POST["mp"])) ?: "";
     $sistemas = json_encode([
         ["sistema" => "Deposito", "activo" => "no"],
         ["sistema" => "Mantenimiento", "activo" => "no"],
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } catch (PDOException $e) {
         // Si hay un error en la base de datos, almacena el mensaje de error y redirige al formulario
         error_log($e->getMessage()); // Log del error para depuración
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos. Por favor, inténtelo de nuevo más tarde.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos. Por favor, inténtelo de nuevo más tarde. '. $e->getMessage() .'</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit;
     }
