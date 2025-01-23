@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $existing_dni = $stmt_check_dni->fetchColumn();
 
         if ($existing_dni) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis" style="text-align: center;">El agente ya cuenta con usuario, solicite la reactivación mediante pedido.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);} window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '"); });</script>';
+            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis" style="text-align: center;">El agente ya cuenta con usuario, solicite la reactivación mediante pedido.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);} window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '"); }); window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '", "' . $servicio . '"); });</script>';
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
