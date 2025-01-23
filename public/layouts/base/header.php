@@ -150,7 +150,7 @@ $basePath = realpath(dirname(__DIR__));
 
                 <?php if (hasAccess([ 'administrador', 'direccion', 'arquitectura' ])): ?>
                     <a href="<?php echo MODULE_PATH ?>arquitectura/arquitectura.php" class="header" title="Arquitectura">
-                    <img src="<?php echo IMG_PATH ?>camilla.svg" alt="Camilla logo" style="width: 1.5vw; height: auto; color: #fff;">
+                    <i class="fa-solid fa-compass-drafting"></i>
                         <p class="headerLeftP open">Arquitectura</p>
                     </a>
                 <?php endif; ?>
