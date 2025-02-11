@@ -60,6 +60,10 @@ input[type=number] {
   appearance: textfield;
 }
 
+select.select2 {
+  width: 95%;
+}
+
 .btn-green {
   color: #fff;
   background-color: rgb(25, 134, 83);
@@ -76,18 +80,6 @@ input[type=number] {
   background-color: #157347;
   border: #157347;
   transition: all 0.15s ease-in-out;
-}
-
-.btn-green:disabled {
-  color: #fff;
-  background-color: #757575;
-  border: #757575;
-  padding: 0.5vw;
-  border-radius: 0.5vw;
-  font-size: 1.05vw;
-  cursor: not-allowed;
-  transition: all 0.15s ease-in-out;
-  margin: .5vw .5vw;
 }
 
 .btn-red {
@@ -136,12 +128,28 @@ input[type=number] {
   margin: .5vw .5vw;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
+  white-space: nowrap;
 }
 
 .btn-tematico:hover {
   background-color: var(--color3);
   border: var(--color3);
   transition: all 0.15s ease-in-out;
+}
+
+.btn-green:disabled,
+.btn-tematico:disabled,
+.btn-red:disabled,
+.btn-yellow:disabled {
+  color: #fff;
+  background-color: #757575;
+  border: #757575;
+  padding: 0.5vw;
+  border-radius: 0.5vw;
+  font-size: 1.05vw;
+  cursor: not-allowed;
+  transition: all 0.15s ease-in-out;
+  margin: .5vw .5vw;
 }
 
 table {
@@ -290,7 +298,7 @@ form div {
 .backForm {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   width: 70%;
 }
@@ -310,7 +318,7 @@ form div {
 .select2-container--default .select2-selection--multiple {
   border: #242424 0.2vw solid;
   border-radius: 0.8vw;
-  width: 100%;
+  width: 95%;
   height: 3vw;
   padding: 0.5vw;
   font-size: 1.8vw;
@@ -590,4 +598,12 @@ a {
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
+}
+
+div.recorrido-unidades {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
 }

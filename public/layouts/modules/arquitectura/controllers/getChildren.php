@@ -9,10 +9,10 @@ $u_padre = isset($_POST['u_padre']) ? $_POST['u_padre'] : null;
 try {
     if ($u_padre === null || $u_padre === '') {
         // Obtener nodos raíz (sin u_padre)
-        $query = $pdo->prepare('SELECT id, nombre, estado, u_hijo FROM arquitectura WHERE u_padre IS NULL');
+        $query = $pdo->prepare('SELECT * FROM arquitectura WHERE u_padre IS NULL');
     } else {
         // Obtener nodos hijos
-        $query = $pdo->prepare('SELECT id, nombre, estado, u_hijo FROM arquitectura WHERE u_padre = :u_padre');
+        $query = $pdo->prepare('SELECT * FROM arquitectura WHERE u_padre = :u_padre');
         $query->bindParam(':u_padre', $u_padre, PDO::PARAM_INT);
     }
     $query->execute();
