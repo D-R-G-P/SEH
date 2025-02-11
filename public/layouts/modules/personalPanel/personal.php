@@ -11,6 +11,7 @@ $user = new User();
 $userSession = new UserSession();
 $currentUser = $userSession->getCurrentUser();
 $user->setUser($currentUser);
+$servicio_usuario = $user->getServicio();
 
 requireRole(['administrador', 'direccion', 'gest_personal']);
 
@@ -20,11 +21,11 @@ $db = new DB();
 $pdo = $db->connect();
 
 // Obtener el parámetro 'selectServicioFilter' de la URL, si no está se establece en null
-$sel = isset($_GET['selectServicioFilter']) ? $_GET['selectServicioFilter'] : null;
+$sel = $_GET['selectServicioFilter'] ?? null;
 
 // Si el parámetro 'selectServicioFilter' no coincide con el servicio del usuario
 // y el usuario no tiene rol de "Administrador" ni "Dirección"
-if (($sel !== $user->getServicio() || !$sel) && !hasAccess(['administrador', 'direccion'])) {
+if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direccion'])) {
     
     // Asignar el servicio del usuario a 'selectServicioFilter' si no es válido
     $selectServicioFilter = $user->getServicio();
