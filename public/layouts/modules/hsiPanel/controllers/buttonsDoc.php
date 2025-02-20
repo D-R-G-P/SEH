@@ -60,6 +60,10 @@ if(isset($_GET['dni']) && isset($_GET['documento']) && isset($_GET['action']) &&
                     'message' => 'Estado de "'.$documento.'" actualizado correctamente',
                     'type' => 'success'
                 ];
+                $_SESSION['load_info'] = [
+                    'dni' => $dni,
+                    'servicio' => $servicio
+                ];
 
             } else {
                 $_SESSION['toast_message'] = [

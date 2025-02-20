@@ -93,6 +93,10 @@ if (isset($_POST['docsDniHidden'])) {
         'message' => 'Archivos subidos exitosamente, aguarde a su verificación.',
         'type' => 'success'
     ];
+    $_SESSION['load_info'] = [
+        'dni' => $dni,
+        'servicio' => $servicio
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit(); // Finalizar el script después de la redirección
 } else {

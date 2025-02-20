@@ -43,6 +43,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'message' => 'Datos modificados correctamente.',
                 'type' => 'success'
             ];
+            $_SESSION['load_info'] = [
+                'dni' => $dni,
+                'servicio' => $servicio
+            ];
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit(); // Finalizar el script después de la redirección
         } else {

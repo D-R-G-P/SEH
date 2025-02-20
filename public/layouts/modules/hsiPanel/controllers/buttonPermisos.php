@@ -51,6 +51,10 @@ if (isset($_GET['permiso']) && isset($_GET['dni']) && isset($_GET['servicio'])) 
                     'message' => 'Permiso agregado correctamente',
                     'type' => 'success'
                 ];
+                $_SESSION['load_info'] = [
+                    'dni' => $dni,
+                    'servicio' => $servicio
+                ];
             }
 
         } catch (PDOException $e) {

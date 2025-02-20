@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ["documento" => "Copia de DNI", "activo" => "no"],
                 ["documento" => "Copia de matrícula profesional", "activo" => "no"],
                 ["documento" => "Solicitud de alta de usuario para HSI (ANEXO I)", "activo" => "no"],
-                ["documento" => "Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)", "activo" => "no"], 
+                ["documento" => "Declaración Jurada - Convenio de confidecialidad usuarios HSI (ANEXO II)", "activo" => "no"],
                 ["documento" => "Declaración Jurada - Usuario prescriptor", "activo" => "no"]
             ]);
 
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Crear una consulta preparada para insertar los datos en la tabla principal
             $query = "INSERT INTO hsi (dni, servicio, mail, telefono, observaciones, estado, new, fecha_solicitud, documentos) 
                       VALUES (:dni, :servicio, :email, :phone, :observaciones, :estado, :new, :fecha_solicitud, :documentos)";
-            
+
             // Parámetros de la consulta
             $params = [
                 ':dni' => $dni,
@@ -80,6 +80,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['toast_message'] = [
                     'message' => 'Usuario solicitado, verifique su bandeja',
                     'type' => 'success'
+                ];
+                $_SESSION['load_info'] = [
+                    'dni' => $dni,
+                    'servicio' => $servicio
                 ];
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
