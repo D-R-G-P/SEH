@@ -36,24 +36,31 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
                 throw new Exception('Acción no válida');
         }
 
-
-
         // Almacena un mensaje de éxito en la sesión
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Cambio realizado correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Cambio realizado correctamente.',
+            'type' => 'success'
+        ];
 
         // Redirige de vuelta a donde viniste
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     } catch (PDOException $e) {
         // Si hay un error en la base de datos, almacena el mensaje de error en la sesión
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error en la base de datos: ' . $e->getMessage() . '</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            'type' => 'error'
+        ];
 
         // Redirige de vuelta a donde viniste
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     } catch (Exception $e) {
         // Si hay un error en la acción, almacena el mensaje de error en la sesión
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error: ' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error: ' . $e->getMessage(),
+            'type' => 'error'
+        ];
 
         // Redirige de vuelta a donde viniste
         header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -61,7 +68,10 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
     }
 } else {
     // Si no se enviaron los parámetros necesarios, muestra un mensaje de error y redirige
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al enviar los parametros.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al enviar los parametros.',
+        'type' => 'error'
+    ];
 
     // Redirige de vuelta a donde viniste
     header('Location: ' . $_SERVER['HTTP_REFERER']);

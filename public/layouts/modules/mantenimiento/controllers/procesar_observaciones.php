@@ -18,7 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'], $_POST['sender'
 
     // Validar valores
     if (empty($id) || empty($sender)) {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Datos inválidos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Datos inválidos.',
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit;
     }
@@ -37,7 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'], $_POST['sender'
     }
 
     if ($estadoColumn === null) {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Datos inválidos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { loadInfo("' . htmlspecialchars($id) . '", "' . htmlspecialchars($act) . '"); });</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Datos inválidos.',
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit;
     }
@@ -50,16 +56,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'], $_POST['sender'
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Estado cambiado correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { loadInfo("' . htmlspecialchars($id) . '", "' . htmlspecialchars($act) . '"); });</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Estado cambiado correctamente.',
+                'type' => 'success'
+            ];
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         } else {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al actualizar el estado. Por favor, inténtalo de nuevo.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { loadInfo("' . htmlspecialchars($id) . '", "' . htmlspecialchars($act) . '"); });</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Error al actualizar el estado. Por favor, inténtalo de nuevo.',
+                'type' => 'error'
+            ];
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit;
         }
     } catch (PDOException $e) {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al procesar el pedido: ' . $e->getMessage() . '. Por favor, inténtalo de nuevo.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { loadInfo("' . htmlspecialchars($id) . '", "' . htmlspecialchars($act) . '"); });</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al procesar el pedido: ' . $e->getMessage() . '. Por favor, inténtalo de nuevo.',
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit;
     }

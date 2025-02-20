@@ -2,14 +2,20 @@
 session_start(); // Inicia la sesión (si aún no se ha iniciado)
 
 if ($_POST['equipId'] === "") {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al obtener el ID del equipo.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al obtener el ID del equipo.',
+        'type' => 'error'
+    ];
     header("Location: ../equipos.php");
     exit;
 }
 
 if ($_POST['state'] === "") {
     $id = $_POST["equipId"];
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Debe indicar un estado para realizar esta acción.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { infoEquip("' . $id . '"); });</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Debe indicar un estado para realizar esta acción.',
+        'type' => 'error'
+    ];
     header("Location: ../equipos.php");
     exit;
 }
@@ -42,12 +48,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $pdo = null;
 
         // Almacena un mensaje de éxito en la sesión y redirige a una página de éxito
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Estado actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Estado actualizado correctamente',
+            'type' => 'success'
+        ];
         header("Location: ../equipos.php");
         exit;
     } catch (PDOException $e) {
         // Si hay un error en la base de datos, almacena el mensaje de error y redirige al formulario
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al conectar a la base de datos: ' . $e->getMessage(),
+            'type' => 'error'
+        ];
         header("Location: ../equipos.php");
         exit;
     }

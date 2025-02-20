@@ -545,11 +545,7 @@ if (!$sel) {
             <h4>Habilitados (<?php echo $totalregistros; ?>)</h4>
             <div style="width: 100%;">
 
-                <form action="hsiAdmin.php#habilitado" method="get" id="formFiltro" style="display: flex;
-flex-direction: row;
-flex-wrap: nowrap;
-align-items: center;
-overflow-y: hidden;">
+                <form action="hsiAdmin.php#habilitado" method="get" id="formFiltro" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; overflow-y: hidden;">
                     <input type="hidden" name="pagina"
                         value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
 

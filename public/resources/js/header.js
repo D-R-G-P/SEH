@@ -81,3 +81,94 @@ function toggleMenu() {
         location.reload();
     }
 }
+
+function toast(message, type, duration = 2500) {
+    let toastContainer = document.getElementById("toast-container");
+
+    if (!toastContainer) {
+        toastContainer = document.createElement("div");
+        toastContainer.id = "toast-container";
+        document.body.appendChild(toastContainer);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    
+    // Definir el icono según el tipo de notificación
+    let icon;
+    switch (type) {
+        case "success":
+            icon = '<i class="fa-solid fa-circle-check"></i>';
+            break;
+        case "error":
+            icon = '<i class="fa-solid fa-circle-xmark"></i>';
+            break;
+        case "warning":
+            icon = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            break;
+        default:
+            icon = '<i class="fa-solid fa-circle-info"></i>';
+            break;
+    }
+
+    // Insertar icono y mensaje
+    toast.innerHTML = `${icon} <span>${message}</span>`;
+
+    // Agregar al contenedor
+    toastContainer.appendChild(toast);
+
+    // Activar animación
+    setTimeout(() => {
+        toast.classList.add("active");
+    }, 100);
+
+    // Cerrar al hacer clic
+    toast.addEventListener("click", () => removeToast(toast));
+
+    // Desaparecer tras la duración especificada
+    setTimeout(() => {
+        removeToast(toast);
+    }, duration);
+}
+
+function removeToast(toast) {
+    toast.classList.remove("active");
+    setTimeout(() => toast.remove(), 500); // Espera a que termine la transición
+}
+
+
+function toggleErrorReport() {
+    let panel = document.getElementById("errorReportPanel");
+    panel.classList.toggle("open");
+}
+
+
+function sendErrorReport() {
+    let user = document.getElementById("user").value;
+    let description = document.getElementById("errorDescription").value;
+
+    if (!user || !description.trim()) {
+        toast("Todos los campos son requeridos.", "error");
+        return;
+    }
+
+    $.ajax({
+        url: '/SGH/public/resources/controllers/error.php',
+        method: 'POST',
+        data: { user, description },
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                toast("Error reportado correctamente.", "success");
+                document.getElementById("errorDescription").value = "";
+                toggleErrorReport();
+            } else {
+                toast("Error: " + (response.error || "No se pudo reportar el error."), "error");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error AJAX:", xhr.responseText || error);
+            toast("Error: " + (xhr.responseText || error), "error");
+        }
+    });
+}

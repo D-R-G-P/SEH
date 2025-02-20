@@ -23,7 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Crear una consulta preparada para insertar los datos en la base de datos
         $query = "INSERT INTO guardias (mes, usuario_registro, especialidad, dia, regimen, especialista, estado) VALUES (:mes, :usuario_registro, :especialidad, :dia, :regimen, :especialista, :estado)";
 
-
         // Parámetros de la consulta preparada
         $params = [
             ':mes' => $fecha,
@@ -39,18 +38,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $pdo->prepare($query);
         if ($stmt->execute($params)) {
             // Registro exitoso, mostrar un mensaje de éxito
-            $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Datos modificados correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; document.addEventListener("DOMContentLoaded", function() { loadInfo(\''.$dni.'\', \''.$servicioSelect.'\'); });</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Datos modificados correctamente.',
+                'type' => 'success'
+            ];
             header("Location: ../guardias.php");
             exit(); // Finalizar el script después de la redirección
         } else {
             // Error al registrar el usuario, mostrar un mensaje de error
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al modificar los datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Error al modificar los datos.',
+                'type' => 'error'
+            ];
             header("Location: ../guardias.php");
             exit(); // Finalizar el script después de la redirección
         }
     } else {
         // No se recibieron todos los campos necesarios, mostrar un mensaje de error
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor verifique todos los datos obligatorios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Por favor verifique todos los datos obligatorios.',
+            'type' => 'error'
+        ];
         header("Location: ../guardias.php");
         exit(); // Finalizar el script después de la redirección
     }

@@ -19,7 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Si hay errores, almacena mensajes de error en la sesión y redirige al formulario
     if (!empty($errors)) {
-        $_SESSION['error_message'] = implode("<br>", $errors);
+        $_SESSION['toast_message'] = [
+            'message' => implode("<br>", $errors),
+            'type' => 'error' // Puede ser "success", "error", "warning" o "info"
+        ];
         header("Location: ../adminPanel.php");
         exit;
     }
@@ -42,7 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $existingDNICount = $checkDNIStmt->fetchColumn();
 
         if ($existingDNICount > 0) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">El DNI ya está registrado como jefe en otro servicio.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'El DNI ya está registrado como jefe en otro servicio.',
+                'type' => 'error' // Puede ser "success", "error", "warning" o "info"
+            ];
             header("Location: ../adminPanel.php");
             exit;
         }
@@ -56,7 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Obtener el ID del servicio recién insertado
         $newServiceId = $pdo->lastInsertId();
 
-
         $stmtJefe = $pdo->prepare("UPDATE personal SET servicio_id = ?, cargo = ? WHERE dni = ?");
         $stmtJefe->execute([$newServiceId, "Jefe de servicio", $jefeServicio]);
 
@@ -64,12 +69,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $pdo = null;
 
         // Almacena un mensaje de éxito en la sesión y redirige a una página de éxito
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">El servicio se ha agregado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'El servicio se ha agregado correctamente',
+            'type' => 'success' // Puede ser "success", "error", "warning" o "info"
+        ];
         header("Location: ../adminPanel.php");
         exit;
     } catch (PDOException $e) {
         // Si hay un error en la base de datos, almacena el mensaje de error y redirige al formulario
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al conectar a la base de datos' . $e->getMessage() . '.',
+            'type' => 'error' // Puede ser "success", "error", "warning" o "info"
+        ];
         header("Location: ../adminPanel.php");
         exit;
     }

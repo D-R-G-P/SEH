@@ -15,23 +15,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $pdo = $db->connect();
 
     try {
-
         // Prepara la consulta SQL para la inserción
         $stmt = $pdo->prepare("UPDATE personal SET estado = CONCAT('Jubilado: ', ?) WHERE dni = ?");
-$stmt->execute([$jubilarFecha, $dni]);
-
-
+        $stmt->execute([$jubilarFecha, $dni]);
 
         // Cierra la conexión a la base de datos
         $pdo = null;
 
         // Almacena un mensaje de éxito en la sesión y redirige a una página de éxito
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Pase de servicio realizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Pase de servicio realizado correctamente',
+            'type' => 'success'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit;
     } catch (PDOException $e) {
         // Si hay un error en la base de datos, almacena el mensaje de error y redirige al formulario
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al conectar a la base de datos: ' . $e->getMessage(),
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit;
     }

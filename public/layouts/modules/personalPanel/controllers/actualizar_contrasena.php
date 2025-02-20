@@ -10,9 +10,6 @@ if(isset($_GET['id']) && isset($_GET['dni'])) {
     $dni = $_GET['dni'];
     $pr = "si";
 
-    // Almacenar los mensajes en variables de sesión
-    $_SESSION['success_message'] = "ID: $id, DNI: $dni"; // Mensaje de éxito
-
     // Generar la contraseña MD5 a partir del DNI
     $contrasena_md5 = md5($dni);
 
@@ -28,17 +25,28 @@ if(isset($_GET['id']) && isset($_GET['dni'])) {
             $stmt_update = $pdo->prepare($sql_update);
             $stmt_update->execute([$contrasena_md5, $pr, $id]);
 
-            $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Contraseña actualizada correctamente.
-            </br>
-            Deberá ingresar con su dni separado por punto (<b>'.$dni.'</b>)</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Contraseña actualizada correctamente. Deberá ingresar con su dni separado por punto (<b>'.$dni.'</b>)',
+                'type' => 'success',
+                'duration' => 25000
+            ];
         } catch (PDOException $e) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al generar la contraseña: ' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Error al generar la contraseña: ' . $e->getMessage() . '.',
+                'type' => 'error'
+            ];
         }
     } else {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al conectar a la base de datos.',
+            'type' => 'error'
+        ];
     }
 } else {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al obtener los parametros.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al obtener los parametros.',
+        'type' => 'error'
+    ];
 }
 
 // Redireccionar de nuevo a la página anterior

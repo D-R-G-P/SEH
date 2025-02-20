@@ -11,10 +11,12 @@ if (isset($_GET['dni']) && isset($_GET['action'])) {
         case 'baja':
             $pedido = "Se solicita baja del usuario.";
             $message = "Solicitud de baja realizada correctamente.";
+            $type = "success";
             break;
         case 'password':
             $pedido = "Se solicita reinicio de contraseña";
             $message = "Solicitud de reinicio de contraseña realizado correctamente";
+            $type = "success";
             break;
     }
 
@@ -41,13 +43,25 @@ if (isset($_GET['dni']) && isset($_GET['action'])) {
     // Ejecutar la consulta
     if ($statement->execute()) {
         // Si la consulta se ejecuta con éxito, redirigir al usuario a una página de éxito o mostrar un mensaje de éxito
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">'. $message .'</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-        header("Location: " . $_SERVER['HTTP_REFERER']);        exit(); // Finalizar el script después de la redirección
+        $_SESSION['toast_message'] = [
+            'message' => $message,
+            'type' => $type
+        ];
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit(); // Finalizar el script después de la redirección
     } else {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al procesar el pedido. Por favor, inténtalo de nuevo.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-        header("Location: " . $_SERVER['HTTP_REFERER']);        exit(); // Finalizar el script después de la redirección
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al procesar el pedido. Por favor, inténtalo de nuevo.',
+            'type' => 'error'
+        ];
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit(); // Finalizar el script después de la redirección
     }
 } else {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">No se recibieron todos los datos necesarios del formulario.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-    header("Location: " . $_SERVER['HTTP_REFERER']);    exit(); // Finalizar el script después de la redirección
+    $_SESSION['toast_message'] = [
+        'message' => 'No se recibieron todos los datos necesarios del formulario.',
+        'type' => 'error'
+    ];
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit(); // Finalizar el script después de la redirección
 }

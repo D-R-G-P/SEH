@@ -79,8 +79,6 @@ if (isset($_POST['docsDniHidden'])) {
         }
     }
 
-
-
     // Convertir el JSON actualizado de documentos a formato JSON
     $documentos_json = json_encode($documentos_array);
 
@@ -90,12 +88,18 @@ if (isset($_POST['docsDniHidden'])) {
     $update_stmt->execute([':documentos' => $documentos_json, ':dni' => $dni]);
 
     // Registro exitoso, mostrar un mensaje de éxito
-    $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Archivos subidos exitosamente, aguarde a su verificación.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 5000);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Archivos subidos exitosamente, aguarde a su verificación.',
+        'type' => 'success'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit(); // Finalizar el script después de la redirección
 } else {
     // Error al registrar el usuario, mostrar un mensaje de error
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor, suba todos los archivos obligatorios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Por favor, suba todos los archivos obligatorios.',
+        'type' => 'error'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit(); // Finalizar el script después de la redirección
 }

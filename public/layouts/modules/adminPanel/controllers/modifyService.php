@@ -18,14 +18,26 @@ if (isset($_POST['idMod'], $_POST['servicioMod'], $_POST['jefeMod'])) {
         $stmtJefe = $pdo->prepare("UPDATE personal SET servicio_id = ?, cargo = ? WHERE dni = ?");
         $stmtJefe->execute([$id, "Jefe de servicio", $jefe]);
 
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Cambio realizado correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-    } catch (PDOException $e) {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error en la base de datos: ' . $e->getMessage() . '</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-    } catch (Exception $e) {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error: ' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-    }
-} else {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al enviar los parámetros.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Cambio realizado correctamente.',
+            'type' => 'success'
+        ];
+        } catch (PDOException $e) {
+        $_SESSION['toast_message'] = [
+            'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            'type' => 'error'
+        ];
+        } catch (Exception $e) {
+        $_SESSION['toast_message'] = [
+            'message' => 'Error: ' . $e->getMessage(),
+            'type' => 'error'
+        ];
+        }
+    } else {
+        $_SESSION['toast_message'] = [
+        'message' => 'Error al enviar los parámetros.',
+        'type' => 'error'
+        ];
 }
 
 header('Location: ' . $_SERVER['HTTP_REFERER']);

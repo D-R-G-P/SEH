@@ -274,7 +274,111 @@ article {
 }
 
 @media print {
-    .headerLeft, .bars {
-      display: none;
+
+    .headerLeft,
+    .bars {
+        display: none;
     }
-  }
+}
+
+/* Panel de Reporte */
+.error-report {
+    position: fixed;
+    top: 0;
+    right: -30vw;
+    /* Oculto inicialmente */
+    width: 30vw;
+    height: 100%;
+    background-color: #dddddd;
+    background-image: radial-gradient(#cfcfcfd4 0.1vw, transparent 0);
+    background-size: 1vw 1vw;
+    background-position: -19vw -19vw;
+    border-left: 0.2vw solid var(--color3-normal);
+    box-shadow: -0.5vw 0 1vw rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding: 1vw;
+    z-index: 1000;
+
+    .fa-chevron-right {
+        display: none;
+    }
+
+    .fa-chevron-left {
+        display: block;
+    }
+}
+
+.error-report-body textarea {
+    resize: none;
+    width: 100%;
+    min-height: 10vw;
+    max-height: 20vw;
+    field-sizing: content;
+}
+
+/* Botón flotante (ahora dentro del panel) */
+.floating-button {
+    position: absolute;
+    top: 4.7vw;
+    left: -3vw;
+    /* Inicialmente fuera del panel */
+    background-color: var(--color3-normal);
+    color: white;
+    width: 11.5vw;
+    height: 3vw;
+    border-radius: 5vw 0 0 5vw;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1vw;
+    transition: all 0.3s ease-in-out;
+    z-index: 999;
+}
+
+.floating-button span {
+    white-space: nowrap;
+    margin-left: .5vw;
+    font-size: 1.1vw;
+}
+
+.floating-button:hover {
+    background-color: var(--color3-dark);
+    left: -11.5vw;
+}
+
+.floating-button i:first-child {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Cuando el panel está abierto */
+.error-report.open {
+    right: 0;
+    z-index: 1000;
+}
+
+.error-report.open .floating-button {
+    left: -2.9vw;
+    width: 2.8vw;
+
+    span {
+        display: none;
+    }
+
+    .fa-chevron-right {
+        display: block;
+    }
+
+    .fa-chevron-left {
+        display: none;
+    }
+
+    .fa-bug {
+        margin-left: .5vw;
+    }
+
+    z-index: 999;
+    /* Mueve el botón con el panel */
+}

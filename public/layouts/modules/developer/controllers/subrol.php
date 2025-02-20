@@ -38,19 +38,28 @@ if (isset($_POST['subrol']) && isset($_POST['subrol_name'])) {
         $stmt->execute();
 
         // Mensaje de éxito
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Subrol registrado/actualizado correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Subrol registrado/actualizado correctamente.',
+            'type' => 'success'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     } catch (Exception $e) {
         // Manejar errores de la base de datos
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al registrar el Subrol: ' . htmlspecialchars($e->getMessage()) . '</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 250000);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al registrar el Subrol: ' . htmlspecialchars($e->getMessage()),
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 } else {
     // Si los datos no están completos
     http_response_code(400);
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al registrar el Subrol: Datos incompletos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al registrar el Subrol: Datos incompletos.',
+        'type' => 'error'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }

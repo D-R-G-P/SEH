@@ -30,11 +30,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute([$apellido, $nombre, $dni, $mn, $mp, $pr, $idUsuario]);
     }
 
-    $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Perfil modificado correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
-        header("Location: ../miUsuario.php");
-        exit;
+    $_SESSION['toast_message'] = [
+        'message' => 'Perfil modificado correctamente.',
+        'type' => 'success'
+    ];
+    header("Location: ../miUsuario.php");
+    exit;
 } else {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al registrar el formulario.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al registrar el formulario.',
+        'type' => 'error'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit;
 }

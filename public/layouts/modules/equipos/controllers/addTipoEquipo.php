@@ -14,7 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Si hay errores, almacena mensajes de error en la sesión y redirige al formulario
     if (!empty($errors)) {
-        $_SESSION['error_message'] = implode("<br>", $errors);
+        $_SESSION['toast_message'] = [
+            'message' => implode("<br>", $errors),
+            'type' => 'error' // Puede ser "success", "error", "warning" o "info"
+        ];
         exit("error");
     }
 
@@ -38,13 +41,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $pdo = null;
 
         // Almacena un mensaje de éxito en la sesión
+        $_SESSION['toast_message'] = [
+            'message' => 'Tipo de equipo agregado exitosamente.',
+            'type' => 'success' // Puede ser "success", "error", "warning" o "info"
+        ];
         exit("success");
     } catch (PDOException $e) {
         // Si hay un error en la base de datos, almacena el mensaje de error en la sesión y redirige al formulario
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al agregar el tipo de equipo.',
+            'type' => 'error' // Puede ser "success", "error", "warning" o "info"
+        ];
         exit("error");
     }
 } else {
     // Si alguien trata de acceder directamente a este script sin enviar el formulario, retorna un error
+    $_SESSION['toast_message'] = [
+        'message' => 'Acceso no autorizado.',
+        'type' => 'error' // Puede ser "success", "error", "warning" o "info"
+    ];
     exit("error");
 }
 ?>

@@ -71,7 +71,7 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
         </div>
         <h3>Declarar nuevo personal</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/addPersonal.php" method="post" class="backForm" id="newPersonalForm">
-          <div style="margin-top: 15vw;">
+          <div>
             <label for="apellido">Apellido</label>
             <input type="text" name="apellido" id="apellido" required>
           </div>
@@ -191,7 +191,7 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
         <h3>Editar personal</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/modifyPersonal.php" method="post" class="backForm" id="editPersonalForm">
           <input type="hidden" name="editid" id="editid">
-          <div style="margin-top: 15vw;">
+          <div>
             <label for="editapellido">Apellido</label>
             <input type="text" name="editapellido" id="editapellido" required>
           </div>
@@ -529,19 +529,10 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
 
       <div style="width: 100%;">
 
-        <form action="personal.php" method="get" id="formFiltro" style="display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    overflow-y: hidden;">
+        <form action="personal.php" method="get" id="formFiltro" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; overflow-y: hidden;">
           <input type="hidden" name="pagina" value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
 
-          <div style="display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr;
-    grid-column-gap: 1vw;
-    grid-row-gap: 0px;
-    overflow-y: hidden;">
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: 1fr; grid-column-gap: 1vw; grid-row-gap: 0px; overflow-y: hidden;">
             <select name="selectServicioFilter" id="selectServicioFilter" class="select2"
             <?php if (!hasAccess(['administrador', 'direccion'])) { echo "disabled"; } ?>>
 

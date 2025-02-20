@@ -22,19 +22,28 @@ if (isset($_POST['version']) && isset($_POST['descripcion'])) {
         $stmt->execute();
 
         // Mensaje de éxito
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Update registrado correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Update registrado correctamente.',
+            'type' => 'success'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     } catch (Exception $e) {
         // Manejar errores de la base de datos
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al registrar la update: ' . htmlspecialchars($e->getMessage()) . '</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al registrar la update: ' . htmlspecialchars($e->getMessage()),
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 } else {
     // Si los datos no están completos
     http_response_code(400);
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al registrar la update: Datos incompletos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al registrar la update: Datos incompletos.',
+        'type' => 'error'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }

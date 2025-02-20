@@ -25,7 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $existing_dni = $stmt_check_dni->fetchColumn();
 
         if ($existing_dni) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis" style="text-align: center;">El agente ya cuenta con usuario, solicite la reactivación mediante pedido.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);} window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '"); });</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'El agente ya cuenta con usuario, solicite la reactivación mediante pedido.',
+                'type' => 'error'
+            ];
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
@@ -74,7 +77,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 // Registro exitoso, mostrar un mensaje de éxito
-                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Usuario solicitado, verifique su bandeja</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+                $_SESSION['toast_message'] = [
+                    'message' => 'Usuario solicitado, verifique su bandeja',
+                    'type' => 'success'
+                ];
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
             } else {
@@ -89,7 +95,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         // No se recibieron todos los campos necesarios, mostrar un mensaje de error
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor verifique todos los datos obligatorios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Por favor verifique todos los datos obligatorios.',
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit(); // Finalizar el script después de la redirección
     }

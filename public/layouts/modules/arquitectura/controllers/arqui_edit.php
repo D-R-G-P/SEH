@@ -17,8 +17,10 @@ try {
 
     // Validar campos obligatorios
     if (!$id_sitio || !$nombre || !$tipo_sitio_id || !$u_padre) {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Todos los campos obligatorios deben completarse.</div></div>
-        <script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Todos los campos obligatorios deben completarse.',
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
@@ -64,13 +66,17 @@ try {
         $stmtUpdate->execute([':u_padre' => $u_padre]);
     }
 
-    $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Sitio actualizado correctamente.</div></div>
-    <script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Sitio actualizado correctamente.',
+        'type' => 'success'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 } catch (Exception $e) {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al actualizar el sitio: ' . htmlspecialchars($e->getMessage()) . '</div></div>
-    <script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al actualizar el sitio: ' . htmlspecialchars($e->getMessage()),
+        'type' => 'error'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }

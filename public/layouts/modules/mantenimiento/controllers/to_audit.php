@@ -15,13 +15,19 @@ if (isset($_GET['id'])) {
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 
-    $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Se ha marcado el caso para auditar correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Se ha marcado el caso para auditar correctamente.',
+        'type' => 'success'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit(); // Finalizar el script después de la redirección
 } else {
     // Si no se proporcionó un ID, devolver un mensaje de error
     http_response_code(400);
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al marcar para auditoria.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al marcar para auditoria.',
+        'type' => 'error'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit(); // Finalizar el script después de la redirección
 }

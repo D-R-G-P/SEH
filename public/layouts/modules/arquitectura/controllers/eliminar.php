@@ -7,7 +7,10 @@ $pdo = $db->connect();
 
 // Validar que el ID es numérico y está presente en la URL
 if (!isset($_GET['id']) || empty($_GET['id']) || !is_numeric($_GET['id'])) {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">ID inválido.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'ID inválido.',
+        'type' => 'error'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }
@@ -22,7 +25,10 @@ try {
     $count = $stmt_check->fetchColumn();
 
     if ($count > 0) {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">No se puede eliminar este sitio porque tiene unidades dependientes.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'No se puede eliminar este sitio porque tiene unidades dependientes.',
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
@@ -52,11 +58,17 @@ try {
         }
     }
 
-    $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Sitio eliminado correctamente.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Sitio eliminado correctamente.',
+        'type' => 'success'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 } catch (Exception $e) {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al eliminar el sitio: ' . htmlspecialchars($e->getMessage()) . '</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al eliminar el sitio: ' . htmlspecialchars($e->getMessage()),
+        'type' => 'error'
+    ];
     header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }

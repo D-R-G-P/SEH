@@ -15,18 +15,18 @@ if(isset($_GET['dni']) && isset($_GET['action'])) {
         case 'baja':
             $observaciones = "Usuario deshabilitado.";
             $estado = "disabled";
-            break;
             $residente = "";
+            break;
         case 'password':
             $observaciones = "Contraseña reiniciada, credenciales enviadas al mail del agente. Cuenta con 48 horas para acceder. (".$fecha.")";
             $estado = "habilitado";
-            break;
             $residente = "";
+            break;
         case 'habilita':
             $observaciones = "Usuario creado correctamente, las credenciales fueron enviadas al whatsapp/mail del agente. Cuenta con 48 horas para acceder. (".$fecha.")";
             $estado = "habilitado";
-            break;
             $residente = "";
+            break;
         case 'habilitar':
             $observaciones = "Usuario creado correctamente, las credenciales fueron enviadas al whatsapp/mail del agente. Cuenta con 48 horas para acceder. (".$fecha.") </br> Usuario habilitado como residente, vencerá al final del año.";
             $estado = "habilitado";
@@ -46,15 +46,27 @@ if(isset($_GET['dni']) && isset($_GET['action'])) {
             $stmt_update = $pdo->prepare($sql_update);
             $stmt_update->execute([$observaciones, $new, $estado, $residente, $dni]);
 
-            $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Notificación enviada correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Notificación enviada correctamente',
+                'type' => 'success'
+            ];
         } catch (PDOException $e) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al enviar la notificación</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Error al enviar la notificación',
+                'type' => 'error'
+            ];
         }
     } else {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al conectar a la base de datos.',
+            'type' => 'error'
+        ];
     }
 } else {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al obtener los parametros.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al obtener los parametros.',
+        'type' => 'error'
+    ];
 }
 
 // Redireccionar de nuevo a la página anterior

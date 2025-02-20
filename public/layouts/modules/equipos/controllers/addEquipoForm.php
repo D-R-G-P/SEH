@@ -17,23 +17,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $pdo = $db->connect();
 
     try {
-
         // Prepara la consulta SQL para la inserción
         $stmt = $pdo->prepare("INSERT INTO equipos (marca, modelo, tipo, estado, problema, servicio) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->execute([$marca, $modelo, $tipo_equipo, 'operativo', 'Sin problema reportado', $servicio]);
-
-
+        $stmt->execute([$marca, $modelo, $tipo_equipo, 'operativo', 'Sin problema reportado', $servicio]);
 
         // Cierra la conexión a la base de datos
         $pdo = null;
 
         // Almacena un mensaje de éxito en la sesión y redirige a una página de éxito
-        $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Equipo agregado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Equipo agregado correctamente',
+            'type' => 'success'
+        ];
         header("Location: ../equipos.php");
         exit;
     } catch (PDOException $e) {
         // Si hay un error en la base de datos, almacena el mensaje de error y redirige al formulario
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error al conectar a la base de datos: ' . $e->getMessage(),
+            'type' => 'error'
+        ];
         header("Location: ../equipos.php");
         exit;
     }

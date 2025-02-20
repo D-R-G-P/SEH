@@ -56,19 +56,34 @@ if(isset($_GET['dni']) && isset($_GET['documento']) && isset($_GET['action']) &&
                 $stmt_update = $pdo->prepare($sql_update);
                 $stmt_update->execute([$documentos_json_updated, $dni]);
 
-                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Estado de "'.$documento.'" actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; document.addEventListener("DOMContentLoaded", function() { loadInfo(\''.$dni.'\', \''.$servicio.'\'); });</script>';
+                $_SESSION['toast_message'] = [
+                    'message' => 'Estado de "'.$documento.'" actualizado correctamente',
+                    'type' => 'success'
+                ];
 
             } else {
-                $_SESSION['warning_message'] = "No se encontraron resultados para el DNI proporcionado: $dni"; // Mensaje de advertencia
+                $_SESSION['toast_message'] = [
+                    'message' => "No se encontraron resultados para el DNI proporcionado: $dni",
+                    'type' => 'warning'
+                ];
             }
         } catch (PDOException $e) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al actualizar el JSON: ' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Error al actualizar el JSON: ' . $e->getMessage(),
+                'type' => 'error'
+            ];
         }
     } else {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error en la conexión a la base de datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error en la conexión a la base de datos.',
+            'type' => 'error'
+        ];
     }
 } else {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">No se recibieron todos los parámetros necesarios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'No se recibieron todos los parámetros necesarios.',
+        'type' => 'error'
+    ];
 }
 
 // Redireccionar de nuevo a la página anterior

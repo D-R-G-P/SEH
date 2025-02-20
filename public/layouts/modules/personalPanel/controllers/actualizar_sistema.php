@@ -11,7 +11,10 @@ if(isset($_GET['id']) && isset($_GET['sistema']) && isset($_GET['estado'])) {
     $estado = $_GET['estado'];
 
     // Almacenar los mensajes en variables de sesión
-    $_SESSION['success_message'] = "ID: $id, Sistema: $sistema, Estado: $estado"; // Mensaje de éxito
+    $_SESSION['toast_message'] = [
+        'message' => "ID: $id, Sistema: $sistema, Estado: $estado",
+        'type' => 'info'
+    ];
 
     $estadomod = ($estado == "si") ? "no" : "si";
 
@@ -48,18 +51,33 @@ if(isset($_GET['id']) && isset($_GET['sistema']) && isset($_GET['estado'])) {
                 $stmt_update = $pdo->prepare($sql_update);
                 $stmt_update->execute([$sistemas_json_updated, $id]);
 
-                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Acceso a "'.$sistema.'" actualizado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+                $_SESSION['toast_message'] = [
+                    'message' => 'Acceso a "'.$sistema.'" actualizado correctamente',
+                    'type' => 'success'
+                ];
             } else {
-                $_SESSION['warning_message'] = "No se encontraron resultados para el ID proporcionado: $id"; // Mensaje de advertencia
+                $_SESSION['toast_message'] = [
+                    'message' => "No se encontraron resultados para el ID proporcionado: $id",
+                    'type' => 'warning'
+                ];
             }
         } catch (PDOException $e) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al actualizar el JSON: ' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Error al actualizar el JSON: ' . $e->getMessage(),
+                'type' => 'error'
+            ];
         }
     } else {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error en la conexion a la base de datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error en la conexion a la base de datos.',
+            'type' => 'error'
+        ];
     }
 } else {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al conectar a la base de datos' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Error al conectar a la base de datos.',
+        'type' => 'error'
+    ];
 }
 
 // Redireccionar de nuevo a la página anterior

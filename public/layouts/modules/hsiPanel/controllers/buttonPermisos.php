@@ -34,7 +34,10 @@ if (isset($_GET['permiso']) && isset($_GET['dni']) && isset($_GET['servicio'])) 
                 $stmt_delete->execute();
 
                 // Mensaje de éxito si el permiso se eliminó
-                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Permiso eliminado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '", "' . $servicio . '"); });</script>';
+                $_SESSION['toast_message'] = [
+                    'message' => 'Permiso eliminado correctamente',
+                    'type' => 'success'
+                ];
             } else {
                 // Si no tiene el permiso, lo agrega
                 $sql_insert = "INSERT INTO usuarios_roles_hsi (dni, id_rol) VALUES (:dni, :id_rol)";
@@ -44,17 +47,29 @@ if (isset($_GET['permiso']) && isset($_GET['dni']) && isset($_GET['servicio'])) 
                 $stmt_insert->execute();
 
                 // Mensaje de éxito si el permiso se agregó
-                $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="justify-content: center;">Permiso agregado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}; window.addEventListener("DOMContentLoaded", () => { loadInfo("' . $dni . '", "' . $servicio . '"); });</script>';
+                $_SESSION['toast_message'] = [
+                    'message' => 'Permiso agregado correctamente',
+                    'type' => 'success'
+                ];
             }
 
         } catch (PDOException $e) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al modificar el permiso: ' . $e->getMessage() . '.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Error al modificar el permiso: ' . $e->getMessage(),
+                'type' => 'error'
+            ];
         }
     } else {
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error en la conexión a la base de datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Error en la conexión a la base de datos.',
+            'type' => 'error'
+        ];
     }
 } else {
-    $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">No se recibieron todos los parámetros necesarios.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'No se recibieron todos los parámetros necesarios.',
+        'type' => 'error'
+    ];
 }
 
 // Redireccionar de nuevo a la página anterior

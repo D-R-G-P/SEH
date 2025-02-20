@@ -21,7 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $existing_rol = $stmt_check_rol->fetchColumn();
 
         if ($existing_rol) {
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis" style="text-align: center;">El rol ya existe.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 25000);}</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'El rol ya existe.',
+                'type' => 'error'
+            ];
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit(); // Finalizar el script después de la redirección
         }
@@ -39,18 +42,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $pdo->prepare($query);
         if ($stmt->execute($params)) {
             // Registro exitoso, mostrar un mensaje de éxito
-            $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis" style="text-align: center;">Rol agregado correctamente</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { back.style.display = "flex"; rolesModule.style.display = "flex"; })</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Rol agregado correctamente',
+                'type' => 'success'
+            ];
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit(); // Finalizar el script después de la redirección
         } else {
             // Error al registrar el usuario, mostrar un mensaje de error
-            $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Error al registrar el rol.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { back.style.display = "flex"; rolesModule.style.display = "flex"; })</script>';
+            $_SESSION['toast_message'] = [
+                'message' => 'Error al registrar el rol.',
+                'type' => 'error'
+            ];
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit(); // Finalizar el script después de la redirección
         }
     } else {
         // No se recibieron todos los campos necesarios, mostrar un mensaje de error
-        $_SESSION['error_message'] = '<div class="notisContent"><div class="notiserror" id="notis">Por favor verifique los datos.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);} window.addEventListener("DOMContentLoaded", () => { back.style.display = "flex"; rolesModule.style.display = "flex"; })</script>';
+        $_SESSION['toast_message'] = [
+            'message' => 'Por favor verifique los datos.',
+            'type' => 'error'
+        ];
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit(); // Finalizar el script después de la redirección
     }

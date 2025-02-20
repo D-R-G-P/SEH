@@ -130,7 +130,7 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
                 <form action="/SGH/public/layouts/modules/mantenimiento/controllers/newSolicitud.php" id="newSolicitudForm"
                     method="post" class="backForm">
                     <input type="hidden" name="reclamante" value="<?php echo $user->getDni(); ?>" required>
-                    <div style="margin-top: 30vw;">
+                    <div>
                         <label for="solicitudServicio">Servicio</label>
                         <select name="solicitudServicio" id="solicitudServicio" class="select2" required>
                             <?php

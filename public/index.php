@@ -16,7 +16,10 @@ $title = "Inicio";
 // Verificar si el usuario está actualmente logueado
 if ($user->getPr() == "si") {
     // Si no hay un usuario en la sesión, redirigir a la página de inicio
-    $_SESSION['success_message'] = '<div class="notisContent"><div class="notis" id="notis">Por favor, modifique su contraseña.</div></div><script>setTimeout(() => {notis.classList.toggle("active");out();}, 1);function out() {setTimeout(() => {notis.classList.toggle("active");}, 2500);}</script>';
+    $_SESSION['toast_message'] = [
+        'message' => 'Por favor, modifique su contraseña.',
+        'type' => 'warning'
+    ];
     header("Location: /SGH/public/layouts/modules/miUsuario/miUsuario.php");
     exit(); // Asegurarse de que el script se detenga después de redirigir
 }
