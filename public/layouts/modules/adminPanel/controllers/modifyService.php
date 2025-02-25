@@ -30,7 +30,7 @@ if (isset($_POST['idMod'], $_POST['servicioMod'], $_POST['jefeMod'])) {
             $rol = $pdo->prepare('INSERT INTO usuarios_roles (dni, rol_id) VALUES (?, 12)');
             $rol->execute([$dni]);
 
-            $subrol = $pdo->prepare('INSERT INTO usuarios_subroles (dni, rol_id, subrol_id) VALUES (?, 12, 24)');
+            $subrol = $pdo->prepare('INSERT INTO usuarios_subroles (dni, rol_id, subrol_id) VALUES (?, 12, 12)');
             $subrol->execute([$dni]);
         } else {
             throw new Exception('El jefe no puede estar vacío.');

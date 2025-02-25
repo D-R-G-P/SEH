@@ -66,7 +66,7 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
             <div id="rolGenView" style="overflow-y: auto;"></div>
         </div>
 
-        <div class="divBackForm" id="roles_users" style="width: auto; overflow-y: auto; padding: 0 4vw 2vw 4vw;">
+        <div class="divBackForm" id="roles_users" style="width: auto; overflow-y: auto; padding: 0 4vw 2vw 4vw; display: none;">
             <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
                 <button class="btn-red" onclick="back.style.display = 'none'; roles_users.style.display = 'none';"
                     style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>

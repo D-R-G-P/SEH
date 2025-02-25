@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $rol = $pdo->prepare('INSERT INTO usuarios_roles (dni, rol_id) VALUES (?, 12)');
         $rol->execute([$dni]);
 
-        $subrol = $pdo->prepare('INSERT INTO usuarios_subroles, rol_id, subrol_id) VALUES (?, 12, 24');
+        $subrol = $pdo->prepare('INSERT INTO usuarios_subroles, rol_id, subrol_id) VALUES (?, 12, 12');
         $subrol->execute([$dni]);
 
         // Cierra la conexión a la base de datos
