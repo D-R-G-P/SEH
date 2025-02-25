@@ -18,8 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
 
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare('UPDATE personal SET estado = CONCAT("Fin de contrato por: ", ?, " desde el: ", ?), password = "", sistemas = "" WHERE dni = ?');
+        $stmt = $pdo->prepare('UPDATE personal SET estado = CONCAT("Fin de contrato por: ", ?, " desde el: ", ?), password = "" WHERE dni = ?');
         $stmt->execute([$finContratoMotivo, $finContratoFecha, $dni]);
+
+        $rol = $pdo->prepare('DELETE FROM usuarios_roles WHERE dni = ?');
+        $rol->execute([$dni]);
+
+        $subrol = $pdo->prepare('DELETE FROM usuarios_subroles WHERE dni = ?');
+        $subrol->execute([$dni]);
 
         // Cierra la conexión a la base de datos
         $pdo = null;

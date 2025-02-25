@@ -285,7 +285,8 @@ form div {
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 * {
-  scrollbar-width: auto;
+  -ms-overflow-style: auto; /* For Internet Explorer and Edge */
+  scrollbar-width: auto; /* For Firefox */
   scrollbar-color: var(--color2) var(--color1) var(--color1);
 }
 

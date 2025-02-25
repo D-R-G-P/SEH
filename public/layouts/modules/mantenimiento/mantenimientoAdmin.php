@@ -172,10 +172,10 @@ if (!$sel) {
                     <h4>Pendientes</h4>
 
                     <form action="mantenimientoAdmin.php" method="get" id="formFiltro" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; overflow-y: hidden;">
-                        <input type="hidden" name="pagina" value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
+                        <input type="hidden" name="pagina" value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>" id="pageInput">
 
                         <div>
-                            <select name="selectServicioFilter" id="selectServicioFilter" class="select2">
+                            <select name="selectServicioFilter" id="selectServicioFilter" class="select2" onchange="pageInput.value = 1; this.form.submit()">
 
                                 <?php
                                 $selectedServicio = isset($_GET['selectServicioFilter']) ? htmlspecialchars($_GET['selectServicioFilter']) : '';

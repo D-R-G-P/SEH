@@ -67,7 +67,7 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
     <div class="back" id="back" style="display: none;">
       <div class="divBackForm" id="newPersonal" style="display: none;">
         <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-          <button class="btn-red" onclick="back.style.display = 'none'; newPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#selectRol').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+          <button class="btn-red" onclick="back.style.display = 'none'; newPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change');" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
         </div>
         <h3>Declarar nuevo personal</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/addPersonal.php" method="post" class="backForm" id="newPersonalForm">
@@ -136,46 +136,6 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
               ?>
             </select>
           </div>
-          <div>
-            <label for="selectRol">Rol</label>
-            <select id="selectRol" class="select2" name="rol" style="width: 100%;" required>
-              <option value="" selected disabled>Seleccionar un rol...</option>
-
-              <?php
-
-              switch ($user->getRol()) {
-                case 'Administrador':
-                  echo '<option value="Sin rol">Sin rol</option>
-                  <option value="Administrador">Administrador</option>
-                  <option value="Dirección">Dirección</option>
-                  <option value="Deposito">Deposito</option>
-                  <option value="Mantenimiento">Mantenimiento</option>
-                  <option value="Patrimoniales">Patrimoniales</option>
-                  <option value="Informatica">Informatica</option>
-                  <option value="Jefe de servicio">Jefe de servicio</option>
-                  <option value="Docencia e investigación">Docencia e investigación</option>';
-                  break;
-
-                case 'Dirección':
-                  echo '<option value="Sin rol">Sin rol</option>
-                    <option value="Administrador">Administrador</option>
-                    <option value="Dirección">Dirección</option>
-                    <option value="Deposito">Deposito</option>
-                    <option value="Mantenimiento">Mantenimiento</option>
-                    <option value="Patrimoniales">Patrimoniales</option>
-                    <option value="Informatica">Informatica</option>
-                    <option value="Jefe de servicio">Jefe de servicio</option>
-                    <option value="Docencia e investigación">Docencia e investigación</option>';
-                  break;
-
-                default:
-                  echo '<option value="Sin rol">Sin rol</option>';
-                  break;
-              }
-
-              ?>
-            </select>
-          </div>
           <div style="display: flex; flex-direction: row; justify-content: center;">
             <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Declarar nuevo
                 personal</b></button>
@@ -185,7 +145,7 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
 
       <div class="divBackForm" id="editPersonal" style="display: none;">
         <div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
-          <button class="btn-red" onclick="back.style.display = 'none'; editPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#selectRol').val(null).trigger('change'); $('#jefeCheckeado').prop('disabled', true);" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+          <button class="btn-red" onclick="back.style.display = 'none'; editPersonal.style.display = 'none'; newPersonalForm.reset(); $('#selectServicio').val(null).trigger('change'); $('#selectEspecialidad').val(null).trigger('change'); $('#selectCargo').val(null).trigger('change'); $('#jefeCheckeado').prop('disabled', true);" style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
         </div>
 
         <h3>Editar personal</h3>
@@ -253,46 +213,6 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
               while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
                 echo '<option value="' . $row['cargo'] . '">' . $row['cargo'] . '</option>';
               }
-              ?>
-            </select>
-          </div>
-          <div>
-            <label for="editselectrol">Rol</label>
-            <select id="editselectrol" class="select2" name="editrol" style="width: 100%;" required>
-              <option value="" disabled selected>Seleccione rol...</option>
-
-              <?php
-
-              switch ($user->getRol()) {
-                case 'Administrador':
-                  echo '<option value="Sin rol">Sin rol</option>
-                  <option value="Administrador">Administrador</option>
-                  <option value="Dirección">Dirección</option>
-                  <option value="Deposito">Deposito</option>
-                  <option value="Mantenimiento">Mantenimiento</option>
-                  <option value="Patrimoniales">Patrimoniales</option>
-                  <option value="Informatica">Informatica</option>
-                  <option value="Jefe de servicio">Jefe de servicio</option>
-                  <option value="Docencia e investigación">Docencia e investigación</option>';
-                  break;
-
-                case 'Dirección':
-                  echo '<option value="Sin rol">Sin rol</option>
-                    <option value="Administrador">Administrador</option>
-                    <option value="Dirección">Dirección</option>
-                    <option value="Deposito">Deposito</option>
-                    <option value="Mantenimiento">Mantenimiento</option>
-                    <option value="Patrimoniales">Patrimoniales</option>
-                    <option value="Informatica">Informatica</option>
-                    <option value="Jefe de servicio">Jefe de servicio</option>
-                    <option value="Docencia e investigación">Docencia e investigación</option>';
-                  break;
-
-                default:
-                  echo '<option value="Sin rol">Sin rol</option>';
-                  break;
-              }
-
               ?>
             </select>
           </div>
@@ -530,11 +450,11 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
       <div style="width: 100%;">
 
         <form action="personal.php" method="get" id="formFiltro" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; overflow-y: hidden;">
-          <input type="hidden" name="pagina" value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
+          <input type="hidden" name="pagina" value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>" id="pageInput">
 
           <div style="display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: 1fr; grid-column-gap: 1vw; grid-row-gap: 0px; overflow-y: hidden;">
             <select name="selectServicioFilter" id="selectServicioFilter" class="select2"
-            <?php if (!hasAccess(['administrador', 'direccion'])) { echo "disabled"; } ?>>
+            <?php if (!hasAccess(['administrador', 'direccion'])) { echo "disabled"; } ?> onchange="pageInput.value = 1; this.form.submit()">
 
               <?php
               $selectedServicio = isset($_GET['selectServicioFilter']) ? htmlspecialchars($_GET['selectServicioFilter']) : '';
@@ -587,8 +507,6 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
             <th class="table-middle">Especialidad</th>
             <th class="table-middle table-center">Matricula</th>
             <th class="table-middle table-center">Cargo</th>
-            <th class="table-middle table-center">Sistemas</th>
-            <th class="table-middle table-center">Rol</th>
             <th class="table-middle table-center">Acciones</th>
           </tr>
         </thead>
@@ -658,47 +576,13 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
                 <td class="table-middle">M.N: <?= $reg['mn'] ?></br>M.P: <?= $reg['mp'] ?></td>
                 <td class="table-middle"><?= $reg['cargo'] ?></td>
 
-                <td class="table-middle">
-                  <div style="display: grid; grid-template-columns: repeat(2, 1fr); align-content: center; justify-content: center; align-items: center; justify-items: center;">
-                    <?php
-                    $sistemas_array = json_decode($reg['sistemas'], true);
-                    ?>
-                    <?php if ($sistemas_array !== null): ?>
-                      <?php foreach ($sistemas_array as $sistema): ?>
-                        <?php
-                        $nombre_sistema = $sistema['sistema'];
-                        $activo = $sistema['activo'];
-                        $claseBoton = ($activo == 'si') ? 'btn-green' : 'btn-red';
-                        $icono = match ($nombre_sistema) {
-                          'Deposito' => 'fa-box',
-                          'Mantenimiento' => 'fa-screwdriver-wrench',
-                          'Informatica' => 'fa-computer',
-                          default => 'fa-question',
-                        };
-                        $variables = "{$reg['id']}, '{$nombre_sistema}', '{$activo}'";
-                        ?>
-                        <button style="text-align: center; width: 2.7vw; height: 2.7vw" title="<?= $nombre_sistema ?>" class="<?= $claseBoton ?>" onclick="updateSistem(<?= $variables ?>)">
-                          <i class="fa-solid <?= $icono ?>"></i>
-                        </button>
-                      <?php endforeach; ?>
-                    <?php else: ?>
-                      Error al decodificar la cadena JSON.
-                    <?php endif; ?>
-                    <button style="width: 2.7vw; height: 2.7vw" class="btn-yellow" title="Generar contraseña" onclick="updatePassword(<?= $reg['id'] ?>, '<?= $reg['dni'] ?>')">
-                      <i class="fa-solid fa-key"></i>
-                    </button>
-                  </div>
-                </td>
-
-                <td class="table-middle"><?= $reg['rol'] ?></td>
-
                 <td class="table-middle table-center">
                   <div class="contenedor-de-botones">
                     <button class="btn-green" title="Abrir menú de acciones" onclick="menuPersona(<?= $reg['id'] ?>)">
                       <i class="fa-solid fa-hand-pointer"></i>
                     </button>
                     <div class="buttons-div" id="menu-<?= $reg['id'] ?>">
-                      <button class="btn-green" title="Editar" onclick="setDatos('<?= $reg['id'] ?>', '<?= $reg['apellido'] ?>', '<?= $reg['nombre'] ?>', '<?= $reg['dni'] ?>', '<?= $reg['servicio_id'] ?>', '<?= $reg['cargo'] ?>', '<?= $reg['especialidad'] ?>', '<?= $reg['mn'] ?>', '<?= $reg['mp'] ?>', '<?= $reg['rol'] ?>')">
+                      <button class="btn-green" title="Editar" onclick="setDatos('<?= $reg['id'] ?>', '<?= $reg['apellido'] ?>', '<?= $reg['nombre'] ?>', '<?= $reg['dni'] ?>', '<?= $reg['servicio_id'] ?>', '<?= $reg['cargo'] ?>', '<?= $reg['especialidad'] ?>', '<?= $reg['mn'] ?>', '<?= $reg['mp'] ?>')">
                         <i class="fa-solid fa-pen"></i> Editar
                       </button>
                       <button class="btn-green" title="Pase" onclick="setDatosPase('<?= $reg['id'] ?>', '<?= $reg['apellido'] ?>', '<?= $reg['nombre'] ?>', '<?= $reg['dni'] ?>')">
@@ -713,6 +597,9 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
                       <button class="btn-yellow" title="Fin contrato" onclick="setDatosFinContrato('<?= $reg['apellido'] ?>', '<?= $reg['nombre'] ?>', '<?= $reg['dni'] ?>')">
                         <i class="fas fa-calendar-times"></i> Fin contrato
                       </button>
+                      <button class="btn-yellow" title="Generar contraseña" onclick="updatePassword(<?= $reg['id'] ?>, '<?= $reg['dni'] ?>')">
+                      <i class="fa-solid fa-key"></i> Reiniciar contraseña
+                    </button>
                     </div>
                   </div>
                 </td>

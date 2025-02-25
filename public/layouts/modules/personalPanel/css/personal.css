@@ -18,9 +18,9 @@ h3 {
     border: .2vw #000 solid;
     border-radius: .8vw;
     width: max-content;
-    transform: translate(-11vw, -11.4vw);
+    transform: translate(-15vw, -13vw);
     padding: 1vw;
-    z-index: 100;
+    z-index: 1;
 }
 
 .buttons-div:after {

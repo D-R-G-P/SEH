@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $mn = $_POST["editmn"];
     $mp = $_POST["editmp"];
     $cargo = $_POST["editcargo"];
-    $rol = $_POST["editrol"];
 
     // Realiza la conexión a la base de datos (utiliza tu propia lógica para la conexión)
     require_once '../../../../../app/db/db.php';
@@ -24,8 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
 
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare("UPDATE personal SET apellido = ?, nombre = ?, dni = ?, cargo = ?, especialidad = ?, mn = ?, mp = ?, rol = ? WHERE id = ?");
-        $stmt->execute([$apellido, $nombre, $dni, $cargo, $especialidad, $mn, $mp, $rol, $id]);
+        $stmt = $pdo->prepare("UPDATE personal SET apellido = ?, nombre = ?, dni = ?, cargo = ?, especialidad = ?, mn = ?, mp = ? WHERE id = ?");
+        $stmt->execute([$apellido, $nombre, $dni, $cargo, $especialidad, $mn, $mp, $id]);
 
         // Cierra la conexión a la base de datos
         $pdo = null;
@@ -40,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } catch (PDOException $e) {
         // Si hay un error en la base de datos, almacena el mensaje de error y redirige al formulario
         $_SESSION['toast_message'] = [
-            'message' => 'Error al conectar a la base de datos: ' . $e->getMessage(),
+            'message' => `Error al conectar a la base de datos: ` . $e->getMessage(),
             'type' => 'error'
         ];
         header("Location: " . $_SERVER['HTTP_REFERER']);

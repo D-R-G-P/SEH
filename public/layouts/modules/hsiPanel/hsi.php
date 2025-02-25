@@ -583,10 +583,10 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
 
           <form action="hsi.php#habilitado" method="get" id="formFiltro" style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; overflow-y: hidden;">
             <input type="hidden" name="pagina"
-              value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
+              value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>" id="pageInput">
 
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: 1fr; grid-column-gap: 1vw; grid-row-gap: 0px; overflow-y: hidden;">
-              <select name="selectServicioFilter" id="selectServicioFilter" class="select2" <?php if (!hasAccess(['administrador', 'direccion'])) {
+              <select name="selectServicioFilter" id="selectServicioFilter" class="select2" onchange="pageInput.value = 1; this.form.submit()" <?php if (!hasAccess(['administrador', 'direccion'])) {
                 echo "disabled";
               } ?>>
 

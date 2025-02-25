@@ -18,6 +18,24 @@ if (isset($_POST['idMod'], $_POST['servicioMod'], $_POST['jefeMod'])) {
         $stmtJefe = $pdo->prepare("UPDATE personal SET servicio_id = ?, cargo = ? WHERE dni = ?");
         $stmtJefe->execute([$id, "Jefe de servicio", $jefe]);
 
+        if (!empty($jefe)) {
+            $dni = $jefe;
+
+            $rol = $pdo->prepare('DELETE FROM usuarios_roles WHERE dni = ?');
+            $rol->execute([$dni]);
+
+            $subrol = $pdo->prepare('DELETE FROM usuarios_subroles WHERE dni = ?');
+            $subrol->execute([$dni]);
+
+            $rol = $pdo->prepare('INSERT INTO usuarios_roles (dni, rol_id) VALUES (?, 12)');
+            $rol->execute([$dni]);
+
+            $subrol = $pdo->prepare('INSERT INTO usuarios_subroles (dni, rol_id, subrol_id) VALUES (?, 12, 24)');
+            $subrol->execute([$dni]);
+        } else {
+            throw new Exception('El jefe no puede estar vacío.');
+        }
+
         $_SESSION['toast_message'] = [
             'message' => 'Cambio realizado correctamente.',
             'type' => 'success'

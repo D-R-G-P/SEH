@@ -13,11 +13,9 @@ $(document).ready(function () {
     $('#selectServicio').select2();
     $('#selectEspecialidad').select2();
     $('#selectCargo').select2();
-    $('#selectRol').select2();
     $('#editselectServicio').select2();
     $('#editselectespecialidad').select2();
     $('#editselectcargo').select2();
-    $('#editselectrol').select2();
     $('#paseSelectServicio').select2();
     $('#licenciaTipo').select2();
     $('#finContratoMotivo').select2();
@@ -209,7 +207,6 @@ function setDatos(id, apellido, nombre, dni, servicio, cargo, especialidad, mn, 
     $('#editmn').val(mn);
     $('#editmp').val(mp);
     $('#editselectcargo').val(cargo).trigger('change');
-    $('#editselectrol').val(rol).trigger('change');
 
     // Llama a la función editselectChange para actualizar el select de especialidades
     editselectChange(especialidad);

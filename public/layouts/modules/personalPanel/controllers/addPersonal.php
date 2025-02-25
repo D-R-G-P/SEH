@@ -12,13 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $especialidad = htmlspecialchars(trim($_POST["especialidad"])) ?: ""; // Si está vacío, asigna "0"
     $mn = htmlspecialchars(trim($_POST["mn"])) ?: "";
     $mp = htmlspecialchars(trim($_POST["mp"])) ?: "";
-    $sistemas = json_encode([
-        ["sistema" => "Deposito", "activo" => "no"],
-        ["sistema" => "Mantenimiento", "activo" => "no"],
-        ["sistema" => "Informatica", "activo" => "no"]
-    ]);
     $cargo = htmlspecialchars(trim($_POST["cargo"]));
-    $rol = htmlspecialchars(trim($_POST["rol"]));
 
     // Realiza la conexión a la base de datos (utiliza tu propia lógica para la conexión)
     require_once '../../../../../app/db/db.php';
@@ -28,8 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare("INSERT INTO personal (apellido, nombre, dni, servicio_id, cargo, especialidad, mn, mp, sistemas, rol, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$apellido, $nombre, $dni, $servicio, $cargo, $especialidad, $mn, $mp, $sistemas, $rol, 'Activo']);
+        $stmt = $pdo->prepare("INSERT INTO personal (apellido, nombre, dni, servicio_id, cargo, especialidad, mn, mp, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$apellido, $nombre, $dni, $servicio, $cargo, $especialidad, $mn, $mp, 'Activo']);
 
         // Cierra la conexión a la base de datos
         $pdo = null;

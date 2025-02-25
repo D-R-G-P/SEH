@@ -315,10 +315,10 @@ if (($sel != $user->getServicio()) && (hasAccess(['administrador', 'direccion'])
                         <form action="mantenimiento.php" method="get" id="formFiltro"
                             style="display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; overflow-y: hidden;">
                             <input type="hidden" name="pagina"
-                                value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>">
+                                value="<?php echo isset($_GET['pagina']) ? htmlspecialchars($_GET['pagina']) : 1; ?>" id="pageInput">
 
                             <div>
-                                <select name="selectServicioFilter" id="selectServicioFilter" class="select2"
+                                <select name="selectServicioFilter" id="selectServicioFilter" class="select2" onchange="pageInput.value = 1; this.form.submit()"
                                     <?php if (hasAccess(['administrador', 'direccion'])) {
                                         echo "";
                                     } else {

@@ -17,8 +17,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
 
         // Prepara la consulta SQL para la inserción
-        $stmt = $pdo->prepare('UPDATE personal SET servicio_id = ?, especialidad = "", password = "", sistemas = \'[{"sistema": "Deposito", "activo": "no"}, {"sistema": "Mantenimiento", "activo": "no"}, {"sistema": "Informatica", "activo": "no"}]\' WHERE id = ?');
+        $stmt = $pdo->prepare('UPDATE personal SET servicio_id = ?, especialidad = "", password = "" WHERE id = ?');
         $stmt->execute([$servicio, $id]);
+
+        $dniStmt = $pdo->prepare('SELECT dni FROM personal WHERE id = ?');
+        $dniStmt->execute([$id]);
+        $dni = $dniStmt->fetchColumn();
+
+        $rol = $pdo->prepare('DELETE FROM usuarios_roles WHERE dni = ?');
+        $rol->execute([$dni]);
+
+        $subrol = $pdo->prepare('DELETE FROM usuarios_subroles WHERE dni = ?');
+        $subrol->execute([$dni]);
 
         // Cierra la conexión a la base de datos
         $pdo = null;

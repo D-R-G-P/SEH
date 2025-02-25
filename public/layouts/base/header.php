@@ -112,7 +112,7 @@ $basePath = realpath(dirname(__DIR__));
 
             <div class="info open">
                 <p>Bienvenido/a</p>
-                <p><?php echo $user->getApellido() . ' ' . $user->getNombre(); ?></p>
+                <p style="white-space: nowrap;"><?php echo $user->getApellido() . ' ' . $user->getNombre(); ?></p>
             </div>
 
             <div class="sistemas">

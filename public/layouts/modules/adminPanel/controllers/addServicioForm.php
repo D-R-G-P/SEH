@@ -65,6 +65,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmtJefe = $pdo->prepare("UPDATE personal SET servicio_id = ?, cargo = ? WHERE dni = ?");
         $stmtJefe->execute([$newServiceId, "Jefe de servicio", $jefeServicio]);
 
+        $dni = $jefeServicio;
+
+        $rol = $pdo->prepare('DELETE FROM usuarios_roles WHERE dni = ?');
+        $rol->execute([$dni]);
+
+        $subrol = $pdo->prepare('DELETE FROM susuarios_ubroles WHERE dni = ?');
+        $subrol->execute([$dni]);
+
+        $rol = $pdo->prepare('INSERT INTO usuarios_roles (dni, rol_id) VALUES (?, 12)');
+        $rol->execute([$dni]);
+
+        $subrol = $pdo->prepare('INSERT INTO usuarios_subroles, rol_id, subrol_id) VALUES (?, 12, 24');
+        $subrol->execute([$dni]);
+
         // Cierra la conexión a la base de datos
         $pdo = null;
 
