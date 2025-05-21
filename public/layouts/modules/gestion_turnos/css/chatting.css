@@ -1,0 +1,654 @@
+.content {
+    padding: 0;
+    overflow: hidden;
+}
+
+.modulo {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    background: #e5ddd5;
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+/* Estilos de la lista de chats */
+.chats {
+    background: #fff;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+}
+
+.chats_buttons {
+    display: flex;
+    justify-content: space-evenly;
+    /* padding: 10px; */
+    background: #f0f0f0;
+    border-bottom: 1px solid #ddd;
+}
+
+.btn-chat {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1vw;
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all .15s ease-in-out;
+    border-bottom: .35vw solid #f0f0f0;
+}
+
+.btn-chat svg,
+.search-box svg {
+    color: var(--color2);
+}
+
+.btn-chat:hover {
+    background-color: #dfdfdf;
+    border-bottom: .35vw solid #dfdfdf;
+}
+
+.btn-chat.active {
+    border-bottom: .35vw solid var(--color2);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #f0f0f0;
+    padding: .2vw 1vw;
+    gap: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+.search-box input {
+    width: 100%;
+    outline: none;
+    border: none;
+    background: transparent;
+    flex: 1;
+    font-size: 14px;
+}
+
+.chat-list {
+    width: 100%;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* .chat-item {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all .1s ease-in-out;
+} */
+
+.chat-item:hover {
+    background: #ebe8e8;
+}
+
+.active-chat {
+    background-color: #ebe8e8;
+    transition: all .1s ease-in-out;
+}
+
+.active-chat:hover {
+    background-color: #d1d1d1;
+}
+
+.chat-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Estilos del chat */
+.chat {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: #efe7dd;
+}
+
+.chat-header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    background: #075e54;
+    color: white;
+    font-weight: bold;
+}
+
+.chat-body {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background: #f0f0f0;
+    position: relative;
+    background: url(../../../../resources/image/hsm_logo.svg) no-repeat center center;
+}
+
+
+.chat-footer {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #e6e6e6;
+    border-top: 1px solid #ddd;
+}
+
+.chat-footer textarea {
+    flex-grow: 1;
+    padding: 10px;
+    border: .1vw solid #b1b1b1;
+    border-radius: 20px;
+    outline: none;
+    resize: none;
+
+}
+
+.chat-footer #emojiList,
+.chat-footer #docList {
+    background-color: #e6e6e6;
+    border: 1px solid #b1b1b1;
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: .5vw;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.custom-file-upload {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3vw;
+    height: 3vw;
+    margin-right: .5vw;
+    border-radius: 50%;
+    background-color: #e6e6e6;
+    cursor: pointer;
+    border: 1px solid #b1b1b1;
+    transition: all .2s ease-in-out;
+}
+
+.custom-file-upload:hover {
+    background-color: #e0e0e0;
+}
+
+.custom-file-upload i {
+    font-size: 16px;
+    color: #333;
+}
+
+#docInput {
+    display: none;
+}
+
+.chat-footer #emojiList:hover,
+.chat-footer #docList:hover {
+    background-color: #ccc;
+}
+
+.chat-footer #emojiList[disabled],
+.chat-footer .custom-file-upload.disabled {
+    cursor: auto;
+    background-color: #e6e6e6;
+    color: rgba(16, 16, 16, 0.3);
+}
+
+.chat-footer #sendMessageButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #25d366;
+    border: none;
+    width: 3vw;
+    height: 3vw;
+    padding: 0;
+    border-radius: 50%;
+    margin-left: 1vw;
+    cursor: pointer;
+    color: white;
+    transition: .2s ease-in-out;
+}
+
+.chat-footer #sendMessageButton:hover {
+    background: #1fb456;
+}
+
+.chat-footer #sendMessageButton[disabled] {
+    cursor: auto;
+}
+
+.chat-footer #sendMessageButton[disabled]:hover {
+    background: #25d366;
+}
+
+.emoji-table {
+    position: absolute;
+    z-index: 1000;
+    bottom: 6.6vw;
+    margin-left: -.8vw;
+    border: 1px solid #ccc;
+    display: none;
+}
+
+#filePreview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5vw;
+    padding: 1vw;
+    border: 1px solid #ccc;
+    border-radius: .5vw;
+    background-color: #fff;
+    max-height: 20vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.preview-item {
+    position: relative;
+    width: 5vw;
+    height: 5vw;
+    border: 1px solid #ccc;
+    border-radius: .5vw;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+}
+
+.preview-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.preview-icon {
+    font-size: 2vw;
+    color: #444;
+}
+
+.remove-preview {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    font-size: .9vw;
+    border: none;
+    border-radius: 0 0 0 .5vw;
+    padding: 0 .3vw;
+    cursor: pointer;
+    z-index: 2;
+}
+
+
+
+/* Mensajes */
+.message {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    position: relative;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.message-info {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    color: grey;
+}
+
+.message-info span, .message-info svg {
+    font-size: .65vw;
+}
+
+.message-image-preview {
+    width: 100%;
+    height: auto;
+    max-width: 20vw;
+    max-height: 20vw;
+    border-radius: .5vw;
+    margin-bottom: .5vw;
+}
+
+.message-tick {
+    margin-left: .2vw;
+}
+
+.message-content .message-file-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 5px;
+    margin-bottom: 0;
+    max-width: 250px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Estilo al pasar el ratón por encima */
+.message-content .message-file-link:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Un ligero cambio de fondo al pasar el ratón */
+}
+
+/* Estilo al hacer clic activo */
+.message-content .message-file-link:active {
+    background-color: rgba(0, 0, 0, 0.1); /* Un cambio de fondo más marcado al hacer clic */
+}
+
+
+/* ========================================== */
+/* Estilos Específicos para Archivos (No Imágenes) */
+/* ========================================== */
+
+/* El enlace de archivo que NO es un preview de imagen */
+.message-content .message-file-link:not(.message-image-preview-link) {
+    /* Propiedades flex ya definidas arriba, aquí puedes añadir específicas si necesitas */
+    gap: 10px; /* Espacio entre el icono y el nombre del archivo */
+}
+
+/* Estilo del icono de archivo */
+.message-content .message-file-icon {
+    /* font-size: 24px; Tamaño del icono */
+    color: #007bff; /* Color representativo para iconos de archivo (ejemplo: azul) */
+    flex-shrink: 0; /* Evita que el icono se encoja si el nombre es muy largo */
+}
+
+/* Estilo del nombre del archivo */
+.message-content .message-file-name {
+    flex-grow: 1; /* Permite que el nombre ocupe el espacio restante */
+    white-space: nowrap; /* Evita que el texto del nombre salte de línea */
+    overflow: hidden; /* Oculta cualquier texto que se desborde */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos (...) para texto desbordado */
+    font-size: 14px; /* Tamaño de fuente para el nombre */
+    color: #333; /* Color del texto del nombre (ejemplo) */
+}
+
+
+/* ========================================== */
+/* Estilos Específicos para Imágenes (Previews) */
+/* ========================================== */
+
+/* El enlace que contiene la imagen de preview */
+.message-content .message-image-preview-link {
+     /* Para imágenes, el flexbox del link puede no ser necesario si la imagen ocupa todo */
+     /* display: block; */ /* Podría ser mejor display: block para que la imagen rellene */
+     padding: 0; /* Eliminar el padding del link base para que la imagen llegue a los bordes */
+     border: none; /* Eliminar borde del link base */
+     background-color: transparent; /* Fondo transparente para el link de imagen */
+     /* El border-radius se aplicará a la imagen si es block */
+     /* overflow: hidden; /* Puede ser útil si la imagen no se redondea bien */
+}
+
+/* Estilo de la imagen de preview (la miniatura) */
+.message-content .message-image-preview {
+    display: block; /* Hace que la imagen se comporte como un bloque para controlar tamaño y bordes */
+    max-width: 100%; /* Asegura que la imagen no se salga de su contenedor (.message-content o la burbuja) */
+    height: auto; /* Mantiene la relación de aspecto */
+    /* Definir un tamaño máximo para las miniaturas */
+    max-width: 200px; /* Ancho máximo de la miniatura, ajusta según tu preferencia */
+    max-height: 200px; /* Altura máxima, ajusta para mantener miniaturas compactas */
+    object-fit: cover; /* Asegura que la imagen cubra el área definida sin distorsión, puede recortar */
+    /* O usa object-fit: contain; si prefieres que la imagen completa se vea dentro de las dimensiones, pudiendo dejar espacio vacío */
+    border-radius: 8px; /* Bordes redondeados para la imagen, coincidiendo con el enlace */
+    /* Opcional: añadir una sombra sutil para que destaque un poco */
+    /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+}
+
+
+/* ========================================== */
+/* Estilos para el Texto Opcional (Caption) */
+/* ========================================== */
+
+.message-content .message-file-caption {
+    margin-top: 5px; /* Espacio encima del caption, separándolo del archivo/imagen */
+    margin-bottom: 0; /* Sin margen inferior, el infoDiv añade el suyo */
+}
+
+/* Burbuja de mensaje enviado */
+.message.sent .message-content .message-file-link {
+    /* Estilos de fondo y borde para archivos/imágenes en burbujas enviadas */
+    background-color: #dcf8c6; /* Fondo verde claro típico de WhatsApp enviado */
+    border-color: rgba(0, 0, 0, 0.05); /* Borde un poco más sutil si el fondo es claro */
+}
+
+/* Burbuja de mensaje recibido */
+.message.received .message-content .message-file-link {
+    /* Estilos de fondo y borde para archivos/imágenes en burbujas recibidas */
+    background-color: #fff; /* Fondo blanco típico de WhatsApp recibido */
+    border-color: rgba(0, 0, 0, 0.1); /* Borde estándar */
+}
+
+
+.sent {
+    background: #dcf8c6;
+    align-self: flex-end;
+    border-radius: .8vw 0 .8vw .8vw;
+}
+
+.headerLeft {
+    z-index: 1000;
+}
+
+.received {
+    background: white;
+    align-self: flex-start;
+    border-radius: 0 .8vw .8vw .8vw;
+}
+
+.button-switch,
+.button-switch:hover {
+    align-items: center;
+    border-radius: 0;
+    margin: 0;
+    border-left: 1px solid var(--color2-dark);
+    border-right: 1px solid var(--color2-dark);
+}
+
+.button-switch.start,
+.button-switch.start:hover {
+    border-radius: .5vw 0 0 .5vw;
+    margin: 0 0 0 .5vw;
+    border-left: none;
+}
+
+.button-switch.end,
+.button-switch.end:hover {
+    border-radius: 0 .5vw .5vw 0;
+    margin: 0 .5vw 0 0;
+    border-right: none;
+}
+
+#patientData,
+#patientOptions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    background-color: #e4e4e4;
+    width: 22vw;
+    height: 100%;
+    z-index: 5;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    padding: 1vw;
+}
+
+/* Mostrar el panel */
+#patientData.active,
+#patientOptions.active {
+    transform: translateX(0%);
+}
+
+#patientData p {
+    margin: .3vw 0;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+}
+
+.radio-group input {
+    display: none;
+}
+
+.radio-label {
+    padding: .6vw;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+}
+
+.radio-label:first-of-type {
+    border-radius: .8vw 0 0 .8vw;
+    border-right: none;
+}
+
+.radio-label:last-of-type {
+    border-radius: 0 .8vw .8vw 0;
+    border-left: none;
+}
+
+.radio-label:hover {
+    background-color: #e0e0e0;
+}
+
+.radio-group input:checked+.radio-label {
+    background-color: var(--color2);
+    color: white;
+    border-color: var(--color2);
+}
+
+
+
+
+
+.chat-item {
+    display: grid;
+    grid-template-columns: 60px auto 30px;
+    align-items: center;
+    gap: .5vw;
+    padding: .5vw;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.chat-item:hover {
+    background-color: #f5f5f5;
+}
+
+/* Imagen de perfil */
+.div1 img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #00a884;
+}
+
+/* Contenido del medio: nombre y número */
+.div2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.div2 b,
+.div2 p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.div2 b {
+    color: #111;
+    max-width: 100%;
+}
+
+.div2 p {
+    color: #666;
+    margin: 0;
+    max-width: 100%;
+}
+
+
+/* Cantidad de mensajes no leídos */
+.div3.un {
+    background-color: #00a884;
+    color: white;
+    font-size: 1vw;
+    font-weight: 800;
+    border-radius: 100%;
+    width: 2vw;
+    height: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sugerencias li {
+    padding: .5vw;
+    /* font-size: 0.9vw; */
+}
+
+#sugerencias li:hover {
+    background-color: #eee;
+}
+
+.message-tick.read {
+    color: rgb(0, 89, 255)
+}
+
+.adm_line {
+    background-color: #e6e6e6;
+    padding: .5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.remitente-admin {
+    display: flex;
+    justify-content: flex-end;
+    font-size: .65vw;
+    color: grey;
+}

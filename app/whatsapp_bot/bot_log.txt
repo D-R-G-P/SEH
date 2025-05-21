@@ -1,0 +1,7 @@
+Database connected!
+✅ Bot conectado y funcionando.
+🔄 Usuario 5492214380474@c.us ya tiene una conversación activa en el paso: confirmarPaciente
+⚠️ Mensaje vacío recibido, no se procesará.
+🔄 Usuario 5492214380474@c.us ya tiene una conversación activa con un agente.
+🔄 Usuario 5492214380474@c.us ya tiene una conversación activa con un agente.
+🔄 Usuario 5492214380474@c.us ya tiene una conversación activa con un agente.
