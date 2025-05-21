@@ -64,6 +64,12 @@ textarea {
   font-size: 1.3vw;
 }
 
+input[type="time"] {
+  border: #242424 0.2vw solid;
+  border-radius: 0.8vw;
+  width: auto;
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -79,93 +85,81 @@ select.select2 {
   width: 95%;
 }
 
-.btn-green {
+/* Estilo base común para todos los botones */
+.btn-green,
+.btn-red,
+.btn-yellow,
+.btn-tematico {
   color: #fff;
-  background-color: rgb(25, 134, 83);
-  border: #198754;
   padding: 0.5vw;
   border-radius: 0.5vw;
-  font-size: 1.05vw;
+  margin: 0.5vw;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
-  margin: .5vw .5vw;
+  border: none;
+  white-space: nowrap;
 }
 
+/* Tamaños personalizados */
+.btn-green {
+  font-size: 1.05vw;
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-red,
+.btn-yellow,
+.btn-tematico {
+  font-size: 1vw;
+}
+
+/* Colores base */
+.btn-red {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-yellow {
+  background-color: #e6b00f;
+  border-color: #e6b00f;
+}
+
+.btn-tematico {
+  background-color: var(--color2);
+  border-color: var(--color2);
+}
+
+/* Hover states */
 .btn-green:hover {
   background-color: #157347;
-  border: #157347;
-  transition: all 0.15s ease-in-out;
-}
-
-.btn-red {
-  color: #fff;
-  background-color: #dc3545;
-  border: #dc3545;
-  padding: 0.5vw;
-  border-radius: 0.5vw;
-  font-size: 1vw;
-  margin: .5vw .5vw;
-  cursor: pointer;
-  transition: all 0.15s ease-in-out;
+  border-color: #157347;
 }
 
 .btn-red:hover {
   background-color: #b02a37;
-  border: #b02a37;
-  transition: all 0.15s ease-in-out;
-}
-
-.btn-yellow {
-  color: #fff;
-  background-color: #e6b00f;
-  border: #e6b00f;
-  padding: 0.5vw;
-  border-radius: 0.5vw;
-  font-size: 1vw;
-  margin: .5vw .5vw;
-  cursor: pointer;
-  transition: all 0.15s ease-in-out;
+  border-color: #b02a37;
 }
 
 .btn-yellow:hover {
   background-color: #cc9e14;
-  border: #cc9e14;
-  transition: all 0.15s ease-in-out;
-}
-
-.btn-tematico {
-  color: #fff;
-  background-color: var(--color2);
-  border: var(--color2);
-  padding: 0.5vw;
-  border-radius: 0.5vw;
-  font-size: 1vw;
-  margin: .5vw .5vw;
-  cursor: pointer;
-  transition: all 0.15s ease-in-out;
-  white-space: nowrap;
+  border-color: #cc9e14;
 }
 
 .btn-tematico:hover {
   background-color: var(--color3);
-  border: var(--color3);
-  transition: all 0.15s ease-in-out;
+  border-color: var(--color3);
 }
 
+/* Estado deshabilitado común */
 .btn-green:disabled,
 .btn-tematico:disabled,
 .btn-red:disabled,
 .btn-yellow:disabled {
-  color: #fff;
   background-color: #757575;
-  border: #757575;
-  padding: 0.5vw;
-  border-radius: 0.5vw;
-  font-size: 1.05vw;
+  border-color: #757575;
   cursor: not-allowed;
-  transition: all 0.15s ease-in-out;
-  margin: .5vw .5vw;
 }
+
 
 table {
   border: 0.2vw solid #000;
@@ -461,19 +455,19 @@ h3 {
   gap: 10px;
   z-index: 100000;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .toast {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-width: 250px;
-  max-width: 50%;
+  min-width: 300px;
+  max-width: 70%;
   padding: 15px 20px;
   border-radius: 8px;
   font-size: 16px;
   color: white;
-  font-family: Arial, sans-serif;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   opacity: 0;
   transform: translateY(-50px);
@@ -641,4 +635,51 @@ div.recorrido-unidades {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
+}
+
+/* Estilos de switch */
+.switch {
+  position: relative;
+  display: flex;
+  width: 2vw;
+  height: 1.1vw;
+
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .2s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 0.8vw;
+  width: 0.8vw;
+  left: 0.15vw;
+  bottom: 0.15vw;
+  background-color: white;
+  transition: .2s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--color2-normal);
+}
+
+input:checked + .slider:before {
+  transform: translateX(0.9vw);
 }

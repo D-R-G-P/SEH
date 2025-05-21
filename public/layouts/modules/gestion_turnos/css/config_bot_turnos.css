@@ -1,0 +1,24 @@
+.parent_predefinido {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.div1_predefinido {
+    grid-area: 1 / 1 / 2 / 4;
+}
+
+.div2_predefinido {
+    grid-area: 1 / 4 / 2 / 5;
+}
+
+.horario_form div {
+    display: grid;
+    grid-template-columns: 0fr 0fr; /* Dos columnas */
+    grid-template-rows: repeat(7, 2); /* Una fila por día, ajustable al contenido */
+    gap: 1vw; /* Mayor separación */
+    align-items: center; /* Alinear verticalmente */
+    justify-content: start; /* Alinear horizontalmente */
+}

@@ -145,6 +145,20 @@ $basePath = realpath(dirname(__DIR__));
                     </a>
                 <?php endif; ?>
 
+                <?php if (hasAccess(['administrador', 'direccion', 'gestion_turnos'])): ?>
+                    <a href="<?php echo MODULE_PATH ?>gestion_turnos/gestion_turnos.php" class="header" title="Gestión de turnos">
+                    <i class="fa-solid fa-calendar-days"></i>
+                        <p class="headerLeftP open">Gestión de turnos</p>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (hasAccess(['administrador', 'direccion', 'gestion_camas'])): ?>
+                    <a href="<?php echo MODULE_PATH ?>gestion_camas/gestion_camas.php" class="header" title="Gestión de camas">
+                    <i class="fa-solid fa-bed"></i>
+                        <p class="headerLeftP open">Gestión de camas</p>
+                    </a>
+                <?php endif; ?>
+
                 <?php if (hasAccess(['administrador', 'direccion', 'hsi'])): ?>
                     <a href="<?php echo MODULE_PATH ?>hsiPanel/hsi.php" class="header" title="Solicitudes HSI">
                         <img src="<?php echo IMG_PATH ?>hsiLogo.svg" alt="HSI logo" style="width: 1.5vw; height: auto">
