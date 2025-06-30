@@ -6,7 +6,7 @@
  */
 
 const devMode = true;
-const allowedNumbers = ['5492214380474@c.us', '5492212024818@c.us'];
+const allowedNumbers = ['5492214380474@c.us', '5492212024818@c.us', '5492215065414@c.us'];
 
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode');

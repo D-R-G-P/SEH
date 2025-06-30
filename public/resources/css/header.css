@@ -90,12 +90,12 @@ header .seccond .logoHSM h2 {
 
 }
 
-.headerLeft.open {
+.headerLeft.loaded.open {
     width: 20.5vw;
     transition: all .5s ease-in-out;
 }
 
-.headerLeft.close {
+.headerLeft.loaded.close {
     width: 4vw;
     transition: all .5s ease-in-out;
 }

@@ -1,1 +1,3 @@
 .env
+/app/whatsapp_bot/node_modules
+/app/whatsapp_bot/.wwebjs_auth

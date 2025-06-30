@@ -89,6 +89,7 @@ select.select2 {
 .btn-green,
 .btn-red,
 .btn-yellow,
+.btn-grey,
 .btn-tematico {
   color: #fff;
   padding: 0.5vw;
@@ -98,19 +99,13 @@ select.select2 {
   transition: all 0.15s ease-in-out;
   border: none;
   white-space: nowrap;
+  font-size: 1.05vw;
 }
 
 /* Tamaños personalizados */
 .btn-green {
-  font-size: 1.05vw;
   background-color: #198754;
   border-color: #198754;
-}
-
-.btn-red,
-.btn-yellow,
-.btn-tematico {
-  font-size: 1vw;
 }
 
 /* Colores base */
@@ -127,6 +122,11 @@ select.select2 {
 .btn-tematico {
   background-color: var(--color2);
   border-color: var(--color2);
+}
+
+.btn-grey {
+  background-color: #757575;
+  border-color: #757575;
 }
 
 /* Hover states */
@@ -150,10 +150,16 @@ select.select2 {
   border-color: var(--color3);
 }
 
+.btn-grey:hover {
+  background-color: #4b4b4b;
+  border-color: #4b4b4b;
+}
+
 /* Estado deshabilitado común */
 .btn-green:disabled,
 .btn-tematico:disabled,
 .btn-red:disabled,
+.btn-yellow:disabled,
 .btn-yellow:disabled {
   background-color: #757575;
   border-color: #757575;

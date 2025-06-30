@@ -14,6 +14,9 @@ function getBaseURL()
     return str_replace('\\', '/', dirname(dirname($_SERVER['SCRIPT_NAME'])));
 }
 
+// Timezone
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+
 // Verificar acceso a roles
 function hasAccess(array $requiredRoles): bool
 {
