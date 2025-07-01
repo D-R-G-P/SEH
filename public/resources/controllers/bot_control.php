@@ -31,7 +31,7 @@ if ($action === 'status') {
     $running = !empty($output);
 
     // Verificar si existe el QR (si el bot está esperando escaneo)
-    $qrPath = __DIR__ . "/../../../app/whatsapp_bot/qrcodes/qr.png"; 
+    $qrPath = __DIR__ . "/../../../app/whatsapp_bot/qrcodes/whatsapp-qr.png"; 
     $waitingForQR = file_exists($qrPath);
 
     // Determinar el estado
@@ -43,7 +43,7 @@ if ($action === 'status') {
 
 
 if ($action === 'check_qr') {
-    $qrPath = $botPath . "/qrcodes/qr.png"; // Ruta del QR dentro de la carpeta del bot
+    $qrPath = $botPath . "/qrcodes/whatsapp-qr.png"; // Ruta del QR dentro de la carpeta del bot
     echo json_encode(["exists" => file_exists($qrPath)]);
     exit;
 }

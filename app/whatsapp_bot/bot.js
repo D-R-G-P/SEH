@@ -5,7 +5,7 @@
  * Incluye funcionalidad para que los agentes inicien chats y para rehidratar sesiones activas al inicio.
  */
 
-const devMode = true;
+const devMode = false;
 const allowedNumbers = ['5492214380474@c.us', '5492212024818@c.us'];
 
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
@@ -318,9 +318,7 @@ function startWaitingForAgent(client, numero, userState, connection) {
                     try {
                         // Asumiendo que la tabla 'personal' tiene 'dni' y 'nombre' (encriptado)
                         const [agentNameRows] = await connection.query("SELECT nombre FROM personal WHERE dni = ? LIMIT 1", [agentDni]);
-                        if (agentNameRows.length > 0 && agentNameRows[0].nombre) {
-                            agentName = decryptData(agentNameRows[0].nombre) || agentName;
-                        }
+                        
                     } catch (nameError) { console.error("Error fetching agent name:", nameError); }
                 }
                 await client.sendMessage(numero, `💬 ¡${agentName} se ha unido al chat! Puedes empezar a escribir tu consulta.`);

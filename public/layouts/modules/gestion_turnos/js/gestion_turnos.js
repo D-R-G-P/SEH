@@ -82,7 +82,7 @@ function updateBotStatus() {
             }
 
             if (mostrarQR && qrResponse.exists) {
-                $("#qrImage").attr("src", "/SGH/app/whatsapp_bot/qrcodes/qr.png").css("display", "block");
+                $("#qrImage").attr("src", "/SGH/app/whatsapp_bot/qrcodes/whatsapp-qr.png").css("display", "block");
                 console.log("📸 QR encontrado en servidor. Mostrando...");
             } else {
                 $("#qrImage").css("display", "none");
