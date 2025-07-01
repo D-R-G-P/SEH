@@ -78,7 +78,7 @@ require_once '../../base/header.php';
 <div class="content">
 	<div class="back" id="back" style="display: none;">
 
-		<div class="divBackForm" id="editPatientModal" style="dispay: none;">
+		<div class="divBackForm" id="editPatientModal" style="display: none;">
 			<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
 				<button class="btn-red"
 					onclick="document.getElementById('back').style.display = 'none'; document.getElementById('derivar').style.display = 'none'; document.getElementById('derivarForm').reset(); $('#agenteSelect').val(null).trigger('change');"
