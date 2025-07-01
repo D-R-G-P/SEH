@@ -1,7 +1,134 @@
-Database connected!
-✅ Bot conectado y funcionando.
-🔄 Usuario 5492214380474@c.us ya tiene una conversación activa en el paso: confirmarPaciente
-⚠️ Mensaje vacío recibido, no se procesará.
-🔄 Usuario 5492214380474@c.us ya tiene una conversación activa con un agente.
-🔄 Usuario 5492214380474@c.us ya tiene una conversación activa con un agente.
-🔄 Usuario 5492214380474@c.us ya tiene una conversación activa con un agente.
+🚀 Initializing WhatsApp client...
+✅ Pool de conexiones a la base de datos creado y conexión inicial exitosa!
+   Conectado a: seh@localhost:3306
+🚀 WhatsApp client initialized successfully.
+[Media Dir] Base directory for media ensured: C:\xampp\htdocs\SGH\app\whatsapp_files
+✅ Bot conectado como Hsi High Gral San Martin (5492212028865@c.us)
+[Cleanup] Starting cleanup of old media directories in: C:\xampp\htdocs\SGH\app\whatsapp_files
+[Cleanup] Deleting directories (YYYY-MM-DD) older than: 2025-04-23
+[Cleanup] Cleanup finished. Deleted 0 old directories.
+[Cron] Media cleanup task scheduled daily at 3:00 AM (Buenos Aires time).
+[System] Agent-initiated chat check started (Interval: 7000ms).
+[Rehydrate] Attempting to rehydrate active/pending chats from DB...
+[Rehydrate] No active or pending chats found in DB to rehydrate.
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Hola..."
+[State] Estado inicializado para 5492214380474@c.us. Total usuarios: 1
+[Router] New conversation or reset state for 5492214380474@c.us. Sending welcome menu.
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Que tal..."
+[Router] Message from 5492214380474@c.us selecting initial option from menu.
+[Option] Invalid option ('Que tal') from 5492214380474@c.us. Re-sending menu prompt.
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "1..."
+[Router] Message from 5492214380474@c.us selecting initial option from menu.
+[Option] 5492214380474@c.us selected: 1. Hablar con agente
+[Agent Handler] User 5492214380474@c.us requested agent. Verifying DB...
+[Agent Handler] Patient found: Cristian Jonathan Lamas (ID: 1). Asking confirmation.
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "No..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_confirmarPaciente).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_confirmarPaciente: "No"
+[Agent Handler] User 5492214380474@c.us denied identity. Requesting data for third party.
+[Agent Handler] Requesting patient data for 5492214380474@c.us. Third party: true
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Si..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirApellido).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirApellido: "Si"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Cristian..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirNombre).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirNombre: "Cristian"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "1..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirSexo).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirSexo: "1"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "No..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirTipoDocumento).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirTipoDocumento: "No"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Entiendo..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirTipoDocumento).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirTipoDocumento: "Entiendo"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Ola..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirTipoDocumento).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirTipoDocumento: "Ola"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Nesesito..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirTipoDocumento).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirTipoDocumento: "Nesesito"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Avlar..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirTipoDocumento).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirTipoDocumento: "Avlar"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Con una persona..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirTipoDocumento).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirTipoDocumento: "Con una persona"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "1..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirTipoDocumento).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirTipoDocumento: "1"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "616262..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirDNI).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirDNI: "616262"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "11/01/2003..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirFechaNacimiento).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirFechaNacimiento: "11/01/2003"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "1..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirIdentidadGenero).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirIdentidadGenero: "1"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "0..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirNombreAutopercibido).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirNombreAutopercibido: "0"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Asd..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirProvincia).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirProvincia: "Asd"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Jjs..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirPartido).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirPartido: "Jjs"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "69..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirCiudad).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirCiudad: "69"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "77..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirCalle).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirCalle: "77"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "77..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirNumeroCasa).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirNumeroCasa: "77"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "0..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirPiso).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirPiso: "0"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "68..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirDepartamento).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirDepartamento: "68"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Vggh..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirMail).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirMail: "Vggh"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Jjsjsja@gam.com..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirMail).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirMail: "Jjsjsja@gam.com"
+
+📩 Message received from: Cristian (5492214380474@c.us) | Type: chat | Body: "Ioma..."
+[Router] Message from 5492214380474@c.us routed to procesarRespuestaAgente (Step: agent_pedirObraSocial).
+[Agent Handler] Processing response from 5492214380474@c.us for step agent_pedirObraSocial: "Ioma"
+[Agent Handler] Data collection complete for 5492214380474@c.us. Proceeding to save/start chat.
+❌ [Agent Handler] Error: Trying to save third-party data but no original pacienteId found for 5492214380474@c.us.
+[Inactivity] Timeout for 5492214380474@c.us. Cleaning up state and notifying.
+[Agent Chat] Stopping agent chat session state for user 5492214380474@c.us. Called by timeout: true
+[State] State for 5492214380474@c.us deleted due to inactivity. Total usuarios: 0
