@@ -65,6 +65,22 @@ CREATE TABLE
         FOREIGN KEY (`discharged_by`) REFERENCES personal (`dni`)
     );
 
+CREATE TABLE `pass_history` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `patient_id` INT NOT NULL,
+    `admitted_id` INT NOT NULL,
+    `bed_old` INT NOT NULL,
+    `bed_new` INT NOT NULL,
+    `date_passed` DATETIME NOT NULL,
+    `passed_by` VARCHAR(10) NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`patient_id`) REFERENCES patients (`id`),
+    FOREIGN KEY (`admitted_id`) REFERENCES patients_admitteds (`id`),
+    FOREIGN KEY (`bed_old`) REFERENCES beds (`id`),
+    FOREIGN KEY (`bed_new`) REFERENCES beds (`id`),
+    FOREIGN KEY (`passed_by`) REFERENCES personal (`dni`)
+);
+
 CREATE TABLE
     `patients` (
         `id` INT NOT NULL AUTO_INCREMENT,

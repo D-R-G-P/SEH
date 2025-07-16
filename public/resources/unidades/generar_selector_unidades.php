@@ -40,7 +40,7 @@ function generarSelectorUnidades($contenedor, $recorridoId, $idSeleccionado = 1)
     ?>
     <div class="recorrido-unidades">
         <?php foreach ($recorrido as $index => $unidad): ?>
-            <span class="btn-tematico"
+            <span class="btn-tematico unidad-btn"
                 onclick="volverANivel(<?= $unidad['id'] ?>, '<?= htmlspecialchars($contenedor) ?>', '<?= htmlspecialchars($recorridoId) ?>')">
                 <?php if ($unidad['nombre'] == "Hospital Interzonal General de Agudos General San Martín") { echo "HIGA General San Martín"; } else { echo $unidad['nombre']; } ?>
             </span>

@@ -103,6 +103,7 @@ if ($cama_id) {
     $deleted_by_name = '';
     $date_deleted = '';
     $deleted_reason = '';
+    $registros = [];
 }
 
 if ($bed_status == 'Ocupada') {
@@ -159,7 +160,7 @@ function formatDate($date)
             <?php } ?>
 
             <?php if ($bed_status == 'Ocupada') { ?>
-                <button class="btn-green" id="egresarBtn"><i class="fa-solid fa-diagram-next"></i> Realizar pase</button>
+                <button class="btn-green" id="paseBtn"><i class="fa-solid fa-diagram-next"></i> Realizar pase</button>
             <?php } ?>
 
             <?php if ($bed_status == 'Ocupada') { ?>
@@ -168,8 +169,8 @@ function formatDate($date)
             <?php } ?>
 
             <?php if ($bed_status == 'Ocupada') { ?>
-                <button class="btn-yellow" id="egresarBtn"><img style="width: 1.6vw;" src="../../../resources/image/camilla.svg"
-                        alt=""> Solicitar camillero</button>
+                <!-- <button class="btn-yellow" id="camilleroBtn"><img style="width: 1.6vw;" src="../../../resources/image/camilla.svg"
+                        alt=""> Solicitar camillero</button> -->
             <?php } ?>
 
             <?php if ($bed_status == 'Libre') { ?>
@@ -487,6 +488,41 @@ function formatDate($date)
                     <button type="button" class="btn-grey" id="cancelBlockBtnIng"><i class="fa-solid fa-xmark"></i>
                         Cancelar</button>
                     <button type="submit" class="btn-green"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="pase_popup" class="pase_popup">
+        <div class="pase_popup_content">
+            <h3 style="margin-bottom: 1vw;">Realizar Pase</h3>
+            <form action="controllers/pase_paciente.php" method="post">
+                <input type="hidden" name="cama_id" value="<?php echo $cama_id; ?>">
+                <input type="hidden" name="patient_id" id="patient_id"
+                    value="<?php echo isset($patient_id) ? $patient_id : ''; ?>">
+                <input type="hidden" name="new_bed_id" id="new_bed_id">
+
+                <div>
+                    <div id="recorrido-pase"></div>
+                    <div id="selector-pase"></div>
+                    <script>
+                        $(document).ready(function () {
+                            actualizarUnidades(<?php echo $ubicacion_arquitectura_id; ?>, 'selector-pase', 'recorrido-pase');
+                        });
+                    </script>
+                </div>
+
+                <div id="beds_result"
+                    style="margin-top: 1vw; display: flex; flex-direction: row; justify-content: center;">
+                </div>
+
+
+                <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 1vw;">
+                    <button type="submit" id="submit_pase_btn" class="btn-green" disabled><i
+                            class="fa-solid fa-diagram-next"></i> Realizar
+                        Pase</button>
+                    <button type="button" class="btn-grey" id="cancelPaseBtn"><i class="fa-solid fa-xmark"></i>
+                        Cancelar</button>
                 </div>
             </form>
         </div>

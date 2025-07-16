@@ -81,10 +81,6 @@ input[type=number] {
   appearance: textfield;
 }
 
-select.select2 {
-  width: 95%;
-}
-
 /* Estilo base común para todos los botones */
 .btn-green,
 .btn-red,

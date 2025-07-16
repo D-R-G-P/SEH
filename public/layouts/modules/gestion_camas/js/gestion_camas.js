@@ -244,6 +244,7 @@ $(document).ready(function () {
 				break;
 			case 'bloquearBtn':
 				document.getElementById('bloquear_popup').style.display = 'flex';
+				$('#bloqueo_tipo').select2({ placeholder: 'Seleccionar un tipo de bloqueo...' });
 				break;
 			case 'desbloquearBtn':
 				confirmation = confirm('¿Está seguro de que desea desbloquear la cama?'); // Mensaje más claro
@@ -275,8 +276,12 @@ $(document).ready(function () {
 					this.location.href = 'controllers/egresar_paciente.php?patient_id=' + patient_id_let + "&cama_id=" + cama_id_let;
 				}
 				break;
-			case 'verInfoBtn':
-				// Lógica para ver información
+			case 'camilleroBtn':
+				break;
+			case 'paseBtn':
+				document.getElementById('pase_popup').style.display = 'flex';
+				let ubiid = document.getElementById('unidad_id_selector-pase').value;
+				loadBedsForLocation(ubiid);
 				break;
 			case 'cancelReserveBtn':
 				document.getElementById('reserve_popup').style.display = 'none';
@@ -287,6 +292,8 @@ $(document).ready(function () {
 			case 'cancelBlockBtnIng':
 				document.getElementById('ingresar_popup').style.display = 'none';
 				break;
+			case 'cancelPaseBtn':
+				document.getElementById('pase_popup').style.display = 'none';
 			case 'editBtnBed':
 				// Asegúrate de que cama_name, description, etc. existan en el DOM
 				$('#cama_name, #description, #complejidad, #unidad_select_selector-container').prop('disabled', false);
@@ -1021,3 +1028,110 @@ window.initBedActions = function (camaId, camaComplexity) {
 		}
 	}
 };
+
+/**
+ * Carga y muestra visualmente las camas de una ubicación específica.
+ * @param {number} locationId El ID de la ubicación (habitación) cuyas camas se van a mostrar.
+ */
+async function loadBedsForLocation(locationId) {
+    const bedsContainer = $('#beds_result');
+    const submitPaseBtn = $('#submit_pase_btn');
+    const newBedIdInput = $('#new_bed_id');
+    const camaOrigenId = parseInt($('#cama_id').val()); // Obtener ID de la cama de origen, si existe
+
+    bedsContainer.empty(); // Limpiar camas anteriores
+    submitPaseBtn.prop('disabled', true); // Deshabilitar botón de submit al cargar nuevas camas
+    newBedIdInput.val(''); // Limpiar la selección de cama de destino
+
+    // Si tienes alguna funcionalidad de generación de notas con LLM, también deshabilitarla aquí
+    // $('#generateNotesBtn').prop('disabled', true);
+    // $('#generated_notes_display').hide().empty();
+
+    if (!locationId) {
+        bedsContainer.append('<div class="text-muted">Seleccione una unidad para ver las camas disponibles.</div>');
+        return;
+    }
+
+    try {
+        // Tu endpoint PHP para obtener camas. Asegúrate de que esta ruta sea correcta.
+        const response = await fetch(`/SGH/public/layouts/modules/gestion_camas/controllers/get_beds.php?location_id=${locationId}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        console.log('Datos de camas recibidos:', data);
+
+        if (data && data.beds && data.beds.length > 0) {
+            data.beds.forEach(bed => {
+                const isSelectable = (bed.bed_status === 'Libre' || bed.bed_status === 'Reservada');
+
+                const btn = $('<button>')
+                    .addClass(`cama_${bed.bed_status} mini-bed`)
+                    .attr('type', 'button')
+                    .attr('data-bed-id', bed.id)
+                    .html(`<i class="fa-solid fa-bed"></i><span style="font-size: 1.1vw;">${bed.name}</span>`);
+                
+                // Deshabilitar si no es seleccionable o si es la cama de origen
+                if (!isSelectable || bed.id === camaOrigenId) {
+                    btn.prop('disabled', true);
+                    btn.css({'cursor': 'not-allowed', 'opacity': '0.6'});
+                }
+
+                bedsContainer.append(btn);
+            });
+        } else {
+            bedsContainer.append('<div class="text-muted">No hay camas disponibles en esta unidad.</div>');
+        }
+    } catch (error) {
+        console.error('Error al obtener datos de camas:', error);
+        bedsContainer.empty().append('<div class="text-muted">Error al cargar las camas. Intente de nuevo.</div>');
+    }
+}
+
+// Este listener de 'change' para '#unidad_select_selector-pase' ahora llama a la función loadBedsForLocation.
+$(document).on('change', '#unidad_select_selector-pase', function () {
+    const selectedUnidad = $(this).val();
+    console.log('Unidad seleccionada para pase (desde change event):', selectedUnidad);
+    
+    // Llama a la función para cargar las camas de la unidad seleccionada
+    loadBedsForLocation(selectedUnidad);
+});
+
+// Este listener de 'change' para '#unidad_select_selector-pase' ahora llama a la función loadBedsForLocation.
+$(document).on('click', '.unidad-btn', function () {
+    const selectedUnidad = $(this).val();
+    console.log('Unidad seleccionada para pase (desde change event):', selectedUnidad);
+    
+    // Llama a la función para cargar las camas de la unidad seleccionada
+    loadBedsForLocation(selectedUnidad);
+});
+
+// ESTE LISTENER DE CLIC DEBE ESTAR FUERA DEL LISTENER DE 'CHANGE'
+// Se adjunta una sola vez al cargar la página para todos los elementos '.mini-bed' (incluso los que se añaden dinámicamente)
+$(document).on('click', '.mini-bed', function () {
+    const bedId = $(this).data('bed-id');
+    const bedStatus = $(this).attr('class').split(' ').find(cls => cls.startsWith('cama_')).replace('cama_', '');
+
+    // Solo permitir la selección si la cama es 'Libre' o 'Reservada'
+    if (bedStatus === 'Libre' || bedStatus === 'Reservada') {
+        console.log('ID de la cama seleccionada:', bedId);
+
+        // Remover la clase 'selected' de todas las camas y añadirla a la actual
+        $('#beds_result').find('.mini-bed').removeClass('selected');
+        $(this).addClass('selected');
+
+        // Establecer el valor del input oculto y habilitar el botón de submit
+        $('#new_bed_id').val(bedId); // CORRECTO: Usando jQuery para acceder al input
+        $('#submit_pase_btn').prop('disabled', false); // CORRECTO: Usando jQuery para acceder al botón
+
+        // Si tienes la funcionalidad de generación de notas con LLM, habilitala aquí también
+        // $('#generateNotesBtn').prop('disabled', false);
+    } else {
+        console.log('La cama seleccionada no está disponible para pase.');
+        $('#submit_pase_btn').prop('disabled', true);
+        // $('#generateNotesBtn').prop('disabled', true); // Deshabilitar si LLM está presente
+        $('#new_bed_id').val(''); // Limpiar la selección
+        $('#beds_result').find('.mini-bed').removeClass('selected'); // Asegurarse de que ninguna cama esté "seleccionada" visualmente
+    }
+});
