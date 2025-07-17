@@ -1,5 +1,0 @@
-🚀 Initializing WhatsApp client...
-✅ Pool de conexiones a la base de datos creado y conexión inicial exitosa!
-   Conectado a: seh@localhost:3306
-🚀 WhatsApp client initialized successfully.
-[Media Dir] Base directory for media ensured: C:\xampp\htdocs\SGH\app\whatsapp_files

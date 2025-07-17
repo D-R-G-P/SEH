@@ -1,0 +1,832 @@
+.select2-container--default .select2-selection--single {
+    width: 100%;
+}
+
+.referencias {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.camas_reference,
+.unidad_reference {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .3rem;
+}
+
+.unidad_reference {
+    margin-left: 1vw;
+    padding-left: 1vw;
+    border-left: .2vw;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-style: solid;
+    border-color: #cbd5e1;
+}
+
+.camas-reference-title,
+.unidad-reference-title {
+    font-size: 1.2vw;
+    font-weight: bold;
+}
+
+.camas_reference_children,
+.unidad_reference_children {
+    display: flex;
+    gap: .5rem;
+}
+
+.camas_reference_children>div,
+.unidad_reference_children>div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
+}
+
+.cama_libre {
+    background-color: #d1fae5;
+    border-color: #6ee7b7;
+    border-radius: .2vw;
+    border-width: .1vw;
+    border-style: solid;
+    color: #065f46;
+    content: "";
+    padding: .4vw;
+}
+
+.cama_ocupada {
+    background-color: #fecaca;
+    border-color: #f87171;
+    border-radius: .2vw;
+    border-width: .1vw;
+    border-style: solid;
+    color: #991b1b;
+    content: "";
+    padding: .4vw;
+}
+
+.cama_reservada {
+    background-color: #fed7aa;
+    border-color: #fb923c;
+    border-radius: .2vw;
+    border-width: .1vw;
+    border-style: solid;
+    color: #9a3412;
+    content: "";
+    padding: .4vw;
+}
+
+.cama_bloqueada {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+    border-radius: .2vw;
+    border-width: .1vw;
+    border-style: solid;
+    color: #374151;
+    content: "";
+    padding: .4vw;
+}
+
+.unidad_hospital {
+    background-color: #e0f2fe;
+    border-color: #7dd3fc;
+    border-radius: .2vw;
+    border-width: .1vw;
+    border-style: solid;
+    color: #065f46;
+    content: "";
+    padding: .4vw;
+}
+
+.unidad_pabellon {
+    background-color: #dcfce7;
+    border-color: #86efac;
+    color: #065f46;
+    border-radius: .2vw;
+    border-width: .1vw;
+    border-style: solid;
+    content: "";
+    padding: .4vw;
+}
+
+.unidad_planta {
+    background-color: #fef3c7;
+    border-color: #fde047;
+    border-radius: .2vw;
+    border-width: .1vw;
+    border-style: solid;
+    color: #065f46;
+    content: "";
+    padding: .4vw;
+}
+
+.unidad_sala {
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+    border-radius: .2vw;
+    border-width: .1vw;
+    border-style: solid;
+    color: #ef4444;
+    content: "";
+    padding: .4vw;
+}
+
+.unidad_habitacion {
+    background-color: #ede9fe;
+    border-color: #a78bfa;
+    border-radius: .2vw;
+    border-width: .1vw;
+    border-style: solid;
+    color: #065f46;
+    content: "";
+    padding: .4vw;
+}
+
+.hospital {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    min-width: 80%;
+    padding: 1vw;
+    border-radius: .8vw;
+    border-width: .1vw;
+    border-style: solid;
+    border-color: #7dd3fc;
+    background-color: #e0f2fe;
+    color: #334155;
+}
+
+.hospital_name span {
+    font-size: .9vw;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.hospital_name svg {
+    margin-right: .5vw;
+}
+
+.hospital_lat,
+.pabellon_lat,
+.piso_lat,
+.sala_lat,
+.habitacion_lat {
+    border-left: .15vw dashed #cbd5e1;
+}
+
+.hospital_children {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1vw;
+    gap: 1vw;
+    flex-wrap: wrap;
+    padding: 1vw;
+    border-radius: .8vw;
+    border-width: .1vw;
+    border-style: solid;
+    background-color: #dcfce7;
+    border-color: #86efac;
+    color: #334155;
+}
+
+.pabellon_name span {
+    font-size: .9vw;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.pabellon_name svg {
+    margin-right: .5vw;
+}
+
+.pabellon_children {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1vw;
+    gap: 1vw;
+    flex-wrap: wrap;
+    padding: 1vw;
+    border-radius: .8vw;
+    border-width: .1vw;
+    border-style: solid;
+    background-color: #fef3c7;
+    border-color: #fde047;
+    color: #334155;
+}
+
+.piso_name span {
+    font-size: .9vw;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.piso_name svg {
+    margin-right: .5vw;
+}
+
+.piso_children {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1vw;
+    gap: 1vw;
+    flex-wrap: wrap;
+    padding: 1vw;
+    border-radius: .8vw;
+    border-width: .1vw;
+    border-style: solid;
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+    color: #334155;
+}
+
+.piso_sub-children {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: 1vw;
+    width: fit-content;
+
+}
+
+.sala_name span {
+    font-size: .9vw;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.sala_name svg {
+    margin-right: .5vw;
+}
+
+.sala_children {
+    display: flex;
+    flex-direction: column;
+    margin: .3vw;
+    width: fit-content;
+    gap: 1vw;
+    flex-wrap: wrap;
+    padding: 1vw;
+    border-radius: .8vw;
+    border-width: .1vw;
+    border-style: solid;
+    background-color: #ede9fe;
+    border-color: #a78bfa;
+    color: #334155;
+}
+
+.habitacion_name span {
+    font-size: .9vw;
+    display: flex;
+    align-items: center;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.habitacion_name svg {
+    margin-right: .5vw;
+}
+
+.cama {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: .3rem;
+    padding: .3vw;
+}
+
+.cama_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 4vw;
+    width: auto;
+    gap: .3rem;
+    padding: .3vw;
+    border-radius: .8vw;
+    border-width: .1vw;
+    border-style: solid;
+    color: #334155;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.cama_item span {
+    font-size: .9vw;
+    width: max-content;
+}
+
+.cama_Libre {
+    background-color: #d1fae5;
+    border-color: #6ee7b7;
+}
+
+.cama_Libre:hover {
+    background-color: #9feebb;
+    border-color: #34d399;
+    transition: all .1s ease-in-out;
+    cursor: pointer;
+}
+
+.cama_Ocupada {
+    background-color: #fecaca;
+    border-color: #f87171;
+}
+
+.cama_Ocupada:hover {
+    background-color: #fca5a5;
+    border-color: #ef4444;
+    transition: all .1s ease-in-out;
+    cursor: pointer;
+}
+
+.cama_Reservada {
+    background-color: #fed7aa;
+    border-color: #fb923c;
+}
+
+.cama_Reservada:hover {
+    background-color: #fbbe24a9;
+    border-color: #f59e0b;
+    transition: all .1s ease-in-out;
+    cursor: pointer;
+}
+
+.cama_Bloqueada {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+.cama_Bloqueada:hover {
+    background-color: #d1d5db;
+    border-color: #6b7280;
+    transition: all .1s ease-in-out;
+    cursor: pointer;
+}
+
+.hospital_name,
+.pabellon_name,
+.piso_name,
+.sala_name,
+.habitacion_name {
+    cursor: pointer;
+}
+
+
+#info_cama {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 90%;
+}
+
+#info_cama form {
+    overflow-y: hidden;
+}
+
+#info_cama form input {
+    width: 100%;
+}
+
+#info_cama .info form div {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+#info_cama .info form div #recorrido-container .recorrido-unidades, #info_cama .info form div #recorrido-pase .recorrido-unidades {
+    flex-direction: row;
+}
+
+#delete_poup {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+#delete_poup .delete_poup_content {
+    background-color: #ffffff;
+    border-radius: .8vw;
+    border: .2vw #000 solid;
+    padding: 1vw;
+    margin-top: 1vw;
+    text-align: center;
+    font-weight: 500;
+    color: #374151;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.delete_poup_content {
+    width: 80%;
+}
+
+#delete_poup .delete_poup_content h3 {
+    font-size: 1.5vw;
+}
+
+#delete_poup .delete_poup_content p {
+    font-size: 1.2vw;
+}
+
+#delete_poup .delete_poup_content form {
+    overflow-y: hidden;
+}
+
+#delete_poup .delete_poup_content form input {
+    width: 100%;
+}
+
+#delete_poup .delete_poup_content form textarea {
+    width: 100%;
+    height: 6vw;
+    resize: none;
+}
+
+#delete_poup .delete_poup_content form button {
+    width: 100%;
+    margin-top: 1vw;
+}
+
+#reserve_popup {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+#reserve_popup .reserve_popup_content {
+    background-color: #ffffff;
+    border-radius: .8vw;
+    border: .2vw #000 solid;
+    padding: 1vw;
+    margin-top: 1vw;
+    text-align: center;
+    font-weight: 500;
+    color: #374151;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.reserve_popup_content {
+    width: 80%;
+}
+
+#reserve_popup .reserve_popup_content h3 {
+    font-size: 1.5vw;
+}
+
+#reserve_popup .reserve_popup_content form {
+    overflow-y: hidden;
+}
+
+#reserve_popup .reserve_popup_content form input {
+    width: 100%;
+}
+
+#reserve_popup .reserve_popup_content form textarea {
+    width: 100%;
+    height: 6vw;
+    resize: none;
+}
+
+#reserve_popup .reserve_popup_content form button {
+    width: 100%;
+    margin-top: 1vw;
+}
+
+#bloquear_popup {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+#bloquear_popup .bloquear_popup_content {
+    background-color: #ffffff;
+    border-radius: .8vw;
+    border: .2vw #000 solid;
+    padding: 1vw;
+    margin-top: 1vw;
+    text-align: center;
+    font-weight: 500;
+    color: #374151;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.bloquear_popup_content {
+    width: 80%;
+}
+
+#bloquear_popup .bloquear_popup_content h3 {
+    font-size: 1.5vw;
+}
+
+#bloquear_popup .bloquear_popup_content form {
+    overflow-y: hidden;
+}
+
+#bloquear_popup .bloquear_popup_content form input {
+    width: 100%;
+}
+
+#bloquear_popup .bloquear_popup_content form textarea {
+    width: 100%;
+    height: 6vw;
+    resize: none;
+}
+
+#bloquear_popup .bloquear_popup_content form button {
+    width: 100%;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+}
+
+#ingresar_popup {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+#ingresar_popup .ingresar_popup_content {
+    background-color: #ffffff;
+    border-radius: .8vw;
+    border: .2vw #000 solid;
+    padding: 1vw;
+    margin-top: 1vw;
+    text-align: center;
+    font-weight: 500;
+    color: #374151;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.ingresar_popup_content {
+    width: 80%;
+}
+
+#ingresar_popup .ingresar_popup_content h3 {
+    font-size: 1.5vw;
+}
+
+#ingresar_popup .ingresar_popup_content form {
+    overflow-y: hidden;
+}
+
+#ingresar_popup .ingresar_popup_content form input {
+    width: 100%;
+}
+
+#ingresar_popup .ingresar_popup_content form textarea {
+    width: 100%;
+    height: 6vw;
+    resize: none;
+}
+
+#ingresar_popup .ingresar_popup_content form button {
+    width: 100%;
+    margin-top: 1vw;
+}
+
+#info_paciente {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 90%;
+    text-align: center;
+}
+
+#info_paciente hr {
+    width: 90%;
+}
+
+#info_paciente h3 {
+    margin-top: 1vw;
+}
+
+#info_paciente form {
+    overflow-y: hidden;
+}
+
+#pase_popup {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+#pase_popup .pase_popup_content {
+    background-color: #ffffff;
+    border-radius: .8vw;
+    border: .2vw #000 solid;
+    padding: 1vw;
+    margin-top: 1vw;
+    text-align: center;
+    font-weight: 500;
+    color: #374151;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.patient_group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .3rem;
+    text-align: start;
+}
+
+.patient_row {
+    display: flex;
+    width: 85%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: .3rem;
+}
+
+.patient_row_son {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .3rem;
+    width: 100%;
+
+    input,
+    select {
+        width: 100%;
+    }
+}
+
+.patient_row_son_check {
+    display: flex;
+    /* Para alinear el switch y el texto */
+    align-items: center;
+    /* Centrar verticalmente */
+    margin-bottom: 15px;
+    /* Espacio debajo */
+    gap: 10px;
+    /* Espacio entre el switch y la etiqueta */
+}
+
+/* Ocultar el checkbox nativo */
+.toggle-switch-checkbox {
+    display: none;
+    /* Oculta el input original */
+}
+
+/* Estilos para la etiqueta (lo que se verá como el switch) */
+.toggle-switch-label {
+    cursor: pointer;
+    font-size: 1rem;
+    /* Tamaño de la fuente para el texto de la etiqueta */
+    color: #333;
+    /* Color del texto de la etiqueta */
+    -webkit-user-select: none;
+    user-select: none;
+    /* Evitar selección de texto */
+    position: relative;
+    /* Para posicionar el pseudo-elemento ::before */
+    padding-left: 50px;
+    /* Espacio para el switch simulado */
+    min-height: 26px;
+    /* Altura mínima para que quepa el switch */
+    display: flex;
+    /* Para alinear el texto de la etiqueta si es largo */
+    align-items: center;
+}
+
+/* Estilos para el "carril" del switch (la parte de fondo) */
+.toggle-switch-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    /* Centrar verticalmente */
+    width: 40px;
+    /* Ancho del carril */
+    height: 20px;
+    /* Alto del carril */
+    background-color: #ccc;
+    /* Color gris claro cuando está apagado */
+    border-radius: 20px;
+    /* Bordes redondeados para el carril */
+    transition: background-color 0.3s ease;
+    /* Transición suave de color */
+}
+
+/* Estilos para el "pomo" del switch (la parte que se mueve) */
+.toggle-switch-label::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    /* Posición inicial del pomo */
+    top: 50%;
+    transform: translateY(-50%);
+    /* Centrar verticalmente */
+    width: 16px;
+    /* Ancho del pomo */
+    height: 16px;
+    /* Alto del pomo */
+    background-color: #fff;
+    /* Color blanco del pomo */
+    border-radius: 50%;
+    /* Pomo redondo */
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    /* Sombra para darle profundidad */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    /* Transición suave del movimiento y color */
+}
+
+/* Estilos cuando el checkbox está 'checked' (encendido) */
+.toggle-switch-checkbox:checked+.toggle-switch-label::before {
+    background-color: var(--color2);
+    /* Color verde vibrante cuando está encendido */
+}
+
+/* Mover el pomo cuando el checkbox está 'checked' */
+.toggle-switch-checkbox:checked+.toggle-switch-label::after {
+    transform: translate(20px, -50%);
+    /* Mover el pomo 20px a la derecha */
+}
+
+/* Estilos de enfoque para accesibilidad */
+.toggle-switch-checkbox:focus+.toggle-switch-label::before {
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5);
+    /* Resaltar el carril al enfocar */
+    outline: none;
+    /* Eliminar el outline nativo si existe */
+}
+
+/* Opcional: ajustar el tamaño de la fuente de la etiqueta para que no se vea demasiado grande */
+.toggle-switch-label {
+    font-size: 0.95rem;
+    /* Ligeramente más pequeño para mejor balance */
+}
+
+.mini-bed {
+    border-radius: .8vw;
+    border: .2vw #000 solid;
+    padding: .5vw;
+    margin-bottom: .5vw;
+    text-align: center;
+    font-size: 1.1vw;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.mini-bed:hover {
+    background-color: #e9ecef;
+}

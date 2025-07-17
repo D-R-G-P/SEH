@@ -19,9 +19,11 @@ window.addEventListener('load', function () {
 
         toggleHeader.classList.remove("close");
         toggleHeader.classList.add("open");
+        toggleHeader.classList.add("loaded");
 
         toggleInfo.classList.remove("close");
         toggleInfo.classList.add("open");
+        toggleHeader.classList.add("loaded");
 
         for (let i = 0; i < toggleHeaderP.length; i++) {
             toggleHeaderP[i].classList.remove("close");
@@ -30,9 +32,11 @@ window.addEventListener('load', function () {
     } else if (cookie == "close") {
         toggleHeader.classList.remove("open");
         toggleHeader.classList.add("close");
+        toggleHeader.classList.add("loaded");
 
         toggleInfo.classList.remove("open");
         toggleInfo.classList.add("close");
+        toggleHeader.classList.add("loaded");
 
         for (let i = 0; i < toggleHeaderP.length; i++) {
             toggleHeaderP[i].classList.remove("open");

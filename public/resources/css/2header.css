@@ -1,0 +1,568 @@
+/* header.css */
+
+header {
+    background-color: var(--color1);
+    padding: 0.5rem; /* .5vw a rem */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 3.5rem; /* 4.5vw a rem, ajustado ligeramente */
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra para el header */
+    flex-shrink: 0; /* Evita que el header se encoja */
+}
+
+header .first {
+    width: auto;
+    display: flex;
+    flex-direction: row; /* Asegurar dirección */
+    align-items: center;
+}
+
+header .first div {
+    margin: 0 0.3rem; /* .5vw a rem */
+}
+
+header .first .bars button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.8rem; /* 1.8vw a rem */
+    cursor: pointer;
+    padding: 0.3rem; /* .3vw a rem */
+    width: 2.5rem; /* 2.5vw a rem */
+    height: 2.5rem; /* 2.5vw a rem */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem; /* 1vw a rem */
+    transition: background 0.15s ease-in-out;
+}
+
+header .first .bars button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+}
+
+header .first .titleLogo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 0.5rem; /* Espacio para el logo */
+}
+
+header .first .titleLogo .iconoLogo {
+    color: #fff;
+    font-size: 2.5rem; /* 3vw a rem */
+    margin-right: 0.5rem;
+}
+
+header .first .titleLogo h1 {
+    color: #fff;
+    font-size: 1rem; /* 1.1vw a rem */
+    text-align: left; /* Alineado a la izquierda para el texto largo */
+    width: auto; /* Dejar que el contenido defina el ancho */
+    max-width: 10rem; /* Limitar el ancho para que no sea excesivamente largo */
+    white-space: nowrap; /* Evitar que el texto se rompa */
+    overflow: hidden; /* Ocultar el desbordamiento */
+    text-overflow: ellipsis; /* Añadir puntos suspensivos si se desborda */
+}
+
+header .seccond .logoHSM {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+header .seccond .logoHSM img {
+    width: auto;
+    height: 2.5rem; /* 3vw a rem */
+    margin-right: 0.5rem;
+}
+
+header .seccond .logoHSM h2 {
+    color: #fff;
+    font-size: 1rem; /* 1.1vw a rem */
+    text-align: right; /* Alineado a la derecha */
+    width: auto;
+    max-width: 10rem; /* Limitar el ancho */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.headerLeft {
+    background-color: var(--color1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Cambiado a flex-start para alinear elementos a la izquierda */
+    justify-content: space-between;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto; /* auto en lugar de scroll */
+    flex-shrink: 0; /* Evita que el sidebar se encoja */
+}
+
+.headerLeft.loaded.open {
+    width: 15rem; /* 20.5vw a rem */
+    transition: all .3s ease-in-out; /* Velocidad de transición ajustada */
+}
+
+.headerLeft.loaded.close {
+    width: 3.5rem; /* 4vw a rem */
+    transition: all .3s ease-in-out;
+}
+
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.headerLeft {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color2) var(--color1);
+}
+
+/* Chrome, Edge, and Safari */
+.headerLeft::-webkit-scrollbar {
+    width: 0.6rem; /* 1vw a rem */
+}
+
+.headerLeft::-webkit-scrollbar-track {
+    background: var(--color1);
+}
+
+.headerLeft::-webkit-scrollbar-thumb {
+    background-color: var(--color2);
+    border-radius: 0.5rem; /* 0.8vw a rem */
+    border: 0.15rem solid var(--color1); /* 0.25vw a rem */
+    transition: background-color 0.3s ease-in-out;
+}
+
+.headerLeft::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color3);
+}
+
+.headerLeft .info.open {
+    color: #fff;
+    margin-top: 0.5rem; /* .5vw a rem */
+    padding: 0.5rem; /* .5vw a rem */
+    font-size: 1rem; /* 1.3vw a rem */
+    white-space: nowrap; /* Evitar que el texto se rompa */
+}
+
+.headerLeft .info.close {
+    color: transparent;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    animation: infoToClose 0.3s ease-in-out forwards; /* Ajuste de animación y forwards */
+    overflow: hidden; /* Asegurar ocultamiento */
+    width: 100%; /* Para que la animación sea fluida */
+    text-align: center; /* Centrar el texto para que desaparezca */
+}
+
+@keyframes infoToClose {
+    0% {
+        color: #fff;
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        color: transparent;
+        width: 0;
+        opacity: 0;
+        display: none; /* Finalmente ocultar completamente */
+    }
+}
+
+.headerLeft .sistemas {
+    margin: 0.8rem 0; /* 1vw a rem */
+    width: 100%; /* Ocupar todo el ancho */
+}
+
+.headerLeft .header {
+    padding: 0.8rem 1rem; /* 1vw a rem */
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem; /* 1.3vw a rem */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    transition: background .2s ease-in-out;
+    border-radius: 0 0.5rem 0.5rem 0; /* 0.8vw a rem */
+}
+
+.headerLeft .header:hover {
+    background: var(--color2);
+}
+
+.headerLeftP {
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-left: 0.5rem; /* .5vw a rem */
+    flex-grow: 1; /* Para que ocupe el espacio */
+    text-align: left; /* Alineación por defecto */
+}
+
+.headerLeftP.close {
+    animation: textToClose 0.3s ease-in-out forwards; /* Ajuste de animación y forwards */
+    color: transparent;
+    width: 0; /* Para que el texto desaparezca */
+}
+
+@keyframes textToClose {
+    0% {
+        white-space: nowrap;
+        overflow: hidden;
+        color: #fff;
+        width: 100%;
+    }
+    100% {
+        color: transparent;
+        width: 0;
+        display: none;
+    }
+}
+
+hr {
+    border-width: 0.0625rem; /* .1vw a rem */
+    border-color: rgba(255, 255, 255, 0.2); /* Más suave */
+    margin: 0.5rem 0; /* Espacio alrededor */
+    width: 90%; /* Ajustar ancho */
+    align-self: center; /* Centrar hr */
+}
+
+.headerLeft .user {
+    width: 100%;
+    padding: 0.8rem 1rem; /* Consistente con .header */
+    color: #fff;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.headerLeft .user p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Puntos suspensivos para nombres largos */
+    flex-grow: 1;
+}
+
+.headerLeft .logout {
+    padding: 0.8rem 1rem; /* 1vw a rem */
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem; /* 1.3vw a rem */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    transition: background .2s ease-in-out;
+    border-radius: 0 0.5rem 0.5rem 0;
+    margin-top: auto; /* Empuja el logout al final del sidebar */
+}
+
+.headerLeft .logout:hover {
+    background: #ec2222;
+}
+
+/* Footer */
+footer {
+    background: var(--color1);
+    display: flex;
+    justify-content: space-between;
+    height: 1.8rem; /* 1.8vw a rem */
+    align-items: center;
+    color: #fff;
+    font-size: 0.8rem; /* 1vw a rem */
+    padding: 0 1rem; /* 0 1vw a rem */
+    flex-shrink: 0; /* Evita que el footer se encoja */
+}
+
+article {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1; /* Para que la article ocupe el espacio restante */
+    height: calc(100% - 3.5rem - 1.8rem); /* altura total - header - footer */
+}
+
+.content {
+    width: 100%;
+    padding: 1rem 0.8rem; /* 1vw .5vw 1vw 1vw a rem */
+    background-color: #dddddd;
+    background-image: radial-gradient(rgba(207, 207, 207, 0.83) 0.0625rem, transparent 0);
+    background-size: 0.6rem 0.6rem;
+    background-position: -12rem -12rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 1;
+}
+
+/* Panel de Reporte */
+.error-report {
+    position: fixed;
+    top: 0;
+    right: -20rem; /* Ajustado de -30vw a rem */
+    width: 18rem; /* Ajustado de 30vw a rem, menos ancho para ser más compacto */
+    height: 100%;
+    background-color: #dddddd;
+    background-image: radial-gradient(rgba(207, 207, 207, 0.83) 0.0625rem, transparent 0);
+    background-size: 0.6rem 0.6rem;
+    background-position: -12rem -12rem;
+    border-left: 0.125rem solid var(--color3-normal);
+    box-shadow: -0.3rem 0 0.6rem rgba(0, 0, 0, 0.2); /* Sombra ajustada */
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    z-index: 1000;
+}
+
+.error-report .fa-chevron-right {
+    display: none;
+}
+
+.error-report .fa-chevron-left {
+    display: block;
+}
+
+.error-report-body textarea {
+    resize: vertical; /* Solo permitir redimensionar verticalmente */
+    width: 100%;
+    min-height: 8rem; /* 10vw a rem */
+    max-height: 15rem; /* 20vw a rem */
+    field-sizing: content;
+    padding: 0.6rem;
+    border-radius: 0.4rem;
+    border: 0.0625rem solid var(--input-border-color);
+}
+
+/* Botón flotante (ahora dentro del panel) */
+.floating-button {
+    position: absolute;
+    top: 3.5rem; /* 4.7vw a rem, ajustar según la altura del header */
+    left: -2rem; /* -3vw a rem */
+    background-color: var(--color3-normal);
+    color: white;
+    width: 9rem; /* 11.5vw a rem */
+    height: 2.5rem; /* 3vw a rem */
+    border-radius: 2.5rem 0 0 2.5rem; /* 5vw a rem */
+    display: flex;
+    justify-content: flex-start; /* Cambiado a flex-start */
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem; /* 1vw a rem */
+    transition: all 0.3s ease-in-out;
+    z-index: 999;
+}
+
+.floating-button span {
+    white-space: nowrap;
+    margin-left: 0.5rem; /* .5vw a rem */
+    font-size: 1rem; /* 1.1vw a rem */
+}
+
+.floating-button:hover {
+    background-color: var(--color3-dark);
+    left: -9rem; /* -11.5vw a rem */
+}
+
+.floating-button i:first-child {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Cuando el panel está abierto */
+.error-report.open {
+    right: 0;
+    z-index: 1000;
+}
+
+.error-report.open .floating-button {
+    left: -1.8rem; /* -2.9vw a rem */
+    width: 1.8rem; /* 2.8vw a rem */
+
+    span {
+        display: none;
+    }
+
+    .fa-chevron-right {
+        display: block;
+    }
+
+    .fa-chevron-left {
+        display: none;
+    }
+
+    .fa-bug {
+        margin-left: 0.3rem; /* .5vw a rem */
+    }
+
+    z-index: 999;
+}
+
+/* Media queries para responsividad */
+
+/* Teléfonos pequeños y medianos */
+@media (max-width: 576px) {
+  header {
+    height: 3rem;
+    padding: 0.3rem;
+  }
+  header .first .bars button {
+    font-size: 1.5rem;
+    width: 2rem;
+    height: 2rem;
+  }
+  header .first .titleLogo .iconoLogo {
+    font-size: 2rem;
+    margin-right: 0.3rem;
+  }
+  header .first .titleLogo h1,
+  header .seccond .logoHSM h2 {
+    font-size: 0.85rem;
+    max-width: 7rem;
+  }
+  header .seccond .logoHSM img {
+    height: 2rem;
+  }
+
+  .headerLeft.loaded.open {
+    width: 12rem;
+  }
+  .headerLeft.loaded.close {
+    width: 3rem;
+  }
+  .headerLeft .info.open {
+    font-size: 0.9rem;
+    padding: 0.3rem;
+  }
+  .headerLeft .sistemas {
+    margin: 0.5rem 0;
+  }
+  .headerLeft .header, .headerLeft .user, .headerLeft .logout {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+  }
+  .headerLeftP {
+    margin-left: 0.3rem;
+  }
+  hr {
+    margin: 0.3rem 0;
+  }
+  footer {
+    height: 1.5rem;
+    font-size: 0.75rem;
+    padding: 0 0.8rem;
+  }
+  article {
+    height: calc(100% - 3rem - 1.5rem); /* Altura de header y footer ajustada */
+  }
+  .content {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .error-report {
+    width: 15rem;
+    right: -15rem;
+    padding: 0.8rem;
+  }
+  .floating-button {
+    top: 3.2rem;
+    left: -1.8rem;
+    width: 7rem;
+    height: 2.2rem;
+    font-size: 0.8rem;
+  }
+  .floating-button span {
+    font-size: 0.9rem;
+  }
+  .floating-button:hover {
+    left: -7rem;
+  }
+  .error-report.open .floating-button {
+    left: -1.5rem;
+    width: 1.5rem;
+  }
+}
+
+/* Tablets */
+@media (min-width: 577px) and (max-width: 992px) {
+  header {
+    height: 3.8rem;
+    padding: 0.4rem;
+  }
+  header .first .bars button {
+    font-size: 1.6rem;
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+  header .first .titleLogo .iconoLogo {
+    font-size: 2.2rem;
+  }
+  header .first .titleLogo h1,
+  header .seccond .logoHSM h2 {
+    font-size: 0.95rem;
+    max-width: 8rem;
+  }
+  header .seccond .logoHSM img {
+    height: 2.5rem;
+  }
+
+  .headerLeft.loaded.open {
+    width: 13rem;
+  }
+  .headerLeft.loaded.close {
+    width: 3.2rem;
+  }
+  .headerLeft .info.open {
+    font-size: 0.95rem;
+  }
+  .headerLeft .header, .headerLeft .user, .headerLeft .logout {
+    font-size: 0.95rem;
+  }
+  footer {
+    height: 1.6rem;
+    font-size: 0.8rem;
+  }
+  article {
+    height: calc(100% - 3.8rem - 1.6rem);
+  }
+  .content {
+    padding: 0.9rem 0.6rem;
+  }
+
+  .error-report {
+    width: 16rem;
+    right: -16rem;
+  }
+  .floating-button {
+    top: 3.8rem;
+    left: -2.2rem;
+    width: 8rem;
+    height: 2.3rem;
+    font-size: 0.85rem;
+  }
+  .floating-button span {
+    font-size: 0.95rem;
+  }
+  .floating-button:hover {
+    left: -8rem;
+  }
+  .error-report.open .floating-button {
+    left: -1.7rem;
+    width: 1.7rem;
+  }
+}
+
+/* Desktop pequeño */
+@media (min-width: 993px) and (max-width: 1200px) {
+  header {
+    height: 4rem;
+  }
+  .floating-button {
+    top: 4.2rem;
+  }
+}
