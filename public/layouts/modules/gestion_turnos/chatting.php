@@ -77,6 +77,89 @@ require_once '../../base/header.php';
 
 <div class="content">
 	<div class="back" id="back" style="display: none;">
+
+		<div class="divBackForm" id="editPatientModal" style="display: none;">
+			<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
+				<button class="btn-red"
+					onclick="document.getElementById('back').style.display = 'none'; document.getElementById('derivar').style.display = 'none'; document.getElementById('derivarForm').reset(); $('#agenteSelect').val(null).trigger('change');"
+					style="width: 2.3vw; height: 2.3vw;"><b><i class="fa-solid fa-xmark"></i></b></button>
+			</div>
+
+			<h3 class="formTitle">Editar paciente</h3>
+			<form id="editPatientForm" class="backForm" style="align-items: flex-start;">
+				<input type="hidden" id="edit_patient_id" name="id_paciente">
+
+				<label for="edit_apellidos">Apellidos:</label>
+				<input type="text" id="edit_apellidos" name="apellidos" required>
+
+				<label for="edit_nombres">Nombres:</label>
+				<input type="text" id="edit_nombres" name="nombres" required>
+
+				<label>Sexo:</label>
+				<div style="display: flex; gap: 1em; align-items: center; flex-direction: row;">
+					<label style="display: flex; flex-wrap: nowrap; align-items: center;">
+						<input type="radio" name="sexo" id="edit_sexo_masculino" value="Masculino">
+						Masculino
+					</label>
+					<label style="display: flex; flex-wrap: nowrap; align-items: center;">
+						<input type="radio" name="sexo" id="edit_sexo_femenino" value="Femenino">
+						Femenino
+					</label>
+					<label style="display: flex; flex-wrap: nowrap; align-items: center;">
+						<input type="radio" name="sexo" id="edit_sexo_x" value="X">
+						X
+					</label>
+				</div>
+
+				<label for="edit_tipo_documento" style="margin-top: 1vw;">Tipo de Documento:</label>
+				<input type="text" id="edit_tipo_documento" name="tipo_documento">
+
+				<label for="edit_documento">Documento:</label>
+				<input type="text" id="edit_documento" name="documento">
+
+				<label for="edit_fecha_nacimiento">Fecha de Nacimiento:</label>
+				<input type="date" id="edit_fecha_nacimiento" name="fecha_nacimiento">
+
+				<label for="edit_identidad_genero">Identidad de Género:</label>
+				<input type="text" id="edit_identidad_genero" name="identidad_genero">
+
+				<label for="edit_nombre_autopercibido">Nombre Autopercibido:</label>
+				<input type="text" id="edit_nombre_autopercibido" name="nombre_autopercibido">
+
+				<label for="edit_provincia">Provincia:</label>
+				<input type="text" id="edit_provincia" name="provincia">
+
+				<label for="edit_partido">Partido:</label>
+				<input type="text" id="edit_partido" name="partido">
+
+				<label for="edit_ciudad">Ciudad:</label>
+				<input type="text" id="edit_ciudad" name="ciudad">
+
+				<label for="edit_calle">Calle:</label>
+				<input type="text" id="edit_calle" name="calle">
+
+				<label for="edit_numero">Número:</label>
+				<input type="text" id="edit_numero" name="numero">
+
+				<label for="edit_piso">Piso:</label>
+				<input type="text" id="edit_piso" name="piso">
+
+				<label for="edit_departamento">Departamento:</label>
+				<input type="text" id="edit_departamento" name="departamento">
+
+				<label for="edit_telefono">Teléfono:</label>
+				<input type="text" id="edit_telefono" name="telefono" required>
+
+				<label for="edit_mail">Email:</label>
+				<input type="email" id="edit_mail" name="mail">
+
+				<label for="edit_obra_social">Obra Social:</label>
+				<input type="text" id="edit_obra_social" name="obra_social">
+
+				<button type="submit" class="btn-green">Guardar Cambios</button>
+			</form>
+		</div>
+
 		<div class="divBackForm" id="derivar" style="display: none;">
 			<div class="close" style="width: 100%; display: flex; justify-content: flex-end; padding: .5vw">
 				<button class="btn-red"

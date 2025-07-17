@@ -587,15 +587,14 @@ li {
   padding: .5rem .75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: #007bff;
+  color: var(--color2);
   background-color: #fff;
   border: .1vw solid #000;
   transition: all 0.15s ease-in-out;
 }
 
-/* TODO: Corregir colores de la paginación. */
 .page-link:hover {
-  color: #007bff;
+  color: var(--color2);
   text-decoration: none;
   background-color: #e9ecef;
   border-color: #000;
@@ -621,7 +620,7 @@ li {
 .page-item.active .page-link {
   z-index: 1;
   color: #fff;
-  background-color: #007bff;
+  background-color: var(--color2);
   border-color: #000;
 }
 

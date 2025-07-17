@@ -81,7 +81,7 @@ if (!$chat_data) {
 $paciente_id = $chat_data['paciente_id'];
 
 // Consultar los datos del paciente en la tabla pacientes_chat
-$sql = "SELECT apellidos, nombres, sexo, tipo_documento, documento, fecha_nacimiento, 
+$sql = "SELECT id, apellidos, nombres, sexo, tipo_documento, documento, fecha_nacimiento, 
                identidad_genero, nombre_autopercibido, provincia, partido, ciudad, calle, 
                numero, piso, departamento, telefono, mail, obra_social 
         FROM pacientes_chat 
