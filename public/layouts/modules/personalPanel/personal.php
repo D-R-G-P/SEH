@@ -71,76 +71,74 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
         </div>
         <h3>Declarar nuevo personal</h3>
         <form action="/SGH/public/layouts/modules/personalPanel/controllers/addPersonal.php" method="post" class="backForm" id="newPersonalForm">
-          <div>
-            <label for="apellido">Apellido</label>
-            <input type="text" name="apellido" id="apellido" required>
-          </div>
-          <div>
-            <label for="nombre">Nombre</label>
-            <input type="text" name="nombre" id="nombre" required>
-          </div>
-          <div>
-            <label for="dni">D.N.I.</label>
-            <input type="text" name="dni" id="dni" width="100%" oninput="formatNumber(this)" required>
-          </div>
-          <div>
-            <label for="selectServicio">Servicio</label>
-            <select id="selectServicio" class="select2" name="servicio" style="width: 100%;" required onchange="selectChange()">
-              <option value="" selected disabled>Seleccionar servicio...</option>
-              <?php
+    <div>
+        <label for="apellido">Apellido</label>
+        <input type="text" name="apellido" id="apellido" required>
+    </div>
+    <div>
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" id="nombre" required>
+    </div>
+    <div>
+        <label for="dni">D.N.I.</label>
+        <div style="display: flex; flex-direction: row; padding: 0;">
+            <input type="text" name="dni" id="dni" style="width: 100%" oninput="formatNumber(this)" required>
+            <button class="btn-green" type="button" id="btn-dni"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </div>
+    <div>
+        <label for="selectServicio">Servicio</label>
+        <select id="selectServicio" class="select2" name="servicio" style="width: 100%;" required onchange="selectChange()">
+            <option value="" selected disabled>Seleccionar servicio...</option>
+        </select>
+    </div>
+    <div>
+        <label for="selectEspecialidad">Especialidad</label>
+        <select id="selectEspecialidad" class="select2" name="especialidad" style="width: 100%;">
+            <option value="" selected disabled>Seleccionar especialidad...</option>
+        </select>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;">
+        <div style="display: flex; flex-direction: column;">
+            <label for="mn">M.N.</label>
+            <input style="width: 100%;" type="number" name="mn" id="mn">
+        </div>
+        <div style="display: flex; flex-direction: column;">
+            <label for="mp">M.P.</label>
+            <input style="width: 100%;" type="number" name="mp" id="mp">
+        </div>
+    </div>
+    <div>
+        <label for="selectCargo">Cargo</label>
+        <select id="selectCargo" class="select2" name="cargo" style="width: 100%;" required>
+            <option value="" selected disabled>Seleccionar cargo...</option>
+        </select>
+    </div>
+    <div class="loading-container" id="loadingContainer">
+        <div class="loading-spinner"></div>
+    </div>
+    <div class="error-container text-red-500 mt-2" id="errorContainer">
+        <p id="errorMessage"></p>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: center;">
+        <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Declarar nuevo personal</b></button>
+    </div>
+</form>
 
-              // Realiza la consulta a la tabla servicios
-              $getServicio = "SELECT id, servicio FROM servicios WHERE estado = 'Activo'";
-              $stmtServicio = $pdo->query($getServicio);
-
-              // Itera sobre los resultados y muestra las filas en la tabla
-              while ($row = $stmtServicio->fetch(PDO::FETCH_ASSOC)) {
-                echo '<option value=' . $row['id'] . '>' . $row['servicio'] . '</option>';
-              }
-
-              ?>
-            </select>
-          </div>
-          <div>
-            <label for="selectEspecialidad">Especialidad</label>
-            <select id="selectEspecialidad" class="select2" name="especialidad" style="width: 100%;">
-              <option value="" selected disabled>Seleccionar especialidad...</option>
-            </select>
-          </div>
-          <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%;">
-            <div style="display: flex; flex-direction: column;">
-              <label for="mn">M.N.</label>
-              <input style="width: 100%;" type="number" name="mn" id="mn">
-            </div>
-
-            <div style="display: flex; flex-direction: column;">
-              <label for="mp">M.P.</label>
-              <input style="width: 100%;" type="number" name="mp" id="mp">
-            </div>
-          </div>
-          <div>
-            <label for="selectCargo">Cargo</label>
-            <select id="selectCargo" class="select2" name="cargo" style="width: 100%;" required>
-              <option value="" selected disabled>Seleccionar cargo...</option>
-              <?php
-
-              // Realiza la consulta a la tabla cargo
-              $getCargo = "SELECT cargo FROM cargos WHERE estado = 'Activo'";
-              $stmtCargo = $pdo->query($getCargo);
-
-              // Itera sobre los resultados y muestra las filas en la tabla
-              while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
-                echo '<option value="' . $row['cargo'] . '">' . $row['cargo'] . '</option>';
-              }
-
-              ?>
-            </select>
-          </div>
-          <div style="display: flex; flex-direction: row; justify-content: center;">
-            <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Declarar nuevo
-                personal</b></button>
-          </div>
-        </form>
+<!-- Modal para mostrar múltiples resultados -->
+<div id="resultsModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="flex justify-between items-center pb-3">
+            <h3 class="text-lg font-bold">Selecciona una persona</h3>
+            <button id="closeModal" class="btn-red">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <ul id="resultsList" class="max-h-60 overflow-y-auto">
+            <!-- Los resultados se agregarán aquí dinámicamente -->
+        </ul>
+    </div>
+</div>
       </div>
 
       <div class="divBackForm" id="editPersonal" style="display: none;">
@@ -217,7 +215,7 @@ if (($sel != $servicio_usuario || !$sel) && !hasAccess(['administrador', 'direcc
             </select>
           </div>
           <div style="display: flex; flex-direction: row; justify-content: center;">
-            <button class="btn-green"><b><i class="fa-solid fa-plus"></i> Confirmar edición</b></button>
+            <button class="btn-green"><b><i class="fa-solid fa-pencil"></i> Confirmar edición</b></button>
           </div>
         </form>
       </div>

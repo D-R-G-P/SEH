@@ -253,3 +253,150 @@ function setDatosJubilar(apellido, nombre, dni) {
     $('#jubilarDni').val(dni);
     $('#jubilarDniHidden').val(dni);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Referencias a elementos del DOM
+    const dniInput = document.getElementById('dni');
+    const apellidoInput = document.getElementById('apellido');
+    const nombreInput = document.getElementById('nombre');
+    const button = document.getElementById('btn-dni');
+    
+    // Asume la existencia de un contenedor de carga y uno de error en tu HTML
+    const loadingContainer = document.getElementById('loadingContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const errorMessage = document.getElementById('errorMessage');
+
+    // Referencias al nuevo modal de resultados
+    const resultsModal = document.getElementById('resultsModal');
+    const resultsList = document.getElementById('resultsList');
+    const closeButton = document.getElementById('closeModal');
+
+    // URLs de tus scripts PHP
+    const nosisProxyUrl = 'controllers/consultar_nosis.php';
+    const geminiProxyUrl = 'controllers/separar_nombre.php';
+
+    // Función para manejar el clic en el botón
+    button.addEventListener('click', async () => {
+        const dniValue = dniInput.value.trim();
+
+        // Limpiar campos y mensajes anteriores
+        apellidoInput.value = '';
+        nombreInput.value = '';
+        if (errorContainer) errorContainer.style.display = 'none';
+        
+        if (dniValue) {
+            // Mostrar spinner de carga
+            if (loadingContainer) loadingContainer.style.display = 'flex';
+            await fetchData(dniValue);
+        } else {
+            displayError('Por favor, ingresa un número de DNI.');
+        }
+    });
+
+    // Función para hacer la llamada a tu script PHP
+    async function fetchData(dni) {
+        try {
+            const payload = {
+                dni: dni
+            };
+
+            // Primera llamada: a la API de Nosis a través del proxy
+            const response = await fetch(nosisProxyUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            // Manejo de errores de la API
+            if (!response.ok) {
+                if (response.status === 429) {
+                    throw new Error('Has superado el límite de uso gratuito de la API. Por favor, inténtalo de nuevo más tarde.');
+                }
+                throw new Error(`Error de red: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.EntidadesEncontradas && data.EntidadesEncontradas.length > 1) {
+                // Hay más de un resultado, mostrar el modal para selección del usuario
+                showResultsModal(data.EntidadesEncontradas);
+            } else if (data.EntidadesEncontradas && data.EntidadesEncontradas.length === 1) {
+                // Solo hay un resultado, procesar directamente con la segunda llamada
+                const entidad = data.EntidadesEncontradas[0];
+                const { nombre, apellido } = await fetchNameFromGemini(entidad.RazonSocial);
+                fillFormFields(nombre, apellido);
+            } else {
+                throw new Error('No se encontraron resultados para el DNI.');
+            }
+        } catch (error) {
+            console.error('Error al obtener la información:', error);
+            displayError(error.message || 'Hubo un error al procesar la solicitud.');
+        } finally {
+            // Ocultar spinner de carga
+            if (loadingContainer) loadingContainer.style.display = 'none';
+        }
+    }
+
+    // Muestra el modal con los resultados
+    function showResultsModal(results) {
+        resultsList.innerHTML = '';
+        results.forEach(entidad => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('cursor-pointer', 'p-2', 'hover:bg-gray-100', 'border-b', 'border-gray-200', 'last:border-b-0');
+            listItem.textContent = entidad.RazonSocial;
+            listItem.addEventListener('click', async () => {
+                const { nombre, apellido } = await fetchNameFromGemini(entidad.RazonSocial);
+                fillFormFields(nombre, apellido);
+                hideResultsModal();
+            });
+            resultsList.appendChild(listItem);
+        });
+        resultsModal.style.display = 'flex';
+    }
+    
+    // Oculta el modal de resultados
+    function hideResultsModal() {
+        resultsModal.style.display = 'none';
+    }
+
+    // Rellena los campos del formulario
+    function fillFormFields(nombre, apellido) {
+        apellidoInput.value = apellido;
+        nombreInput.value = nombre;
+    }
+
+    // Nueva función para llamar al proxy de Gemini en el servidor
+    async function fetchNameFromGemini(razonSocial) {
+        try {
+            const response = await fetch(geminiProxyUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ razonSocial: razonSocial })
+            });
+            
+            if (!response.ok) throw new Error('Error al llamar a Gemini API a través del servidor.');
+            
+            const data = await response.json();
+            return { nombre: data.nombre, apellido: data.apellido };
+            
+        } catch (error) {
+            console.error("Error al separar nombre y apellido con IA:", error);
+            return { nombre: "N/A", apellido: "N/A" };
+        }
+    }
+
+    // Función para mostrar errores en la UI
+    function displayError(message) {
+        if (errorContainer && errorMessage) {
+            errorMessage.textContent = message;
+            errorContainer.style.display = 'block';
+        }
+    }
+
+    // Event listener para cerrar el modal con el botón
+    if (closeButton) {
+        closeButton.addEventListener('click', hideResultsModal);
+    }
+});

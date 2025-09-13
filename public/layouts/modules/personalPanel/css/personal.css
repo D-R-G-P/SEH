@@ -32,8 +32,10 @@ h3 {
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 1vw 0 1vw 1vw; /* Triángulo hacia la derecha */
-    border-color: transparent transparent transparent #000; /* Blanco */
+    border-width: 1vw 0 1vw 1vw;
+    /* Triángulo hacia la derecha */
+    border-color: transparent transparent transparent #000;
+    /* Blanco */
 }
 
 .buttons-div.activo {
@@ -99,19 +101,59 @@ h3 {
     content: "";
     position: absolute;
     top: 50%;
-    left: 0; /* Cambiado a right en lugar de left */
-    transform: translate(-1vw, -50%); /* Ajuste positivo para la traducción horizontal */
+    left: 0;
+    /* Cambiado a right en lugar de left */
+    transform: translate(-1vw, -50%);
+    /* Ajuste positivo para la traducción horizontal */
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 1vw 1vw 1vw 0; /* Triángulo hacia la izquierda */
-    border-color: transparent #000 transparent transparent; /* Blanco */
+    border-width: 1vw 1vw 1vw 0;
+    /* Triángulo hacia la izquierda */
+    border-color: transparent #000 transparent transparent;
+    /* Blanco */
 }
 
 .buttonPagination {
     height: 2.2vw;
 }
 
-.select2-container--default .select2-selection--single, .select2-container--default .select2-selection--multiple .select2-selection__arrow {
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple .select2-selection__arrow {
     transform: translateY(0.0vw);
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    width: 400px;
+}
+.modal-content ul {
+    list-style: none; /* Elimina los puntos de la lista */
+    padding: 0;
+}
+.modal-content ul li {
+    cursor: pointer;
+    padding: 0.5rem;
+    border-bottom: 1px solid #e5e7eb; /* Color de borde más suave */
+}
+.modal-content ul li:hover {
+    background-color: #f3f4f6; /* Fondo de color más claro al pasar el cursor */
+}
+.modal-content ul li:last-child {
+    border-bottom: none; /* Elimina el borde del último elemento */
 }
